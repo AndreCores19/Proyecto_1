@@ -19,3 +19,5 @@ public class App extends Application {
 }
 
 //Hay que decidir un nombre pa esta vaina?
+
+// di, yo diría que si jajaja
