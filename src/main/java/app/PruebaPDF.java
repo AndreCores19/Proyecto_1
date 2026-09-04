@@ -2,7 +2,7 @@ package app;
 
 import java.util.List;
 
-import static app.Logic.GeneradorReportePDF.generar;
+import static app.Logica.GeneradorReportePDF.generar;
 
 public class PruebaPDF {
     public static void main(String[] args) {
