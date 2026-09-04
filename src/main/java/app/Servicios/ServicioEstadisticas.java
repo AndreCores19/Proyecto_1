@@ -1,4 +1,4 @@
-package app.Service;
+package app.Servicios;
 
 public class ServicioEstadisticas {
 }

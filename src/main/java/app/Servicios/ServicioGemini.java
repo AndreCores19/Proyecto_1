@@ -1,7 +1,6 @@
-package app.Service;
+package app.Servicios;
 
-import app.Logic.LogicaGemini;
-import app.Logic.LogicaReservas;
+import app.Logica.LogicaReservas;
 
 
 public class ServicioGemini {
