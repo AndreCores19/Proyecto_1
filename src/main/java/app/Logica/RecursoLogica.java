@@ -11,21 +11,12 @@ public class RecursoLogica {
 
     private String rutaArchivo;
     private CategoriaLogica categoriaLogica;
+    private LogicaReservas reservaLogica;
 
     public RecursoLogica() {
+        this.rutaArchivo = "recursos.json";
         this.categoriaLogica = new CategoriaLogica();
-    }
-
-    public String getRutaArchivo() {
-        return rutaArchivo;
-    }
-
-    public void setRutaArchivo(String rutaArchivo) {
-        this.rutaArchivo = rutaArchivo;
-    }
-
-    public void setRutaArchivoCategorias(String rutaArchivoCategorias) {
-        this.categoriaLogica.setRutaArchivo(rutaArchivoCategorias);
+        this.reservaLogica = new LogicaReservas();
     }
 
     public List<RecursoDTO> listarTodos() {
@@ -104,8 +95,10 @@ public class RecursoLogica {
     }
 
     public void eliminar(String numActivo) throws Exception {
-        // cuando ReservaLogica exista, validar aquí que el recurso
-        // no reservas activas/futuras antes de permitir el borrado.
+        if (reservaLogica.tieneReservasActivasPorRecurso(numActivo)) {
+            throw new Exception("No se puede eliminar un recurso que tiene reservas activas.");
+        }
+
         RecursoDatos datos = new RecursoDatos();
         datos.setRutaArchivo(rutaArchivo);
         datos.deserializar();
