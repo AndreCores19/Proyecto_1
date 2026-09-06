@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<TitledPane fx:id="tltPwd" prefHeight="300.0" prefWidth="348.0" text="Cambiar Clave" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane fx:id="tltPwd" prefHeight="300.0" prefWidth="348.0" text="Cambiar Clave" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.CambiarClaveViewController">
    <content>
       <GridPane fx:id="gridPwdCambio" alignment="CENTER" hgap="20.0" prefHeight="224.0" prefWidth="346.0">
         <columnConstraints>
@@ -41,7 +41,7 @@
             </Button>
             <Label fx:id="lblClaveAct" text="Clave Actual" GridPane.halignment="CENTER" />
             <Label fx:id="lblClaveNueva" text="Clave Nueva" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Label fx:id="lblClaveConf" text="Clave Confirmación" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label fx:id="lblClaveConf" text="Clave Nueva" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </content>

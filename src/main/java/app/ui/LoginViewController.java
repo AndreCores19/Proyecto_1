@@ -1,5 +1,6 @@
-package app.Controllers;
+package app.ui;
 
+import app.Controllers.SesionActual;
 import app.DTO.UsuarioDTO;
 import app.Servicios.ServicioUsuario;
 import javafx.fxml.FXML;
@@ -9,7 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 
-public class LoginController {
+public class LoginViewController {
     @FXML private TextField txtIdLogin;
     @FXML private PasswordField txtPwdLogin;
     @FXML private Button btnLogin;
@@ -20,6 +21,7 @@ public class LoginController {
     @FXML
     private void initialize() {
         btnLogin.setOnAction(event -> intentarLogin());
+        btnCancelar.setOnAction(event -> cancelarLogin(event));
         hyperPwd.setOnAction(event -> irACambiarClave(event));
     }
 
@@ -58,5 +60,9 @@ public class LoginController {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+    }
+    private void cancelarLogin(javafx.event.ActionEvent event) {
+        javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 }
