@@ -11,7 +11,7 @@ public class PrimerAdmin {
         AdministradorDatos datos = new AdministradorDatos();
         datos.setRutaArchivo("administradores.json");
 
-        AdministradorDTO admin = new AdministradorDTO("Administrador Principal", "123", "hola2894", "ADMIN");
+        AdministradorDTO admin = new AdministradorDTO("Administrador Principal", "admin", "hola123", "ADMIN");
 
         List<AdministradorDTO> lista = new ArrayList<>();
         lista.add(admin);
@@ -19,6 +19,6 @@ public class PrimerAdmin {
         datos.setListado(lista);
         datos.serializar();
 
-        System.out.println("Administrador creado: id=123, clave=hola2894");
+        System.out.println("Administrador creado: id=admin, clave=hola123");
     }
 }
