@@ -17,7 +17,3 @@ public class App extends Application {
     }
     public static void main(String[] args){ launch(args); }
 }
-
-//Hay que decidir un nombre pa esta vaina?
-
-// di, yo diría que si jajaja

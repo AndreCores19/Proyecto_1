@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBoxLogin" fx:controller="app.Controllers.LoginController" alignment="CENTER" prefHeight="363.0" prefWidth="348.0" spacing="30.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vBoxLogin" alignment="CENTER" prefHeight="363.0" prefWidth="348.0" spacing="30.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controllers.LoginController">
    <children>
       <ImageView fx:id="imgLogin" fitHeight="101.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -53,7 +53,7 @@
             <PasswordField fx:id="txtPwdLogin" alignment="CENTER" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Hyperlink fx:id="hyperPwd" text="¿Olvidó la contraseña?">
+      <Hyperlink fx:id="hyperPwd" text="¿Quiere cambiar la clave?">
          <font>
             <Font size="13.0" />
          </font>

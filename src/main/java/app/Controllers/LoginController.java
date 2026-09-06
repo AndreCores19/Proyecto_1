@@ -20,6 +20,7 @@ public class LoginController {
     @FXML
     private void initialize() {
         btnLogin.setOnAction(event -> intentarLogin());
+        hyperPwd.setOnAction(event -> irACambiarClave(event));
     }
 
     private void intentarLogin() {
@@ -27,7 +28,26 @@ public class LoginController {
         String clave = txtPwdLogin.getText();
         try {
             UsuarioDTO usuario = servicioUsuario.iniciarSesion(id, clave);
+            SesionActual.setUsuarioActual(usuario);
             System.out.println("Login exitoso: " + usuario.getId() + "  (rol: " + usuario.getRol() + ")");
+            // acá después vamos a navegar al menú principal
+        } catch (Exception e) {
+            mostrarError(e.getMessage());
+        }
+    }
+
+    private void irACambiarClave(javafx.event.ActionEvent event) {
+        String id = txtIdLogin.getText();
+        String clave = txtPwdLogin.getText();
+        try {
+            UsuarioDTO usuario = servicioUsuario.iniciarSesion(id, clave);
+            SesionActual.setUsuarioActual(usuario);
+
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/cambiarClave-view.fxml"));
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+
         } catch (Exception e) {
             mostrarError(e.getMessage());
         }
