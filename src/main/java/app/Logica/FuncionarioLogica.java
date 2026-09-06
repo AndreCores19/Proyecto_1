@@ -8,17 +8,16 @@ import java.util.List;
 
 public class FuncionarioLogica {
 
+    private LogicaReservas reservaLogica;
     private String rutaArchivo;
 
     public FuncionarioLogica() {
+        this.rutaArchivo = "funcionarios.json";
+        this.reservaLogica = new LogicaReservas();
     }
 
     public String getRutaArchivo() {
         return rutaArchivo;
-    }
-
-    public void setRutaArchivo(String rutaArchivo) {
-        this.rutaArchivo = rutaArchivo;
     }
 
     public List<FuncionarioDTO> listarTodos() {
@@ -68,7 +67,6 @@ public class FuncionarioLogica {
             }
         }
 
-        // Regla del enunciado: la clave inicial es igual al id
         nuevo.setClave(nuevo.getId());
         nuevo.setRol("FUNCIONARIO");
 
@@ -105,10 +103,9 @@ public class FuncionarioLogica {
     }
 
     public void eliminar(String id) throws Exception {
-        // Cuando el modulo de Reservas esté listo, agregar aquí la validación:
-        // if (reservaLogica.tieneReservasActivas(id)) {
-        //     throw new Exception("No se puede eliminar: el funcionario tiene reservas activas o futuras.");
-        // }
+        if (reservaLogica.tieneReservasActivas(id)) {
+             throw new Exception("No se puede eliminar: el funcionario tiene reservas activas .");
+        }
 
         FuncionarioDatos datos = new FuncionarioDatos();
         datos.setRutaArchivo(rutaArchivo);

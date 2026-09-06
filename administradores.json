@@ -1,8 +1,8 @@
 [
   {
     "nombre": "Administrador Principal",
-    "id": "123",
-    "clave": "hola2894",
+    "id": "admin",
+    "clave": "hola123",
     "rol": "ADMIN"
   }
 ]

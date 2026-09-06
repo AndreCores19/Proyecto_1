@@ -15,10 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox fx:id="vBoxLogin" alignment="CENTER" prefHeight="363.0" prefWidth="348.0" spacing="30.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vBoxLogin" fx:controller="app.Controllers.LoginController" alignment="CENTER" prefHeight="363.0" prefWidth="348.0" spacing="30.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="imgLogin" fitHeight="72.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgLogin" fitHeight="101.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@logologo.png" />
          </image>

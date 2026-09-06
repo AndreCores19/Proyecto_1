@@ -1,3 +1,4 @@
+/*
 package app.Logic;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,4 +53,4 @@ public class LogicaGemini {
         JSONArray partes = contenido.getJSONArray("parts");
         return partes.getJSONObject(0).getString("text");
     }
-}
+}*/

@@ -13,6 +13,13 @@ public class LogicaReservas {
     private RecursoDatos recursoDatos;
     private ReservaDatos reservaDatos;
 
+    public LogicaReservas() {
+        this.recursoDatos = new RecursoDatos();
+        this.recursoDatos.setRutaArchivo("recursos.json");
+        this.reservaDatos = new ReservaDatos();
+        this.reservaDatos.setRutaArchivo("reservas.json");
+    }
+
     public List<ReservaDTO> obtenerTodas() {
         reservaDatos.deserializar();
         return reservaDatos.getReservas();
@@ -31,5 +38,24 @@ public class LogicaReservas {
             }
         }
         return resultado;
+    }
+
+    public boolean tieneReservasActivas(String idFuncionario) {
+        List<ReservaDTO> todas = obtenerTodas();
+        for(ReservaDTO reserva : todas) {
+            if (reserva.getIdFuncionario().equals(idFuncionario) && !reserva.getEstado().equals("CANCELADA")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean tieneReservasActivasPorRecurso(String numActivo) {
+        List<ReservaDTO> todas = obtenerTodas();
+        for(ReservaDTO reserva : todas) {
+            if (reserva.getIdsRecursos().contains(numActivo) && !reserva.getEstado().equals("CANCELADA")) {                return true;
+            }
+        }
+        return false;
     }
 }
