@@ -17,9 +17,9 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="app.ui.EstadisticasViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <TitledPane animated="false" collapsible="false" expanded="false" prefHeight="0.0" prefWidth="800.0" text="Estadísticas" wrapText="true" BorderPane.alignment="CENTER">
+      <TitledPane fx:id="titleFondo" animated="false" collapsible="false" expanded="false" prefHeight="0.0" prefWidth="800.0" text="Estadísticas" wrapText="true" BorderPane.alignment="CENTER">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
         </content>
@@ -29,13 +29,13 @@
       </TitledPane>
    </top>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="hbCentro" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox>
+            <VBox fx:id="vbRecursos">
                <children>
-                  <AnchorPane>
+                  <AnchorPane fx:id="ancpFechasR">
                      <children>
-                        <GridPane layoutX="11.0" layoutY="5.0" prefHeight="77.0" prefWidth="361.0" AnchorPane.bottomAnchor="5.666666666666671" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.333333333333314" AnchorPane.topAnchor="5.0">
+                        <GridPane fx:id="grdFechasR" layoutX="11.0" layoutY="5.0" prefHeight="77.0" prefWidth="361.0" AnchorPane.bottomAnchor="5.666666666666671" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.333333333333314" AnchorPane.topAnchor="5.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.33334350585938" minWidth="10.0" prefWidth="134.66667683919272" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.33331298828125" minWidth="10.0" prefWidth="135.6666463216146" />
@@ -47,13 +47,13 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <DatePicker prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <DatePicker layoutX="191.0" layoutY="56.0" prefHeight="25.0" prefWidth="119.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Imprimir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Desde:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="21.0" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Hasta:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Button layoutX="299.0" layoutY="56.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Cargar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Label text="Recursos">
+                              <DatePicker fx:id="dteDesdeR" layoutX="191.0" layoutY="56.0" prefHeight="25.0" prefWidth="119.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <DatePicker fx:id="dteHastaR" prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <Button fx:id="btnImprimirR" mnemonicParsing="false" onAction="#imprimirRecursos" prefHeight="25.0" prefWidth="68.0" text="Imprimir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <Label fx:id="lblDesdeR" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Desde:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Label fx:id="lblHastaR" alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="21.0" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Hasta:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Button fx:id="btnCargarR" layoutX="299.0" layoutY="56.0" mnemonicParsing="false" onAction="#cargarRecursos" prefHeight="25.0" prefWidth="67.0" text="Cargar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <Label fx:id="lblRecursos" text="Recursos">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -62,28 +62,28 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="400.0">
+                  <AnchorPane fx:id="ancpEstadisticaR" prefHeight="200.0" prefWidth="400.0">
                      <children>
-                        <TableView layoutX="16.0" layoutY="4.0" prefHeight="191.0" prefWidth="368.0">
+                        <TableView fx:id="tblRecursos" layoutX="16.0" layoutY="4.0" prefHeight="191.0" prefWidth="368.0">
                           <columns>
-                            <TableColumn prefWidth="138.66668128967285" text="Categoría" />
-                            <TableColumn prefWidth="227.3333282470703" text="Cantidad" />
+                            <TableColumn fx:id="tblCategoriaR" prefWidth="138.66668128967285" text="Categoría" />
+                            <TableColumn fx:id="tblCantidadR" prefWidth="227.3333282470703" text="Cantidad" />
                           </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="288.0" prefWidth="400.0">
+                  <AnchorPane fx:id="ancpGraficoR" prefHeight="288.0" prefWidth="400.0">
                      <children>
-                        <ImageView fitHeight="264.0" fitWidth="366.0" layoutX="17.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imgGraficoR" fitHeight="264.0" fitWidth="366.0" layoutX="17.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
                </children>
             </VBox>
-            <VBox prefHeight="575.0">
+            <VBox fx:id="vbActividades" prefHeight="575.0">
                <children>
-                  <AnchorPane prefHeight="90.0" prefWidth="400.0">
+                  <AnchorPane fx:id="ancpFechasA" prefHeight="90.0" prefWidth="400.0">
                      <children>
-                        <GridPane layoutX="11.0" layoutY="5.0" prefHeight="77.0" prefWidth="361.0" AnchorPane.bottomAnchor="5.666666666666671" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.333333333333314" AnchorPane.topAnchor="5.0">
+                        <GridPane fx:id="grdFechasA" layoutX="11.0" layoutY="5.0" prefHeight="77.0" prefWidth="361.0" AnchorPane.bottomAnchor="5.666666666666671" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.333333333333314" AnchorPane.topAnchor="5.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.33334350585938" minWidth="10.0" prefWidth="134.66667683919272" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.33331298828125" minWidth="10.0" prefWidth="135.6666463216146" />
@@ -95,13 +95,13 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <DatePicker prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <DatePicker layoutX="191.0" layoutY="56.0" prefHeight="25.0" prefWidth="119.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Imprimir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Desde:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="21.0" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Hasta:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Button layoutX="299.0" layoutY="56.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Cargar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Label text="Actividades">
+                              <DatePicker fx:id="dteHastaA" prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <DatePicker fx:id="dteDesdeA" layoutX="191.0" layoutY="56.0" prefHeight="25.0" prefWidth="119.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <Button fx:id="btnImprimirA" mnemonicParsing="false" onAction="#imprimirActividades" prefHeight="25.0" prefWidth="68.0" text="Imprimir" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <Label fx:id="lblDesdeA" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Desde:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Label fx:id="lblHastaA" alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="21.0" nodeOrientation="LEFT_TO_RIGHT" text="Fecha Hasta:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Button fx:id="btnCargarA" layoutX="299.0" layoutY="56.0" mnemonicParsing="false" onAction="#cargarActividades" prefHeight="25.0" prefWidth="67.0" text="Cargar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <Label fx:id="lblActividades" text="Actividades">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -110,19 +110,19 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane>
+                  <AnchorPane fx:id="ancpEstadisticaA">
                      <children>
-                        <TableView layoutX="16.0" layoutY="4.0" prefHeight="191.0" prefWidth="368.0">
+                        <TableView fx:id="tblActividades" layoutX="16.0" layoutY="4.0" prefHeight="191.0" prefWidth="368.0">
                            <columns>
-                              <TableColumn prefWidth="138.66668128967285" text="Semana" />
-                              <TableColumn prefWidth="227.3333282470703" text="Cantidad" />
+                              <TableColumn fx:id="tblSemanaA" prefWidth="138.66668128967285" text="Semana" />
+                              <TableColumn fx:id="tblCantidadA" prefWidth="227.3333282470703" text="Cantidad" />
                            </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="288.0" prefWidth="400.0">
+                  <AnchorPane fx:id="ancpGraficoA" prefHeight="288.0" prefWidth="400.0">
                      <children>
-                        <ImageView fitHeight="264.0" fitWidth="366.0" layoutX="17.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imgGraficoA" fitHeight="264.0" fitWidth="366.0" layoutX="17.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
                </children>
