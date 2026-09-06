@@ -84,9 +84,9 @@ public class ReservaDatos {
         }
     }
 
-    private class LocalDateAdapter implements JsonSerializer<LocalTime>, JsonDeserializer<LocalDate> {
+    private class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> { // Andrea estuvo aqui
 
-        private static final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd:MM:yyyy");
+        private static final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         @Override
         public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -94,7 +94,7 @@ public class ReservaDatos {
         }
 
         @Override
-        public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
+        public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
             return new JsonPrimitive(src.format(formato));
         }
     }

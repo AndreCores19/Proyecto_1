@@ -13,22 +13,8 @@ public class UsuarioLogica {
     private String rutaArchivoFuncionarios;
 
     public UsuarioLogica() {
-    }
-
-    public String getRutaArchivoAdmins() {
-        return rutaArchivoAdmins;
-    }
-
-    public void setRutaArchivoAdmins(String rutaArchivoAdmins) {
-        this.rutaArchivoAdmins = rutaArchivoAdmins;
-    }
-
-    public String getRutaArchivoFuncionarios() {
-        return rutaArchivoFuncionarios;
-    }
-
-    public void setRutaArchivoFuncionarios(String rutaArchivoFuncionarios) {
-        this.rutaArchivoFuncionarios = rutaArchivoFuncionarios;
+        this.rutaArchivoAdmins = "administradores.json";
+        this.rutaArchivoFuncionarios = "funcionarios.json";
     }
 
     public UsuarioDTO iniciarSesion(String id, String clave) throws Exception {

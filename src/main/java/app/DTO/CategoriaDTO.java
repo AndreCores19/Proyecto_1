@@ -34,7 +34,6 @@ public class CategoriaDTO {
         this.descripcion = descripcion;
     }
 
-    // Solo get/set, como marca la regla 5 -- SIN métodos de agregar/quitar aquí
     public List<RecursoDTO> getRecursos() {
         return recursos;
     }
