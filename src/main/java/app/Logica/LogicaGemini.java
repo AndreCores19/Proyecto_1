@@ -1,4 +1,5 @@
-package app.Service;
+/*
+package app.Logic;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -7,14 +8,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class GeminiService {
+public class LogicaGemini {
     private static final String MODELO = "gemini-3.5-flash-lite"; //Se cambio de 2.5 a 3.5 flash lite porque la licencia de la KEY del correo institucional no funciona,
                                                                   // por lo que utilice la personal y ese es una de las versiones que funcionan por ser un "Nuevo usuario"
     private static final String ENDPOINT_BASE =
             "https://generativelanguage.googleapis.com/v1beta/models/";
     private final String apiKey;
     private final HttpClient httpClient;
-    public GeminiService() {
+    public LogicaGemini() {
         this.apiKey = System.getenv("GEMINI_API_KEY");
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalStateException(
@@ -52,4 +53,4 @@ public class GeminiService {
         JSONArray partes = contenido.getJSONArray("parts");
         return partes.getJSONObject(0).getString("text");
     }
-}
+}*/
