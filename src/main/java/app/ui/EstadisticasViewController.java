@@ -57,7 +57,12 @@ public class EstadisticasViewController {
     private void cargarActividades() {
         LocalDate desde = dteDesdeA.getValue();
         LocalDate hasta = dteHastaA.getValue();
-
+        if (tblRecursos.getItems().isEmpty()) {
+            // avisar al usuario que no hay datos cargados
+            Alert alerta = new Alert(Alert.AlertType.WARNING, "No hay datos cargados. Presione 'Cargar' primero.");
+            alerta.showAndWait();
+            return;
+        }
         List<ResultadoEstadisticaDTO> resultados = servicioEstadisticas.obtenerEstadisticaActividades(desde, hasta);
 
         tblActividades.setItems(FXCollections.observableArrayList(resultados));
