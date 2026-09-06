@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane fx:id="tbpAdminFuncionario" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane fx:id="tbpAdminFuncionario" pickOnBounds="false" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
       <Tab fx:id="tFunc" closable="false" text="Funcionarios">
          <content>
-            <fx:include source="funcionariosAdmin-view.fxml"/>
+            <fx:include source="funcionariosAdmin-view.fxml" />
          </content>
       </Tab>
       <Tab fx:id="tCat" closable="false" text="Categorias">
@@ -22,7 +23,7 @@
       </Tab>
       <Tab closable="false" text="Calendarizacion">
          <content>
-            <fx:include source="calendarizacionRecursos-view.fxml"/>
+            <fx:include source="calendarizacionRecursos-view.fxml" />
          </content>
       </Tab>
       <Tab closable="false" text="Actividades">
@@ -32,7 +33,7 @@
       </Tab>
       <Tab fx:id="tCharts" closable="false" text="Estadisticas">
          <content>
-            <fx:include source="estadisticas-view.fxml"/>
+            <fx:include source="estadisticas-view.fxml" />
          </content>
       </Tab>
    </tabs>
