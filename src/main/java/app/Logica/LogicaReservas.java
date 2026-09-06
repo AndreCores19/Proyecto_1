@@ -30,7 +30,6 @@ public class LogicaReservas {
                 resultado.add(reserva);
             }
         }
-
         return resultado;
     }
 }

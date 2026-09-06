@@ -176,59 +176,7 @@
       </Tab>
       <Tab fx:id="tCharts" closable="false" text="Estadisticas">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Pane depthTest="ENABLE" layoutX="40.0" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="720.0">
-                     <children>
-                        <TitledPane fx:id="titlRecursos" animated="false" collapsible="false" layoutX="368.0" prefHeight="460.0" prefWidth="360.0" text="Actividades">
-                           <content>
-                              <AnchorPane fx:id="anpActividades" minHeight="0.0" minWidth="0.0" prefHeight="434.0" prefWidth="373.0">
-                                 <children>
-                                    <TableView fx:id="tblSemana" layoutX="40.0" layoutY="83.0" prefHeight="137.0" prefWidth="278.0">
-                                       <columns>
-                                          <TableColumn prefWidth="117.33334350585938" text="Semana" />
-                                          <TableColumn prefWidth="160.0" text="Cantidad" />
-                                       </columns>
-                                    </TableView>
-                                    <DatePicker fx:id="dteDesdeA" layoutX="40.0" layoutY="36.0" prefHeight="25.0" prefWidth="100.0" />
-                                    <Label fx:id="lblFechaDesdeA" layoutX="55.0" layoutY="14.0" text="Fecha Desde:" />
-                                    <DatePicker fx:id="dteHastaA" layoutX="152.0" layoutY="37.0" prefHeight="25.0" prefWidth="100.0" />
-                                    <Label fx:id="lblFechaHastaA" layoutX="168.0" layoutY="15.0" text="Fecha Hasta:" />
-                                    <Button fx:id="btnCargarfechaA" layoutX="266.0" layoutY="36.0" mnemonicParsing="false" text="Cargar" />
-                                    <ImageView fx:id="imgActividades" disable="true" fitHeight="196.0" fitWidth="278.0" layoutX="40.0" layoutY="231.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </TitledPane>
-                        <TitledPane fx:id="titlActividades" animated="false" collapsible="false" prefHeight="460.0" prefWidth="360.0" text="Recursos">
-                           <content>
-                              <AnchorPane fx:id="anpRecursos" minHeight="0.0" minWidth="0.0" prefHeight="230.0" prefWidth="350.0">
-                                 <children>
-                                    <TableView fx:id="tblCategoria" layoutX="40.0" layoutY="83.0" prefHeight="137.0" prefWidth="278.0">
-                                       <columns>
-                                          <TableColumn prefWidth="120.00000381469727" text="Categoria" />
-                                          <TableColumn prefWidth="158.66664123535156" text="Cantidad" />
-                                       </columns>
-                                    </TableView>
-                                    <DatePicker fx:id="dteDesdeR" layoutX="40.0" layoutY="38.0" prefHeight="25.0" prefWidth="100.0" />
-                                    <Label fx:id="lblFechaDesdeR" layoutX="55.0" layoutY="14.0" text="Fecha Desde:" />
-                                    <DatePicker fx:id="dteHastaR" layoutX="152.0" layoutY="38.0" prefHeight="25.0" prefWidth="100.0" />
-                                    <Label fx:id="lblFechaHastaR" layoutX="169.0" layoutY="14.0" text="Fecha Hasta:" />
-                                    <Button fx:id="btnCargarfechaR" layoutX="266.0" layoutY="38.0" mnemonicParsing="false" text="Cargar" />
-                                    <ImageView fx:id="imgRecursos" disable="true" fitHeight="196.0" fitWidth="278.0" layoutX="40.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </TitledPane>
-                     </children>
-                  </Pane>
-               </children></AnchorPane>
+            <fx:include source="estadisticas-view.fxml"/>
          </content>
       </Tab>
    </tabs>
