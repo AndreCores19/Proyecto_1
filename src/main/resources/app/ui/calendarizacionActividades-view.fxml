@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="bpCalActividades" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.CalendarizacionActividadesViewController">
+<center>
+    <VBox fx:id="vbxFondo" fillWidth="true" spacing="10">
+        <padding>
+            <Insets bottom="10" left="10" right="10" top="10" />
+        </padding>
+        <TitledPane fx:id="tpSemana" animated="false" collapsible="false" maxWidth="Infinity" prefWidth="698.0" text="Semana">
+            <content>
+                <GridPane fx:id="grdFechaRef" hgap="10" maxWidth="Infinity" prefWidth="780.0" vgap="5">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="224.33334350585938" minWidth="36.33332697550456" prefWidth="224.33334350585938" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="578.0000406901041" minWidth="171.6666971842448" prefWidth="196.33332316080725" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="373.33330281575525" minWidth="48.666666666666686" prefWidth="53.33334350585932" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="253.33332316080725" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="NEVER" />
+                    </rowConstraints>
+                    <children>
+                        <Label fx:id="lblFechaA" text="Fecha de referencia" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <DatePicker fx:id="dteFechaReferencia" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button fx:id="btnCargarFecha" mnemonicParsing="false" onAction="#cargarCalendario" text="Cargar" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#imprimirCalendario" text="Imprimir" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    </children>
+                </GridPane>
+            </content>
+        </TitledPane>
+        <TitledPane fx:id="tltActividadesSemanales" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="Infinity" text="Actividades Semanales" VBox.vgrow="ALWAYS">
+            <content>
+                <TableView fx:id="tblCalendario" maxHeight="Infinity" maxWidth="Infinity">
+                    <columns>
+                        <TableColumn fx:id="tcHora" prefWidth="97.25" resizable="false" text="Hora" />
+                        <TableColumn fx:id="tcFechaLun" prefWidth="97.25" resizable="false" text="[Fecha]" />
+                     <TableColumn fx:id="tcFechaMart" prefWidth="97.25" resizable="false" text="[Fecha]" />
+                     <TableColumn fx:id="tcFechaMier" prefWidth="97.25" resizable="false" text="[Fecha]" />
+                     <TableColumn fx:id="tcFechaJuev" prefWidth="97.25" resizable="false" text="[Fecha]" />
+                     <TableColumn fx:id="tcFechaVier" prefWidth="97.25" resizable="false" text="[Fecha]" />
+                     <TableColumn fx:id="tcFechaSab" prefWidth="97.25" resizable="false" text="[Fecha]" />
+                     <TableColumn fx:id="tcFechaDom" prefWidth="97.25" resizable="false" sortable="false" text="[Fecha]" />
+                    </columns>
+                </TableView>
+            </content>
+        </TitledPane>
+    </VBox>
+</center>
+</BorderPane>
