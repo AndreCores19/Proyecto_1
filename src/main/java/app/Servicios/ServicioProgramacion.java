@@ -26,7 +26,7 @@ public class ServicioProgramacion {
             } catch (Exception e) {
                 nombreFuncionario = "Desconocido";
             }
-            int horaInicio = reserva.getHora().getHour();
+            int horaInicio = reserva.getHoraInicio().getHour();
             int horaFin = reserva.getHoraFin().getHour();
 
             for (int fila = horaInicio; fila < horaFin; fila++) {
