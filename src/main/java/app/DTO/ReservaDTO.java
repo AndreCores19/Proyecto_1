@@ -8,25 +8,25 @@ public class ReservaDTO {
     private String idReserva;
     private String actividad;
     private LocalDate fecha;
-    private LocalTime hora;
+    private LocalTime horaInicio;
     private LocalTime horaFin;
-    private List<String> idsCategoria;
-    private List<String> idsRecursos;
+    private List<String> idsCategoriaSolicitada;
+    private List<String> idsRecursosAsignados;
     private String idFuncionario;
     private String estado;
 
     public ReservaDTO() {}
 
-    public ReservaDTO(String idReserva,String actividad, LocalDate fecha, LocalTime hora, LocalTime horaFin, List<String> idsCategoria, String idFuncionario, String estado, List<String> idsRecursos) {
+    public ReservaDTO(String idReserva,String actividad, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, List<String> idsCategoria, String idFuncionario, String estado, List<String> idsRecursos) {
         this.idReserva = idReserva;
         this.actividad = actividad;
         this.fecha = fecha;
-        this.hora = hora;
+        this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.idsCategoria = idsCategoria;
+        this.idsCategoriaSolicitada = idsCategoria;
         this.idFuncionario = idFuncionario;
         this.estado = estado;
-        this.idsRecursos = idsRecursos;
+        this.idsRecursosAsignados = idsRecursos;
     }
 
     public String getIdReserva() {
@@ -41,12 +41,13 @@ public class ReservaDTO {
         return actividad;
     }
 
-    public LocalTime getHora() {
-        return hora;
+    public LocalTime getHoraInicio() {
+        return horaInicio;
     }
 
-    public List<String> getIdsCategoria() {
-        return idsCategoria;
+
+    public List<String> getIdsCategoriaSolicitada() {
+        return idsCategoriaSolicitada;
     }
 
     public String getIdFuncionario() {
@@ -57,8 +58,8 @@ public class ReservaDTO {
         return horaFin;
     }
 
-    public List<String> getIdsRecursos() {
-        return idsRecursos;
+    public List<String> getIdsRecursosAsignados() {
+        return idsRecursosAsignados;
     }
 
     public String getEstado() {
@@ -77,12 +78,12 @@ public class ReservaDTO {
         this.fecha = fecha;
     }
 
-    public void setHora(LocalTime hora) {
-        this.hora = hora;
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
     }
 
-    public void setIdsCategoria(List<String> idsCategoria) {
-        this.idsCategoria = idsCategoria;
+    public void setIdsCategoriaSolicitada(List<String> idsCategoria) {
+        this.idsCategoriaSolicitada = idsCategoria;
     }
 
     public void setIdFuncionario(String idFuncionario) {
@@ -93,8 +94,8 @@ public class ReservaDTO {
         this.horaFin = horaFin;
     }
 
-    public void setIdsRecursos(List<String> idsRecursos) {
-        this.idsRecursos = idsRecursos;
+    public void setIdsRecursosAsignados(List<String> idsRecursos) {
+        this.idsRecursosAsignados = idsRecursos;
     }
 
     public void setEstado(String estado) {

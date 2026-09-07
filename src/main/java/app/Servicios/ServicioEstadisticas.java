@@ -20,7 +20,7 @@ public class ServicioEstadisticas {
         Map<String, Integer> conteoRecursos = new TreeMap<>();
 
         for (ReservaDTO reserva : reservas) {
-            for (String idCategoria : reserva.getIdsCategoria()) {
+            for (String idCategoria : reserva.getIdsCategoriaSolicitada()) {
                 conteoRecursos.merge(idCategoria, 1, Integer::sum); // si la llave ya existe, sume 1; si no existe, se pone en 1
 
             }
