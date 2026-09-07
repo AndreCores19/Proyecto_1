@@ -28,7 +28,7 @@
       </Tab>
       <Tab closable="false" text="Actividades">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <fx:include source="calendarizacionActividades-view.fxml" />
          </content>
       </Tab>
       <Tab fx:id="tCharts" closable="false" text="Estadisticas">
