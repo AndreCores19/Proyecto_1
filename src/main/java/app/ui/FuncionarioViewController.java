@@ -1,14 +1,14 @@
 package app.ui;
 
 import app.DTO.FuncionarioDTO;
-import app.Logica.GeneradorReportePDF;
+import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioFuncionario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import app.Logica.GeneradorReportePDFLogica;
+
 
 import java.util.List;
 
