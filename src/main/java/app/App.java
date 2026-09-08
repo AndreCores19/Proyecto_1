@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 public class App extends Application {
     @Override
     public void start(Stage escenarioPrincipal) throws Exception {
-        Parent raiz = FXMLLoader.load(getClass().getResource("/app/ui/login-view.fxml"));
+        Parent raiz = FXMLLoader.load(getClass().getResource("/app/ui/funcionariosAdmin-view.fxml"));
         Scene escena = new Scene(raiz);
         Stage stage = new Stage();
         stage.setScene(escena);
-        stage.setTitle("Prueba - Estadísticas");
+        stage.setTitle("Prueba de Interfaz");
         stage.show();
     }
     public static void main(String[] args){ launch(args); }

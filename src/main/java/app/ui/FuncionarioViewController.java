@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import app.Logica.GeneradorReportePDF;
 
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class FuncionarioViewController {
         btnBorrarFunc.setOnAction(event -> borrar());
         btnLimpiarFunc.setOnAction(event -> limpiar());
         btnBusc.setOnAction(event -> buscar());
+        btnImpri.setOnAction(event -> imprimir());
     }
 
     private void cargarTabla() {
@@ -127,6 +129,22 @@ public class FuncionarioViewController {
             datosTabla.setAll(resultado);
         } else {
             cargarTabla();
+        }
+    }
+
+    private void imprimir() {
+        List<String> encabezados = List.of("ID", "Nombre", "Teléfono");
+        List<List<String>> filas = new java.util.ArrayList<>();
+
+        for (FuncionarioDTO f : datosTabla) {
+            filas.add(List.of(f.getId(), f.getNombre(), f.getTelefono()));
+        }
+
+        try {
+            GeneradorReportePDF.generar("Listado de Funcionarios", encabezados, filas, "src/Data/reporteFuncionarios.pdf");
+            mostrarExito("Reporte generado correctamente.");
+        } catch (Exception e) {
+            mostrarError("Error al generar el reporte: " + e.getMessage());
         }
     }
 
