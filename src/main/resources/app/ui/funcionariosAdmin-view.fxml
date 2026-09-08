@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vBoxAdminFunc" alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
+<VBox fx:id="vBoxAdminFunc" fx:controller="app.ui.FuncionarioViewController" alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">   <children>
       <TitledPane fx:id="tltAdminBusq" animated="false" collapsible="false" contentDisplay="CENTER" text="Busqueda">
          <content>
             <GridPane fx:id="gpBusqFun" alignment="CENTER" cacheShape="false" centerShape="false" scaleShape="false">

@@ -11,7 +11,7 @@ import java.util.List;
 public class QuemadosJson {
     public static void main(String[] args) {
         AdministradorDatos datos = new AdministradorDatos();
-        datos.setRutaArchivo("src/Data/administradores.json");
+        datos.setRutaArchivo("Data/administradores.json");
 
         AdministradorDTO admin = new AdministradorDTO("Administrador Principal", "admin", "hola123", "ADMIN");
 

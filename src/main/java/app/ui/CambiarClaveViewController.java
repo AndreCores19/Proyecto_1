@@ -20,11 +20,11 @@ public class CambiarClaveViewController {
 
     @FXML
     private void initialize() {
-        btnAceptar.setOnAction(event -> intentarCambiar());
+        btnAceptar.setOnAction(event -> intentarCambiar(event));
         btnCancel.setOnAction(event -> volverAlLogin(event));
     }
 
-    private void intentarCambiar() {
+    private void intentarCambiar(javafx.event.ActionEvent event) {
         UsuarioDTO usuario = SesionActual.getUsuarioActual();
         String claveActual = pwdActual.getText();
         String claveNueva = pwdNueva.getText();
@@ -38,6 +38,7 @@ public class CambiarClaveViewController {
         try {
             servicioUsuario.cambiarClave(usuario, claveActual, claveNueva);
             mostrarExito("Clave actualizada correctamente.");
+            volverAlLogin(event);
         } catch (Exception e) {
             mostrarError(e.getMessage());
         }
