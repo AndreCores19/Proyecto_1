@@ -16,7 +16,7 @@ public class ServicioCategoria {
         return categoriaLogica.buscarPorId(id);
     }
 
-    public List<CategoriaDTO> buscarPorNombre(String texto) {
+    public List<CategoriaDTO> buscarPorDescripcion(String texto) {
         return categoriaLogica.buscarPorDescripcion(texto);
     }
 

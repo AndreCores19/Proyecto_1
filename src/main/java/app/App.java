@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     @Override
     public void start(Stage escenarioPrincipal) throws Exception {
-        Parent raiz = FXMLLoader.load(getClass().getResource("/app/ui/funcionariosAdmin-view.fxml"));
+        Parent raiz = FXMLLoader.load(getClass().getResource("/app/ui/login-view.fxml"));
         Scene escena = new Scene(raiz);
         Stage stage = new Stage();
         stage.setScene(escena);
