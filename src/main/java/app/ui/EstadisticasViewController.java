@@ -1,8 +1,8 @@
 package app.ui;
 
 import app.DTO.ResultadoEstadisticaDTO;
-import app.Logica.GeneradorGrafico;
-import app.Logica.GeneradorReportePDF;
+import app.Logica.GeneradorGraficoLogica;
+import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioEstadisticas;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -50,7 +50,7 @@ public class EstadisticasViewController {
         List<ResultadoEstadisticaDTO> resultados = servicioEstadisticas.obtenerEstadisticaRecursos(desde, hasta);
 
         tblRecursos.setItems(FXCollections.observableArrayList(resultados));
-        imgGraficoR.setImage(GeneradorGrafico.generar("Recursos Usados", "Categoría", "Cantidad", resultados));
+        imgGraficoR.setImage(GeneradorGraficoLogica.generar("Recursos Usados", "Categoría", "Cantidad", resultados));
     }
 
     @FXML
@@ -66,7 +66,7 @@ public class EstadisticasViewController {
         List<ResultadoEstadisticaDTO> resultados = servicioEstadisticas.obtenerEstadisticaActividades(desde, hasta);
 
         tblActividades.setItems(FXCollections.observableArrayList(resultados));
-        imgGraficoA.setImage(GeneradorGrafico.generar("Recursos Usados", "Semana", "Cantidad", resultados));
+        imgGraficoA.setImage(GeneradorGraficoLogica.generar("Recursos Usados", "Semana", "Cantidad", resultados));
     }
 
     @FXML
@@ -82,7 +82,7 @@ public class EstadisticasViewController {
             filas.add(List.of(r.getEtiqueta(), String.valueOf(r.getCantidad())));
         }
         List<String> encabezados = List.of("Categoría", "Cantidad");
-        GeneradorReportePDF.generar("Estadísticas de Recursos", encabezados, filas, "estadisticas_recursos.pdf");
+        GeneradorReportePDFLogica.generar("Estadísticas de Recursos", encabezados, filas, "estadisticas_recursos.pdf");
     }
 
     @FXML
@@ -98,6 +98,6 @@ public class EstadisticasViewController {
             filas.add(List.of(a.getEtiqueta(), String.valueOf(a.getCantidad())));
         }
         List<String> encabezados = List.of("Semana", "Cantidad");
-        GeneradorReportePDF.generar("Estadísticas de Actividades", encabezados, filas, "estadisticas_actividades.pdf");
+        GeneradorReportePDFLogica.generar("Estadísticas de Actividades", encabezados, filas, "estadisticas_actividades.pdf");
     }
 }

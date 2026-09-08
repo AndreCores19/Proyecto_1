@@ -8,14 +8,15 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.UnitValue;
-
-import java.io.FileNotFoundException;
 import java.util.List;
 
-public class GeneradorReportePDF {
+public class GeneradorReportePDFLogica {
     public static void generar(String titulo, List<String> encabezados, List<List<String>> filas, String rutaSalida) {
         if (encabezados == null || encabezados.isEmpty()) {
             throw new IllegalArgumentException("Debe indicar al menos un encabezado");
+        }
+        if (filas == null) {
+            throw new IllegalArgumentException("La lista de filas no puede ser null");
         }
         for (List<String> fila : filas) {
             if (fila.size() != encabezados.size()) {
@@ -43,8 +44,8 @@ public class GeneradorReportePDF {
 
             document.add(table);
             document.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("No se pudo crear el archivo PDF: " + rutaSalida, e);
+        } catch (Exception e) {
+            throw new RuntimeException("No se pudo generar el PDF: " + rutaSalida, e);
         }
     }
 }

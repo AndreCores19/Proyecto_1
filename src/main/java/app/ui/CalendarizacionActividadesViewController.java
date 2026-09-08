@@ -1,6 +1,6 @@
 package app.ui;
 import app.DTO.CeldaActividadDTO;
-import app.Logica.GeneradorReportePDF;
+import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioProgramacion;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -89,6 +89,6 @@ public class CalendarizacionActividadesViewController {
                     f.getJueves(), f.getViernes(), f.getSabado(), f.getDomingo()
             ));
         }
-        GeneradorReportePDF.generar("Programación de Actividades", encabezados, filas, "programacion_actividades.pdf");
+        GeneradorReportePDFLogica.generar("Programación de Actividades", encabezados, filas, "programacion_actividades.pdf");
     }
 }

@@ -22,6 +22,7 @@ public class LogicaReservas {
         this.recursoDatos.setRutaArchivo("Data/recursos.json");
         this.reservaDatos = new ReservaDatos();
         this.reservaDatos.setRutaArchivo("Data/reservas.json");
+        this.categoriaLogica = new CategoriaLogica();
     }
 
     public List<ReservaDTO> obtenerTodas() {
