@@ -9,6 +9,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +93,18 @@ public class CalendarizacionActividadesViewController {
                     f.getJueves(), f.getViernes(), f.getSabado(), f.getDomingo()
             ));
         }
-        GeneradorReportePDFLogica.generar("Programación de Actividades", encabezados, filas, "programacion_actividades.pdf");
+        GeneradorReportePDFLogica.generar("Programación de Actividades", encabezados, filas, "Data/programacion_actividades.pdf");
+        try {
+            Desktop.getDesktop().open(new File("Data/programacion_actividades.pdf"));
+        } catch (IOException e) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR, "El PDF se generó, pero no se pudo abrir automáticamente.");
+            alerta.showAndWait();
+        }
+    }
+
+    @FXML
+    private void limpiarCalendario() {
+        tblCalendario.getItems().clear();
+        dteFechaReferencia.setValue(null);
     }
 }

@@ -18,16 +18,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.EstadisticasViewController">
-   <top>
-      <TitledPane fx:id="titleFondo" animated="false" collapsible="false" contentDisplay="CENTER" expanded="false" text="Estadísticas" wrapText="true" BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-        </content>
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </TitledPane>
-   </top>
    <center>
       <HBox fx:id="hbCentro" alignment="CENTER" prefHeight="100.0" prefWidth="799.0" BorderPane.alignment="CENTER">
          <children>
@@ -58,9 +48,17 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="btnLimpiarR" layoutX="295.0" layoutY="49.0" mnemonicParsing="false" onAction="#cargarRecursos" prefHeight="25.0" prefWidth="67.0" text="Limpiar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button fx:id="btnLimpiarR" layoutX="295.0" layoutY="49.0" mnemonicParsing="false" onAction="#limpiarRecursos" prefHeight="25.0" prefWidth="67.0" text="Limpiar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
+                        <TitledPane fx:id="titleFondo" animated="false" collapsible="false" contentDisplay="CENTER" expanded="false" layoutX="-82.0" layoutY="-7.0" text="Estadísticas" wrapText="true">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          </content>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </TitledPane>
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -113,7 +111,7 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="btnLimpiarA" layoutX="293.0" layoutY="49.0" mnemonicParsing="false" onAction="#cargarActividades" prefHeight="25.0" prefWidth="67.0" text="Limpiar" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                              <Button fx:id="btnLimpiarA" layoutX="293.0" layoutY="49.0" mnemonicParsing="false" onAction="#limpiarActividades" prefHeight="25.0" prefWidth="67.0" text="Limpiar" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                            </children>
                         </GridPane>
                      </children>
