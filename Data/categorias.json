@@ -2,12 +2,32 @@
   {
     "id": "CAT-000001",
     "descripcion": "Categoria 1",
-    "recursos": []
+    "recursos": [
+      {
+        "numActivo": "Catlol",
+        "categoria": {
+          "id": "CAT-000001",
+          "descripcion": "Categoria 1",
+          "recursos": []
+        },
+        "descripcion": "Holaaaa"
+      }
+    ]
   },
   {
     "id": "CAT-000002",
     "descripcion": "Categoria 2",
-    "recursos": []
+    "recursos": [
+      {
+        "numActivo": "12345",
+        "categoria": {
+          "id": "CAT-000002",
+          "descripcion": "Categoria 2",
+          "recursos": []
+        },
+        "descripcion": "hello"
+      }
+    ]
   },
   {
     "id": "CAT-000003",
