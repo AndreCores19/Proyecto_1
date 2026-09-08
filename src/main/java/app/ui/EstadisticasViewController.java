@@ -12,6 +12,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +86,13 @@ public class EstadisticasViewController {
             filas.add(List.of(r.getEtiqueta(), String.valueOf(r.getCantidad())));
         }
         List<String> encabezados = List.of("Categoría", "Cantidad");
-        GeneradorReportePDFLogica.generar("Estadísticas de Recursos", encabezados, filas, "/Data/estadisticas_recursos.pdf");
+        GeneradorReportePDFLogica.generar("Estadísticas de Recursos", encabezados, filas, "Data/estadisticas_recursos.pdf");
+        try {
+            Desktop.getDesktop().open(new File("Data/estadisticas_recursos.pdf"));
+        } catch (IOException e) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR, "El PDF se generó, pero no se pudo abrir automáticamente.");
+            alerta.showAndWait();
+        }
     }
 
     @FXML
@@ -98,6 +108,28 @@ public class EstadisticasViewController {
             filas.add(List.of(a.getEtiqueta(), String.valueOf(a.getCantidad())));
         }
         List<String> encabezados = List.of("Semana", "Cantidad");
-        GeneradorReportePDFLogica.generar("Estadísticas de Actividades", encabezados, filas, "/Data/estadisticas_actividades.pdf");
+        GeneradorReportePDFLogica.generar("Estadísticas de Actividades", encabezados, filas, "Data/estadisticas_actividades.pdf");
+        try {
+            Desktop.getDesktop().open(new File("Data/estadisticas_actividades.pdf"));
+        } catch (IOException e) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR, "El PDF se generó, pero no se pudo abrir automáticamente.");
+            alerta.showAndWait();
+        }
+    }
+
+    @FXML
+    private void limpiarRecursos() {
+        dteDesdeR.setValue(null);
+        dteHastaR.setValue(null);
+        tblRecursos.getItems().clear();
+        imgGraficoR.setImage(null);
+    }
+
+    @FXML
+    private void limpiarActividades() {
+        dteDesdeA.setValue(null);
+        dteHastaA.setValue(null);
+        tblActividades.getItems().clear();
+        imgGraficoA.setImage(null);
     }
 }

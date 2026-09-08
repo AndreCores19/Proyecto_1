@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="bpCalActividades" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.CalendarizacionActividadesViewController">
+<BorderPane fx:id="bpCalActividades" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.CalendarizacionActividadesViewController">      
 <center>
     <VBox fx:id="vbxFondo" fillWidth="true" spacing="10">
         <padding>
@@ -26,21 +26,23 @@
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="224.33334350585938" minWidth="36.33332697550456" prefWidth="224.33334350585938" />
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="578.0000406901041" minWidth="171.6666971842448" prefWidth="196.33332316080725" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="373.33330281575525" minWidth="48.666666666666686" prefWidth="65.33333333333331" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="116.0" />
-                     <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="146.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="224.33334350585938" minWidth="36.33332697550456" prefWidth="175.33332316080728" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="578.0000406901041" minWidth="168.66666666666666" prefWidth="168.66666666666666" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="373.33330281575525" minWidth="48.666666666666686" prefWidth="83.33333333333331" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="99.99999999999994" />
+                     <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="177.66668701171875" />
+                     <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="142.33331298828125" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints vgrow="NEVER" />
                     </rowConstraints>
                     <children>
-                        <Label fx:id="lblFechaA" text="Fecha de referencia" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="lblFechaA" prefHeight="17.0" prefWidth="109.0" text="Fecha de referencia" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <DatePicker fx:id="dteFechaReferencia" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Button fx:id="btnCargarFecha" mnemonicParsing="false" onAction="#cargarCalendario" text="Cargar" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                         <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#imprimirCalendario" text="Imprimir" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                     <Button fx:id="btnCerrarSesion" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Cerrar Sesión" GridPane.columnIndex="4" />
+                     <Button fx:id="btnCerrarSesion" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Cerrar Sesión" GridPane.columnIndex="5" />
+                     <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#limpiarCalendario" prefHeight="25.0" prefWidth="71.0" text="Limpiar" GridPane.columnIndex="4" />
                     </children>
                 </GridPane>
             </content>
