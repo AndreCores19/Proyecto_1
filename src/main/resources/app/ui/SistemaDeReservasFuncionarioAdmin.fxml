@@ -13,12 +13,12 @@
       </Tab>
       <Tab fx:id="tCat" closable="false" text="Categorias">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <fx:include source="categoriaAdmin-view.fxml" />
          </content>
       </Tab>
       <Tab fx:id="tRecur" closable="false" text="Recursos">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <fx:include source="recursosAdmin-view.fxml" />
          </content>
       </Tab>
       <Tab closable="false" text="Calendarizacion">

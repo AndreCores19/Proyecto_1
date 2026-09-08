@@ -19,5 +19,12 @@
     "id": "333",
     "clave": "333",
     "rol": "FUNCIONARIO"
+  },
+  {
+    "nombre": "Juan Perez",
+    "telefono": "722222222",
+    "id": "444",
+    "clave": "444",
+    "rol": "FUNCIONARIO"
   }
 ]

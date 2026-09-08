@@ -31,8 +31,17 @@ public class LoginViewController {
         try {
             UsuarioDTO usuario = servicioUsuario.iniciarSesion(id, clave);
             SesionActual.setUsuarioActual(usuario);
-            System.out.println("Login exitoso: " + usuario.getId() + "  (rol: " + usuario.getRol() + ")");
-            // acá después vamos a navegar al menú principal
+            String vistaDestino;
+            if ("ADMIN".equals(usuario.getRol())) {
+                vistaDestino = "/app/ui/SistemaDeReservasFuncionarioAdmin.fxml";
+            } else {
+                vistaDestino = "/app/ui/SistemaDeReservasFuncionario.fxml";
+            }
+
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(getClass().getResource(vistaDestino));
+            javafx.stage.Stage stage = (javafx.stage.Stage) btnLogin.getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+
         } catch (Exception e) {
             mostrarError(e.getMessage());
         }

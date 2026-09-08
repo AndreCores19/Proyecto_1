@@ -130,7 +130,6 @@ public class CategoriaLogica {
         throw new Exception("No existe una categoría con id: " + categoriaId);
     }
 
-    // Método de apoyo para RecursoLogica: quita un RecursoDTO de la lista interna de su categoría
     public void quitarRecursoDeLista(String categoriaId, String numActivo) throws Exception {
         CategoriaDatos datos = new CategoriaDatos();
         datos.setRutaArchivo(rutaArchivo);

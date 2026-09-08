@@ -39,7 +39,7 @@ public class FuncionarioViewController {
         tcNombFunc.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         tcTelFunc.setCellValueFactory(new PropertyValueFactory<>("telefono"));
 
-        cargarTabla();
+        tvFuncionarios.setItems(datosTabla);
 
         tvFuncionarios.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccionado) -> {
             if (seleccionado != null) {
@@ -121,16 +121,27 @@ public class FuncionarioViewController {
         if (!id.isEmpty()) {
             try {
                 FuncionarioDTO encontrado = servicioFuncionario.buscarPorId(id);
-                datosTabla.setAll(encontrado);
+                agregarSiNoExiste(encontrado);
             } catch (Exception e) {
                 mostrarError(e.getMessage());
             }
         } else if (!nombre.isEmpty()) {
             List<FuncionarioDTO> resultado = servicioFuncionario.buscarPorNombre(nombre);
-            datosTabla.setAll(resultado);
+            for (FuncionarioDTO f : resultado) {
+                agregarSiNoExiste(f);
+            }
         } else {
             cargarTabla();
         }
+    }
+
+    private void agregarSiNoExiste(FuncionarioDTO nuevo) {
+        for (FuncionarioDTO f : datosTabla) {
+            if (f.getId().equals(nuevo.getId())) {
+                return;
+            }
+        }
+        datosTabla.add(nuevo);
     }
 
     private void imprimir() {
