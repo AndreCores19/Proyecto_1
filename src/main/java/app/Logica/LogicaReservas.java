@@ -19,9 +19,9 @@ public class LogicaReservas {
 
     public LogicaReservas() {
         this.recursoDatos = new RecursoDatos();
-        this.recursoDatos.setRutaArchivo("recursos.json");
+        this.recursoDatos.setRutaArchivo("src/Data/recursos.json");
         this.reservaDatos = new ReservaDatos();
-        this.reservaDatos.setRutaArchivo("reservas.json");
+        this.reservaDatos.setRutaArchivo("src/Data/reservas.json");
     }
 
     public List<ReservaDTO> obtenerTodas() {

@@ -1,5 +1,6 @@
 package app.Datos;
 
+import app.DTO.AdministradorDTO;
 import app.DTO.FuncionarioDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -14,7 +14,7 @@ public class RecursoLogica {
     private LogicaReservas reservaLogica;
 
     public RecursoLogica() {
-        this.rutaArchivo = "recursos.json";
+        this.rutaArchivo = "src/Data/recursos.json";
         this.categoriaLogica = new CategoriaLogica();
         this.reservaLogica = new LogicaReservas();
     }
