@@ -8,7 +8,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class GeneradorGrafico {
+public class GeneradorGraficoLogica {
     public static Image generar(String titulo, String ejex, String ejey, List<ResultadoEstadisticaDTO> datos){
         if (datos == null || datos.isEmpty()) {
             throw new IllegalArgumentException("No hay datos para graficar");
@@ -16,6 +16,9 @@ public class GeneradorGrafico {
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (ResultadoEstadisticaDTO r : datos) {
+            if (r.getEtiqueta() == null) {
+                throw new IllegalArgumentException("Un resultado no tiene etiqueta asignada");
+            }
             dataset.addValue(r.getCantidad(), "Cantidad", r.getEtiqueta());
         }
 
