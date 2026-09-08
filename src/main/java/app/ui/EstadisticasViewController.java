@@ -82,7 +82,7 @@ public class EstadisticasViewController {
             filas.add(List.of(r.getEtiqueta(), String.valueOf(r.getCantidad())));
         }
         List<String> encabezados = List.of("Categoría", "Cantidad");
-        GeneradorReportePDFLogica.generar("Estadísticas de Recursos", encabezados, filas, "estadisticas_recursos.pdf");
+        GeneradorReportePDFLogica.generar("Estadísticas de Recursos", encabezados, filas, "/Data/estadisticas_recursos.pdf");
     }
 
     @FXML
@@ -98,6 +98,6 @@ public class EstadisticasViewController {
             filas.add(List.of(a.getEtiqueta(), String.valueOf(a.getCantidad())));
         }
         List<String> encabezados = List.of("Semana", "Cantidad");
-        GeneradorReportePDFLogica.generar("Estadísticas de Actividades", encabezados, filas, "estadisticas_actividades.pdf");
+        GeneradorReportePDFLogica.generar("Estadísticas de Actividades", encabezados, filas, "/Data/estadisticas_actividades.pdf");
     }
 }

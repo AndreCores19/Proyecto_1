@@ -1,59 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-        <?import javafx.geometry.Insets?>
-        <?import javafx.scene.control.Button?>
-        <?import javafx.scene.control.ComboBox?>
-        <?import javafx.scene.control.DatePicker?>
-        <?import javafx.scene.control.Label?>
-        <?import javafx.scene.control.TableColumn?>
-        <?import javafx.scene.control.TableView?>
-        <?import javafx.scene.control.TitledPane?>
-        <?import javafx.scene.layout.BorderPane?>
-        <?import javafx.scene.layout.ColumnConstraints?>
-        <?import javafx.scene.layout.GridPane?>
-        <?import javafx.scene.layout.RowConstraints?>
-        <?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="bpCalendarizacion" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.CalendarizacionRecursosViewController">
 <center>
-    <VBox fx:id="vbPartesCalen" spacing="10" fillWidth="true">
+    <VBox fx:id="vbPartesCalen" fillWidth="true" prefHeight="600.0" prefWidth="800.0" spacing="10">
         <padding>
-            <Insets top="10" right="10" bottom="10" left="10"/>
+            <Insets bottom="10" left="10" right="10" top="10" />
         </padding>
-        <TitledPane fx:id="tpFiltros" text="Filtros" collapsible="false" animated="false" maxWidth="Infinity">
+        <TitledPane fx:id="tpFiltros" animated="false" collapsible="false" maxWidth="Infinity" text="Filtros">
             <content>
-                <GridPane fx:id="gpFiltros" hgap="10" vgap="5" maxWidth="Infinity">
+                <GridPane fx:id="gpFiltros" hgap="10" maxWidth="Infinity" vgap="5">
                     <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
+                        <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="NEVER" halignment="RIGHT"/>
-                        <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
-                        <ColumnConstraints hgrow="NEVER" halignment="RIGHT"/>
-                        <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
-                        <ColumnConstraints hgrow="NEVER"/>
-                        <ColumnConstraints hgrow="NEVER"/>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="173.33335367838538" minWidth="123.9999796549479" prefWidth="123.9999796549479" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="102.00002034505206" minWidth="52.666646321614564" prefWidth="53.33338419596356" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="223.33328247070312" minWidth="180.0" prefWidth="223.33328247070312" />
+                        <ColumnConstraints hgrow="NEVER" />
+                        <ColumnConstraints hgrow="NEVER" />
+                     <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints vgrow="NEVER"/>
+                        <RowConstraints vgrow="NEVER" />
                     </rowConstraints>
                     <children>
-                        <Label fx:id="lblFecha" text="Fecha" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <DatePicker fx:id="dpFechafiltros" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                        <Label fx:id="lblCate" text="Categoría" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-                        <ComboBox fx:id="cbxCategoria" promptText="Seleccione una categoría" maxWidth="Infinity" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
-                        <Button fx:id="btnCargarFiltros" text="Cargar" mnemonicParsing="false" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
-                        <Button fx:id="btnImprimirEnFiltros" text="Imprimir" mnemonicParsing="false" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblFecha" text="Fecha" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <DatePicker fx:id="dpFechafiltros" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label fx:id="lblCate" text="Categoría" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="cbxCategoria" maxWidth="Infinity" promptText="Seleccione una categoría" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Button fx:id="btnCargarFiltros" mnemonicParsing="false" text="Cargar" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                        <Button fx:id="btnImprimirEnFiltros" mnemonicParsing="false" text="Imprimir" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                     <Button fx:id="btnCerrarSesion" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Cerrar Sesión" GridPane.columnIndex="6" />
                     </children>
                 </GridPane>
             </content>
         </TitledPane>
-        <TitledPane fx:id="tpCalendarizacion" text="Calendarización de Recursos" collapsible="false" animated="false" maxWidth="Infinity" maxHeight="Infinity" VBox.vgrow="ALWAYS">
+        <TitledPane fx:id="tpCalendarizacion" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="Infinity" text="Calendarización de Recursos" VBox.vgrow="ALWAYS">
             <content>
-                <TableView fx:id="tvCalendarizacion" maxWidth="Infinity" maxHeight="Infinity">
+                <TableView fx:id="tvCalendarizacion" maxHeight="Infinity" maxWidth="Infinity">
                     <columns>
-                        <TableColumn fx:id="tcHora" text="Hora" prefWidth="100"/>
-                        <TableColumn fx:id="tcEntiendo" text="Entiendo" prefWidth="300"/>
+                        <TableColumn fx:id="tcHora" prefWidth="100" text="Hora" />
+                        <TableColumn fx:id="tcEntiendo" prefWidth="300" text="Entiendo" />
                     </columns>
                 </TableView>
             </content>
@@ -61,4 +63,3 @@
     </VBox>
 </center>
 </BorderPane>
-

@@ -28,8 +28,9 @@
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="224.33334350585938" minWidth="36.33332697550456" prefWidth="224.33334350585938" />
                         <ColumnConstraints hgrow="ALWAYS" maxWidth="578.0000406901041" minWidth="171.6666971842448" prefWidth="196.33332316080725" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="373.33330281575525" minWidth="48.666666666666686" prefWidth="53.33334350585932" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="253.33332316080725" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="373.33330281575525" minWidth="48.666666666666686" prefWidth="65.33333333333331" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="116.0" />
+                     <ColumnConstraints hgrow="NEVER" maxWidth="284.66670735677087" minWidth="67.33333333333337" prefWidth="146.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints vgrow="NEVER" />
@@ -39,6 +40,7 @@
                         <DatePicker fx:id="dteFechaReferencia" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Button fx:id="btnCargarFecha" mnemonicParsing="false" onAction="#cargarCalendario" text="Cargar" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                         <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#imprimirCalendario" text="Imprimir" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                     <Button fx:id="btnCerrarSesion" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Cerrar Sesión" GridPane.columnIndex="4" />
                     </children>
                 </GridPane>
             </content>

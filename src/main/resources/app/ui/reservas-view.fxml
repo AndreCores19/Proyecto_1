@@ -185,6 +185,7 @@
                                                         </TitledPane>
                                                     </children>
                                                 </GridPane>
+                                    <Button fx:id="btnCerrarSesion" layoutX="675.0" layoutY="144.0" mnemonicParsing="false" prefHeight="37.333333333" prefWidth="91.0" text="Cerrar Sesión" />
                                             </children>
                                         </AnchorPane>
                                     </children>
