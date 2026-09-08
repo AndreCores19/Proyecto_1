@@ -1,0 +1,39 @@
+[
+  {
+    "numActivo": "238715",
+    "categoria": {
+      "id": "CAT-000007",
+      "descripcion": "Categoria 1",
+      "recursos": []
+    },
+    "descripcion": "Laptop #238715"
+  },
+  {
+    "numActivo": "34343",
+    "categoria": {
+      "id": "CAT-000008",
+      "descripcion": "Categoria 2",
+      "recursos": []
+    },
+    "descripcion": "Sala 1 primer piso"
+  },
+  {
+    "numActivo": "45238",
+    "categoria": {
+      "id": "CAT-000007",
+      "descripcion": "Categoria 1",
+      "recursos": [
+        {
+          "numActivo": "238715",
+          "categoria": {
+            "id": "CAT-000007",
+            "descripcion": "Categoria 1",
+            "recursos": []
+          },
+          "descripcion": "Laptop #238715"
+        }
+      ]
+    },
+    "descripcion": "Laptop #45238"
+  }
+]

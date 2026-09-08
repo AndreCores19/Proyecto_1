@@ -1,0 +1,17 @@
+[
+  {
+    "id": "CAT-000001",
+    "descripcion": "Categoria 1",
+    "recursos": []
+  },
+  {
+    "id": "CAT-000002",
+    "descripcion": "Categoria 2",
+    "recursos": []
+  },
+  {
+    "id": "CAT-000003",
+    "descripcion": "Categoria 3",
+    "recursos": []
+  }
+]
