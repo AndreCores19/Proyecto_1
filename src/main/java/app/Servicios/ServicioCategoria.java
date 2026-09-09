@@ -8,7 +8,7 @@ import java.util.List;
 public class ServicioCategoria {
     private CategoriaLogica categoriaLogica = new CategoriaLogica();
 
-    public List<CategoriaDTO> listarTodos() {
+    public List<CategoriaDTO> listarTodas() {
         return categoriaLogica.listarTodas();
     }
 

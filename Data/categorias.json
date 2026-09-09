@@ -1,17 +1,75 @@
 [
   {
     "id": "CAT-000001",
-    "descripcion": "Categoria 1",
-    "recursos": []
+    "descripcion": "Sala para 10 personas",
+    "recursos": [
+      {
+        "numActivo": "34343",
+        "categoria": {
+          "id": "CAT-000001",
+          "descripcion": "Sala para 10 personas",
+          "recursos": []
+        },
+        "descripcion": "Sala 1 primer piso"
+      },
+      {
+        "numActivo": "283102",
+        "categoria": {
+          "id": "CAT-000001",
+          "descripcion": "Sala para 10 personas",
+          "recursos": [
+            {
+              "numActivo": "34343",
+              "categoria": {
+                "id": "CAT-000001",
+                "descripcion": "Sala para 10 personas",
+                "recursos": []
+              },
+              "descripcion": "Sala 1 primer piso"
+            }
+          ]
+        },
+        "descripcion": "Sala 2 Primer piso"
+      }
+    ]
   },
   {
     "id": "CAT-000002",
-    "descripcion": "Categoria 2",
-    "recursos": []
+    "descripcion": "Laptop windows 11",
+    "recursos": [
+      {
+        "numActivo": "238715",
+        "categoria": {
+          "id": "CAT-000002",
+          "descripcion": "Laptop windows 11",
+          "recursos": []
+        },
+        "descripcion": "Laptop #238715"
+      },
+      {
+        "numActivo": "45238",
+        "categoria": {
+          "id": "CAT-000002",
+          "descripcion": "Laptop windows 11",
+          "recursos": [
+            {
+              "numActivo": "238715",
+              "categoria": {
+                "id": "CAT-000002",
+                "descripcion": "Laptop windows 11",
+                "recursos": []
+              },
+              "descripcion": "Laptop #238715"
+            }
+          ]
+        },
+        "descripcion": "Laptop #45238"
+      }
+    ]
   },
   {
     "id": "CAT-000003",
-    "descripcion": "Categoria 3",
+    "descripcion": "Proyector",
     "recursos": []
   }
 ]

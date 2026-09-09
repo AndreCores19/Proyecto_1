@@ -2,10 +2,8 @@ package app.ui;
 
 import app.DTO.CategoriaDTO;
 import app.DTO.RecursoDTO;
-import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioCategoria;
 import app.Servicios.ServicioRecurso;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,8 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecursoViewController {
@@ -43,50 +39,25 @@ public class RecursoViewController {
     @FXML
     private void initialize() {
         tcIDRecur.setCellValueFactory(new PropertyValueFactory<>("numActivo"));
-        tccategRecur.setCellValueFactory(cellData -> {
-            CategoriaDTO cat = cellData.getValue().getCategoria();
-            return new SimpleStringProperty(cat != null ? cat.getDescripcion() : "");
-        });
+        tccategRecur.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCategoria().getDescripcion())
+        );
         tcDesRecur.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
         tvRecursos.setItems(datosTabla);
 
-        StringConverter<CategoriaDTO> converter = new StringConverter<>() {
-            @Override
-            public String toString(CategoriaDTO cat) {
-                return cat != null ? cat.getDescripcion() : "";
-            }
-
-            @Override
-            public CategoriaDTO fromString(String string) {
-                return null;
-            }
-        };
-
-        CombBRecur.setConverter(converter);
-        CombRecur.setConverter(converter);
-
-        cargarCategorias();
-        cargarTabla();
+        configurarComboBox(CombBRecur);
+        configurarComboBox(CombRecur);
+        cargarCategoriasEnCombos();
 
         tvRecursos.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccionado) -> {
             if (seleccionado != null) {
                 txtFIDRecur.setText(seleccionado.getNumActivo());
                 txtFRecur.setText(seleccionado.getDescripcion());
-
-                // Seleccionar la categoría correspondiente en el ComboBox
-                if (seleccionado.getCategoria() != null) {
-                    for (CategoriaDTO cat : CombRecur.getItems()) {
-                        if (cat.getId() != null && cat.getId().equals(seleccionado.getCategoria().getId())) {
-                            CombRecur.getSelectionModel().select(cat);
-                            break;
-                        }
-                    }
-                } else {
-                    CombRecur.getSelectionModel().clearSelection();
-                }
+                CombRecur.setValue(seleccionado.getCategoria());
             }
         });
+
         btnGuardarFunc.setOnAction(event -> guardar());
         btnBorrarFunc.setOnAction(event -> borrar());
         btnLimpiarFunc.setOnAction(event -> limpiar());
@@ -94,54 +65,48 @@ public class RecursoViewController {
         btnImpriRecur.setOnAction(event -> imprimir());
     }
 
-    private void cargarCategorias() {
-        try {
-            List<CategoriaDTO> categorias = servicioCategoria.listarTodos();
-            CombBRecur.setItems(FXCollections.observableArrayList(categorias));
-            CombRecur.setItems(FXCollections.observableArrayList(categorias));
-        } catch (Exception e) {
-            mostrarError("Error al cargar categorías: " + e.getMessage());
-        }
+    private void configurarComboBox(ComboBox<CategoriaDTO> combo) {
+        combo.setConverter(new StringConverter<CategoriaDTO>() {
+            @Override
+            public String toString(CategoriaDTO categoria) {
+                return categoria == null ? "" : categoria.getDescripcion();
+            }
+            @Override
+            public CategoriaDTO fromString(String string) {
+                return null; // no hace falta, el usuario no escribe texto libre acá
+            }
+        });
     }
 
-    private void cargarTabla() {
-        try {
-            List<RecursoDTO> lista = servicioRecurso.listarTodos();
-            datosTabla.setAll(lista);
-        } catch (Exception e) {
-            mostrarError("Error al cargar listado de recursos: " + e.getMessage());
-        }
+    private void cargarCategoriasEnCombos() {
+        List<CategoriaDTO> categorias = servicioCategoria.listarTodas();
+        ObservableList<CategoriaDTO> observable = FXCollections.observableArrayList(categorias);
+        CombBRecur.setItems(observable);
+        CombRecur.setItems(observable);
     }
 
     private void guardar() {
-        String numActivo = txtFIDRecur.getText();
-        CategoriaDTO categoria = CombRecur.getValue();
+        String id = txtFIDRecur.getText();
         String descripcion = txtFRecur.getText();
-
-        if (numActivo == null || numActivo.trim().isEmpty()) {
-            mostrarError("El ID del recurso es requerido.");
-            return;
-        }
+        CategoriaDTO categoriaElegida = CombRecur.getValue();
 
         try {
             RecursoDTO existente = null;
             try {
-                existente = servicioRecurso.buscarPorNumActivo(numActivo);
+                existente = servicioRecurso.buscarPorNumActivo(id);
             } catch (Exception ignorado) {
-                // No existe, se procesará como nuevo
             }
 
             if (existente == null) {
-                servicioRecurso.agregar(new RecursoDTO(numActivo, categoria, descripcion));
+                servicioRecurso.agregar(new RecursoDTO(id, categoriaElegida, descripcion));
             } else {
-                existente.setCategoria(categoria);
                 existente.setDescripcion(descripcion);
+                existente.setCategoria(categoriaElegida);
                 servicioRecurso.modificar(existente);
             }
 
             mostrarExito("Recurso guardado correctamente.");
             limpiar();
-            cargarTabla();
         } catch (Exception e) {
             mostrarError(e.getMessage());
         }
@@ -150,14 +115,14 @@ public class RecursoViewController {
     private void borrar() {
         RecursoDTO seleccionado = tvRecursos.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {
-            mostrarError("Debe seleccionar un recurso de la tabla para poder borrarlo borrar.");
+            mostrarError("Debe seleccionar un recurso de la tabla para borrar.");
             return;
         }
         try {
             servicioRecurso.eliminar(seleccionado.getNumActivo());
             mostrarExito("Recurso eliminado.");
+            datosTabla.remove(seleccionado);
             limpiar();
-            cargarTabla();
         } catch (Exception e) {
             mostrarError(e.getMessage());
         }
@@ -166,55 +131,51 @@ public class RecursoViewController {
     private void limpiar() {
         txtFIDRecur.clear();
         txtFRecur.clear();
-        CombRecur.getSelectionModel().clearSelection();
+        CombRecur.setValue(null);
         tvRecursos.getSelectionModel().clearSelection();
     }
 
     private void buscar() {
-        CategoriaDTO catSeleccionada = CombBRecur.getValue();
-        String descBusqueda = txtFieldDescRecur.getText();
+        CategoriaDTO categoriaFiltro = CombBRecur.getValue();
+        String descripcion = txtFieldDescRecur.getText();
 
-        try {
-            List<RecursoDTO> resultados;
-            if (catSeleccionada != null && catSeleccionada.getId() != null) {
-                resultados = servicioRecurso.filtrarPorCategoria(catSeleccionada.getId());
-            } else {
-                resultados = servicioRecurso.listarTodos();
-            }
-
-            if (descBusqueda != null && !descBusqueda.trim().isEmpty()) {
-                datosTabla.setAll(
-                        resultados.stream()
-                                .filter(r -> r.getDescripcion() != null &&
-                                        r.getDescripcion().toLowerCase().contains(descBusqueda.toLowerCase()))
-                                .toList()
-                );
-            } else {
-                datosTabla.setAll(resultados);
-            }
-        } catch (Exception e) {
-            mostrarError("Error al realizar la búsqueda: " + e.getMessage());
+        List<RecursoDTO> resultado;
+        if (categoriaFiltro != null) {
+            resultado = servicioRecurso.filtrarPorCategoria(categoriaFiltro.getId());
+        } else {
+            resultado = servicioRecurso.listarTodos();
         }
+
+        for (RecursoDTO r : resultado) {
+            if (descripcion == null || descripcion.trim().isEmpty()
+                    || r.getDescripcion().toLowerCase().contains(descripcion.toLowerCase())) {
+                agregarSiNoExiste(r);
+            }
+        }
+    }
+
+    private void agregarSiNoExiste(RecursoDTO nuevo) {
+        for (RecursoDTO r : datosTabla) {
+            if (r.getNumActivo().equals(nuevo.getNumActivo())) {
+                return;
+            }
+        }
+        datosTabla.add(nuevo);
     }
 
     private void imprimir() {
         List<String> encabezados = List.of("ID", "Categoría", "Descripción");
-        List<List<String>> filas = new ArrayList<>();
+        List<List<String>> filas = new java.util.ArrayList<>();
 
         for (RecursoDTO r : datosTabla) {
-            String nomCategoria = (r.getCategoria() != null) ? r.getCategoria().getDescripcion() : "";
-            filas.add(List.of(
-                    r.getNumActivo() != null ? r.getNumActivo() : "",
-                    nomCategoria,
-                    r.getDescripcion() != null ? r.getDescripcion() : ""
-            ));
+            filas.add(List.of(r.getNumActivo(), r.getCategoria().getDescripcion(), r.getDescripcion()));
         }
 
         String rutaPdf = "Data/reporteRecursos.pdf";
 
         try {
-            GeneradorReportePDFLogica.generar("Listado de Recursos", encabezados, filas, rutaPdf);
-            File archivoPdf = new File(rutaPdf);
+            app.Logica.GeneradorReportePDFLogica.generar("Listado de Recursos", encabezados, filas, rutaPdf);
+            java.io.File archivoPdf = new java.io.File(rutaPdf);
             if (java.awt.Desktop.isDesktopSupported()) {
                 java.awt.Desktop.getDesktop().open(archivoPdf);
             }
