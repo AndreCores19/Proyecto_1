@@ -26,8 +26,13 @@ public class LoginViewController {
     }
 
     private void intentarLogin() {
-        String id = txtIdLogin.getText();
-        String clave = txtPwdLogin.getText();
+        String id = txtIdLogin.getText().trim();
+        String clave = txtPwdLogin.getText().trim();
+        if (id.isEmpty() || clave.isEmpty()) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING, "Por favor, complete todos los campos.");
+            alerta.showAndWait();
+            return;
+        }
         try {
             UsuarioDTO usuario = servicioUsuario.iniciarSesion(id, clave);
             SesionActual.setUsuarioActual(usuario);

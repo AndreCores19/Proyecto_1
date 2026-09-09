@@ -52,25 +52,29 @@ public class EstadisticasViewController {
         LocalDate hasta = dteHastaR.getValue();
 
         List<ResultadoEstadisticaDTO> resultados = servicioEstadisticas.obtenerEstadisticaRecursos(desde, hasta);
-
+        if (resultados.isEmpty()) {
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION, "No hay reservas en el rango de fechas seleccionado.");
+            alerta.showAndWait();
+            return;
+        }
         tblRecursos.setItems(FXCollections.observableArrayList(resultados));
         imgGraficoR.setImage(GeneradorGraficoLogica.generar("Recursos Usados", "Categoría", "Cantidad", resultados));
+
     }
 
     @FXML
     private void cargarActividades() {
         LocalDate desde = dteDesdeA.getValue();
         LocalDate hasta = dteHastaA.getValue();
-        if (tblRecursos.getItems().isEmpty()) {
-            // avisar al usuario que no hay datos cargados
-            Alert alerta = new Alert(Alert.AlertType.WARNING, "No hay datos cargados. Presione 'Cargar' primero.");
+
+        List<ResultadoEstadisticaDTO> resultados = servicioEstadisticas.obtenerEstadisticaActividades(desde, hasta);
+        if (resultados.isEmpty()) {
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION, "No hay reservas en el rango de fechas seleccionado.");
             alerta.showAndWait();
             return;
         }
-        List<ResultadoEstadisticaDTO> resultados = servicioEstadisticas.obtenerEstadisticaActividades(desde, hasta);
-
         tblActividades.setItems(FXCollections.observableArrayList(resultados));
-        imgGraficoA.setImage(GeneradorGraficoLogica.generar("Recursos Usados", "Semana", "Cantidad", resultados));
+        imgGraficoA.setImage(GeneradorGraficoLogica.generar("Actividades", "Semana", "Cantidad", resultados));
     }
 
     @FXML
