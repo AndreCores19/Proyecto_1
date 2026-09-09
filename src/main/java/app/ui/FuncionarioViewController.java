@@ -1,5 +1,6 @@
 package app.ui;
 
+import app.Controllers.SesionActual;
 import app.DTO.FuncionarioDTO;
 import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioFuncionario;
@@ -24,6 +25,8 @@ public class FuncionarioViewController {
     @FXML private Button btnGuardarFunc;
     @FXML private Button btnBorrarFunc;
     @FXML private Button btnLimpiarFunc;
+
+    @FXML private Button btnCerrarSesion;
 
     @FXML private TableView<FuncionarioDTO> tvFuncionarios;
     @FXML private TableColumn<FuncionarioDTO, String> tcIDFunc;
@@ -53,6 +56,7 @@ public class FuncionarioViewController {
         btnLimpiarFunc.setOnAction(event -> limpiar());
         btnBusc.setOnAction(event -> buscar());
         btnImpri.setOnAction(event -> imprimir());
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
     }
 
     private void cargarTabla() {
@@ -67,7 +71,6 @@ public class FuncionarioViewController {
         String telefono = txtFTelfFunc.getText();
 
         try {
-            // Intentamos ver si ya existe, para decidir si es alta o modificación
             FuncionarioDTO existente = null;
             try {
                 existente = servicioFuncionario.buscarPorId(id);
@@ -177,5 +180,18 @@ public class FuncionarioViewController {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+    }
+
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

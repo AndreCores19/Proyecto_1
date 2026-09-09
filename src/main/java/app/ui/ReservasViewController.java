@@ -1,5 +1,6 @@
 package app.ui;
 
+import app.Controllers.SesionActual;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -35,6 +36,8 @@ public class ReservasViewController {
     @FXML private Button btnLimpiarSeleccion;
     @FXML private ListView <CategoriaDTO> lvCategorias;
 
+    @FXML private Button btnCerrarSesion;
+
     @FXML private TableView <ReservaDTO> tvMisReservas;
     @FXML private TableColumn <ReservaDTO,String> tcReservasId;
     @FXML private TableColumn <ReservaDTO,String> tcReservasActividad;
@@ -53,6 +56,7 @@ public class ReservasViewController {
         btnCatCancelarSeleccionada.setOnAction(event -> cancelarReservaSeleccionada());
         btnLimpiarSeleccion.setOnAction(event -> limpiarSeleccion());
         btnImprimirReservas.setOnAction(event -> imprimirReservas());
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
 
         cargarHorario();
         configurarTablaReservas();
@@ -108,4 +112,16 @@ public class ReservasViewController {
         alerta.showAndWait();
     }
 
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package app.ui;
 
+import app.Controllers.SesionActual;
 import app.DTO.ResultadoEstadisticaDTO;
 import app.Logica.GeneradorGraficoLogica;
 import app.Logica.GeneradorReportePDFLogica;
@@ -12,7 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert;
-
+import javafx.scene.control.Button;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,9 @@ public class EstadisticasViewController {
     @FXML private TableColumn<ResultadoEstadisticaDTO, String> tblCantidadA;
     @FXML private ImageView imgGraficoA;
 
+    @FXML private Button btnCerrarSesion;
+
+
     private ServicioEstadisticas servicioEstadisticas = new ServicioEstadisticas();
     @FXML
     public void initialize() {
@@ -45,6 +49,8 @@ public class EstadisticasViewController {
 
         tblSemanaA.setCellValueFactory(new PropertyValueFactory<>("etiqueta"));
         tblCantidadA.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
     }
     @FXML
     private void cargarRecursos() {
@@ -135,5 +141,18 @@ public class EstadisticasViewController {
         dteHastaA.setValue(null);
         tblActividades.getItems().clear();
         imgGraficoA.setImage(null);
+    }
+
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
