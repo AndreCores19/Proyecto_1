@@ -1,33 +1,33 @@
 [
   {
-    "numActivo": "238715",
-    "categoria": {
-      "id": "CAT-000007",
-      "descripcion": "Categoria 1",
-      "recursos": []
-    },
-    "descripcion": "Laptop #238715"
-  },
-  {
     "numActivo": "34343",
     "categoria": {
-      "id": "CAT-000008",
-      "descripcion": "Categoria 2",
+      "id": "CAT-000001",
+      "descripcion": "Sala para 10 personas",
       "recursos": []
     },
     "descripcion": "Sala 1 primer piso"
   },
   {
+    "numActivo": "238715",
+    "categoria": {
+      "id": "CAT-000002",
+      "descripcion": "Laptop windows 11",
+      "recursos": []
+    },
+    "descripcion": "Laptop #238715"
+  },
+  {
     "numActivo": "45238",
     "categoria": {
-      "id": "CAT-000007",
-      "descripcion": "Categoria 1",
+      "id": "CAT-000002",
+      "descripcion": "Laptop windows 11",
       "recursos": [
         {
           "numActivo": "238715",
           "categoria": {
-            "id": "CAT-000007",
-            "descripcion": "Categoria 1",
+            "id": "CAT-000002",
+            "descripcion": "Laptop windows 11",
             "recursos": []
           },
           "descripcion": "Laptop #238715"
@@ -37,21 +37,22 @@
     "descripcion": "Laptop #45238"
   },
   {
-    "numActivo": "Catlol",
+    "numActivo": "283102",
     "categoria": {
       "id": "CAT-000001",
-      "descripcion": "Categoria 1",
-      "recursos": []
+      "descripcion": "Sala para 10 personas",
+      "recursos": [
+        {
+          "numActivo": "34343",
+          "categoria": {
+            "id": "CAT-000001",
+            "descripcion": "Sala para 10 personas",
+            "recursos": []
+          },
+          "descripcion": "Sala 1 primer piso"
+        }
+      ]
     },
-    "descripcion": "Holaaaa"
-  },
-  {
-    "numActivo": "12345",
-    "categoria": {
-      "id": "CAT-000002",
-      "descripcion": "Categoria 2",
-      "recursos": []
-    },
-    "descripcion": "hello"
+    "descripcion": "Sala 2 Primer piso"
   }
 ]

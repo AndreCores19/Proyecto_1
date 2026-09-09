@@ -7,6 +7,7 @@ import app.DTO.FuncionarioDTO;
 import app.Logica.CategoriaLogica;
 import app.Logica.FuncionarioLogica;
 import app.Logica.RecursoLogica;
+import app.DTO.CategoriaDTO;
 
 
 import java.util.ArrayList;
@@ -38,22 +39,27 @@ public class QuemadosJson {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-
         CategoriaLogica categoriaLogica = new CategoriaLogica();
-
-        app.DTO.CategoriaDTO cat1 = null;
-        app.DTO.CategoriaDTO cat2 = null;
-        app.DTO.CategoriaDTO cat3 = null;
-        try{
-            cat1 = new app.DTO.CategoriaDTO("1", "Categoria 1");
-            cat2 = new app.DTO.CategoriaDTO("2", "Categoria 2");
-            cat3 = new app.DTO.CategoriaDTO("3", "Categoria 3");
-            categoriaLogica.agregar(cat1);
-            categoriaLogica.agregar(cat2);
-            categoriaLogica.agregar(cat3);
-            System.out.println("Categorias creadas correctamente.");
+        try {
+            categoriaLogica.agregar(new CategoriaDTO(null, "Sala para 10 personas"));
+            categoriaLogica.agregar(new CategoriaDTO(null, "Laptop windows 11"));
+            categoriaLogica.agregar(new CategoriaDTO(null, "Proyector"));
+            System.out.println("Categorías creadas correctamente.");
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error creando categorías: " + e.getMessage());
+        }
+
+        RecursoLogica recursoLogica = new RecursoLogica();
+        try {
+            CategoriaDTO catSala = categoriaLogica.buscarPorId("CAT-000001");
+            CategoriaDTO catLaptop = categoriaLogica.buscarPorId("CAT-000002");
+
+            recursoLogica.agregar(new RecursoDTO("34343", catSala, "Sala 1 primer piso"));
+            recursoLogica.agregar(new RecursoDTO("238715", catLaptop, "Laptop #238715"));
+            recursoLogica.agregar(new RecursoDTO("45238", catLaptop, "Laptop #45238"));
+            System.out.println("Recursos creados correctamente.");
+        } catch (Exception e) {
+            System.out.println("Error creando recursos: " + e.getMessage());
         }
     }
 }
