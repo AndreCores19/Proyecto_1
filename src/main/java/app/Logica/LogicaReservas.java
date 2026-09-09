@@ -25,13 +25,13 @@ public class LogicaReservas {
         this.categoriaLogica = new CategoriaLogica();
     }
 
-    public List<ReservaDTO> obtenerTodas() {
+    public List<ReservaDTO> listarTodas() {
         reservaDatos.deserializar();
         return reservaDatos.getReservas();
     }
 
-    public List<ReservaDTO> obtenerPorRango(LocalDate desde, LocalDate hasta) {
-        List<ReservaDTO> todas = obtenerTodas();
+    public List<ReservaDTO> listarPorRango(LocalDate desde, LocalDate hasta) {
+        List<ReservaDTO> todas = listarTodas();
         List<ReservaDTO> resultado = new ArrayList<>();
 
         for (ReservaDTO reserva : todas) {
@@ -46,7 +46,7 @@ public class LogicaReservas {
     }
 
     public boolean tieneReservasActivas(String idFuncionario) {
-        List<ReservaDTO> todas = obtenerTodas();
+        List<ReservaDTO> todas = listarTodas();
         for(ReservaDTO reserva : todas) {
             if (reserva.getIdFuncionario().equals(idFuncionario) && !reserva.getEstado().equals("CANCELADA")) {
                 return true;
@@ -55,16 +55,31 @@ public class LogicaReservas {
         return false;
     }
 
-    public boolean tieneReservasActivasPorRecurso(String numActivo) throws Exception {
-        List<ReservaDTO> todas = obtenerTodas();
+    public List<ReservaDTO> listarReservasPorFuncionario(String idFuncionario) {
+        List<ReservaDTO> todas = listarTodas();
+        List<ReservaDTO> resultado = new ArrayList<>();
         for(ReservaDTO reserva : todas) {
-            if (reserva.getIdsRecursosAsignados().contains(numActivo) && !reserva.getEstado().equals("CANCELADA")) {                return true;
+            if (reserva.getIdFuncionario().equals(idFuncionario)) {
+                resultado.add(reserva);
+            }
+        }
+        return resultado;
+    }
+
+    public boolean tieneReservasActivasPorRecurso(String numActivo) throws Exception {
+        List<ReservaDTO> todas = listarTodas();
+        for(ReservaDTO reserva : todas) {
+            if (reserva.getIdsRecursosAsignados().contains(numActivo) && !reserva.getEstado().equals("CANCELADA")) {
+                return true;
             }
         }
         return false;
     }
 
     public ReservaDTO agregarReserva(ReservaDTO nueva) throws Exception {
+        ResultadoDeAsignacionDTO resultado = estaDisponible(nueva);
+        nueva.setIdsRecursosAsignados(resultado.getIdsRecursosAsignados());
+
         reservaDatos.deserializar();
         String nuevoId = generarSiguienteId(reservaDatos.getReservas());
         nueva.setIdReserva(nuevoId);
@@ -87,7 +102,7 @@ public class LogicaReservas {
     }
 
     private ResultadoDeAsignacionDTO estaDisponible(ReservaDTO reserva) throws Exception {
-        List<ReservaDTO> todasLasReservas = obtenerTodas();
+        List<ReservaDTO> todasLasReservas = listarTodas();
         List<CategoriaDTO> todasLasCategorias = categoriaLogica.listarTodas();
         List<String> idsCategoriasNoDisponibles = new ArrayList<>();
         List<String> idsRecursosAsignados = new ArrayList<>();

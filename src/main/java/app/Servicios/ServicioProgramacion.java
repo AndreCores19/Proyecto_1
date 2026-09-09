@@ -15,7 +15,7 @@ public class ServicioProgramacion {
     public CeldaActividadDTO[][] matrizReservas(LocalDate fechaReferencia){
         LocalDate lunes = fechaReferencia.with(DayOfWeek.MONDAY);
         LocalDate domingo = lunes.plusDays(6);
-        List<ReservaDTO> reservas = logicaReservas.obtenerPorRango(lunes, domingo);
+        List<ReservaDTO> reservas = logicaReservas.listarPorRango(lunes, domingo);
         CeldaActividadDTO[][] matriz = new CeldaActividadDTO[24][7];
         for (ReservaDTO reserva : reservas) {
             int columna = reserva.getFecha().getDayOfWeek().getValue() - 1;

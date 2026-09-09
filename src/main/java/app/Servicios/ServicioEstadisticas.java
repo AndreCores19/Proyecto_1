@@ -16,7 +16,7 @@ public class ServicioEstadisticas {
     private CategoriaLogica categoriaLogica = new CategoriaLogica();
 
     public List<ResultadoEstadisticaDTO> obtenerEstadisticaRecursos(LocalDate desde, LocalDate hasta){
-        List<ReservaDTO> reservas = logicaReservas.obtenerPorRango(desde, hasta);
+        List<ReservaDTO> reservas = logicaReservas.listarPorRango(desde, hasta);
         Map<String, Integer> conteoRecursos = new TreeMap<>();
 
         for (ReservaDTO reserva : reservas) {
@@ -40,7 +40,7 @@ public class ServicioEstadisticas {
     }
 
     public List<ResultadoEstadisticaDTO> obtenerEstadisticaActividades(LocalDate desde, LocalDate hasta){
-        List<ReservaDTO> reservas = logicaReservas.obtenerPorRango(desde, hasta);
+        List<ReservaDTO> reservas = logicaReservas.listarPorRango(desde, hasta);
         Map<String, Integer> contarActividades = new TreeMap<>();
 
         for (ReservaDTO reserva : reservas) {
