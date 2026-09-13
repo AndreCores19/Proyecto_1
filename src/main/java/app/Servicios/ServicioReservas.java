@@ -8,8 +8,8 @@ import java.util.List;
 public class ServicioReservas {
     private final LogicaReservas logicaReservas = new LogicaReservas();
 
-    public ResultadoDeAsignacionDTO reservarEspacio(ReservaDTO reservaDTO) throws Exception {
-        return logicaReservas.agregarReserva(reservaDTO);
+    public void reservarEspacio(ReservaDTO reservaDTO) throws Exception {
+        logicaReservas.agregarReserva(reservaDTO);
     }
     public List<ReservaDTO> listarReservas(ReservaDTO reservaDTO) throws Exception {
         return logicaReservas.listarTodas();

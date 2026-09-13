@@ -76,7 +76,7 @@ public class LogicaReservas {
         return false;
     }
 
-    public ResultadoDeAsignacionDTO agregarReserva(ReservaDTO nueva) throws Exception {
+    public void agregarReserva(ReservaDTO nueva) throws Exception {
         ResultadoDeAsignacionDTO resultado = estaDisponible(nueva);
         nueva.setIdsRecursosAsignados(resultado.getIdsRecursosAsignados());
 
@@ -85,7 +85,6 @@ public class LogicaReservas {
         nueva.setIdReserva(nuevoId);
         reservaDatos.getReservas().add(nueva);
         reservaDatos.serializar();
-        return resultado;
     }
 
     private String generarSiguienteId(List<ReservaDTO> reservas) {

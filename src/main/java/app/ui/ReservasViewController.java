@@ -191,22 +191,12 @@ public class ReservasViewController {
                         LocalTime.parse(cbxHoraFin.getValue()),
                         idsCategorias,
                         idFuncionarioActual,
-                        "PENDIENTE",
+                        "ACTIVA",
                         new ArrayList<>()
                 );
-        ResultadoDeAsignacionDTO resultado = servicioReservas.reservarEspacio(nuevaReserva);
-        if(resultado.isExitosa()) {
-            mostrarExito("Reserva realizada con éxito");
-        } else {
-            resultado.getIdsCategoriasNoDisponibles().forEach(idCategoria -> {
-                try {
-                    CategoriaDTO categoria = servicioCategoria.buscarPorId(idCategoria);
-                    mostrarError("No hay recursos disponibles para la categoría: " + categoria.getId() + " - " + categoria.getDescripcion());
-                } catch (Exception e) {
-                    mostrarError("No se pudo encontrar la categoría con id: " + idCategoria);
-                }
-            });
-        }
+         servicioReservas.reservarEspacio(nuevaReserva);
+         mostrarExito("Reserva realizada con éxito"); //Si llego aqui es porque el catch no capturo ninguna excepcion y la reserva fue exitosa
+
         limpiarSeleccion();
         cargarMisReservas();
         } catch (Exception e) {
