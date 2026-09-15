@@ -10,12 +10,12 @@
             <fx:include source="reservas-view.fxml" />
          </content>
       </Tab>
-      <Tab closable="false" text="Calendarizacion">
+      <Tab fx:id="tCalendarizacion" closable="false" text="Calendarizacion">
          <content>
             <fx:include source="calendarizacionRecursos-view.fxml" />
          </content>
       </Tab>
-      <Tab closable="false" text="Actividades">
+      <Tab fx:id="tActividades" closable="false" text="Actividades">
          <content>
             <fx:include source="calendarizacionActividades-view.fxml" />
          </content>

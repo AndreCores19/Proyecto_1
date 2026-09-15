@@ -134,8 +134,8 @@ public class LogicaReservas {
                     if(!recursoEncontrado){
                         idsCategoriasNoDisponibles.add(idCategoriaSolicitada);
                     }
+                    break;
                 }
-                break;
             }
         }
         return new ResultadoDeAsignacionDTO(idsCategoriasNoDisponibles.isEmpty(), idsCategoriasNoDisponibles, idsRecursosAsignados);

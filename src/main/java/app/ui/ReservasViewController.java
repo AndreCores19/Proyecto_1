@@ -1,6 +1,7 @@
 package app.ui;
 
 import app.Controllers.SesionActual;
+import app.DTO.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,13 +11,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import app.Servicios.ServicioReservas;
 import app.Servicios.ServicioCategoria;
-import app.DTO.ReservaDTO;
-import app.DTO.AdministradorDTO;
-import app.DTO.CategoriaDTO;
-import app.DTO.ResultadoDeAsignacionDTO;
-import app.DTO.RecursoDTO;
-import app.DTO.FuncionarioDTO;
+import app.Servicios.ServicioGemini;
 
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -65,10 +62,6 @@ public class ReservasViewController {
                 dpFecha.setValue(seleccionado.getFecha());
                 cbxHoraInicio.setValue(seleccionado.getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")));
                 cbxHoraFin.setValue(seleccionado.getHoraFin().format(DateTimeFormatter.ofPattern("HH:mm")));
-               // lvCategorias.getSelectionModel().clearSelection();
-                  //  lvCategorias.getSelectionModel().select(categoria);
-               // }
-                //lvCategorias.setItems(misCategorias););
             }
         });
 
@@ -79,28 +72,65 @@ public class ReservasViewController {
     }
 
     private void extraerIA() {
-        // Lógica para extraer la información de la actividad basada en la frase ingresada
+        String frase = txtFFrase.getText();
+        if (frase.isEmpty() || frase == null) {
+            mostrarError("Ingrese una frase para extraer la actividad.");
+            return;
+        }
+
+        try {
+            ExtraccionIADTO extraido = ServicioGemini.extraerDatosDeLaIA(frase);
+            limpiarSeleccion();
+            txtFActividad.setText(frase);
+            if(extraido.getActividad()!=null) txtFActividad.setText(extraido.getActividad());
+            if(extraido.getFecha()!=null) dpFecha.setValue(extraido.getFecha());
+            if(extraido.getHoraInicio()!=null) cbxHoraInicio.setValue(extraido.getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")));
+            if(extraido.getHoraFin()!=null) cbxHoraFin.setValue(extraido.getHoraFin().format(DateTimeFormatter.ofPattern("HH:mm")));
+
+            seleccionarCategoriasSugeridas(extraido.getCategoriasSugeridas());
+
+        } catch (IOException | InterruptedException e) {
+            mostrarError("No se pudo interpretar la frase. Completa el formulario manualmente.");
+        }
     }
 
-    private void extraerActividad() {
-        // Lógica para extraer la actividad basada en la frase ingresada
+    private void seleccionarCategoriasSugeridas(List<String> categoriasSugeridas) {
+        if (categoriasSugeridas == null || categoriasSugeridas.isEmpty()) {
+            return;
+        }
+
+        for(CategoriaDTO categoria : lvCategorias.getItems()) {
+            for (String sugeridas : categoriasSugeridas) {
+                if (categoria.getDescripcion().toLowerCase().contains(sugeridas.toLowerCase()) || sugeridas.toLowerCase().contains(categoria.getDescripcion().toLowerCase())) {
+                    lvCategorias.getSelectionModel().select(categoria);
+                    break;
+                }
+            }
+        }
     }
 
     private void cargarHorario() {
         ObservableList<String> horas = FXCollections.observableArrayList();
+        LocalTime ahora = LocalTime.now();
         for (int i = 7; i < 21; i++) {
-            horas.add(String.format("%02d:00", i));
-            horas.add(String.format("%02d:30", i));
+            LocalTime horaEnPunto = LocalTime.of(i, 0);
+            LocalTime horaMedia = LocalTime.of(i, 30);
+            if (horaEnPunto.isAfter(ahora)) {
+                horas.add(String.format("%02d:00", i));
+            }
+            if (horaMedia.isAfter(ahora)) {
+                horas.add(String.format("%02d:30", i));
+            }
         }
         cbxHoraInicio.setItems(horas);
         cbxHoraFin.setItems(horas);
-}
+    }
 
     private void configurarTablaReservas() {
         tcReservasId.setCellValueFactory(new PropertyValueFactory<>("idReserva"));
         tcReservasActividad.setCellValueFactory(new PropertyValueFactory<>("actividad"));
         tcReservasFecha.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFecha().toString()));
-        tcReservasHorario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm"))));
+        tcReservasHorario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")) + " - " + data.getValue().getHoraFin().format(DateTimeFormatter.ofPattern("HH:mm"))));
         tcReservasRecursos.setCellValueFactory(data -> new SimpleStringProperty(String.join(", ", data.getValue().getIdsRecursosAsignados())));
         tcReservasEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
     }
@@ -215,13 +245,18 @@ public class ReservasViewController {
             if (respuesta == ButtonType.OK) {
                 try {
                     servicioReservas.cancelarReserva(seleccionada.getIdReserva());
-                    mostrarExito("Reserva cancelada con éxito.");
+                    mostrarExito("Reserva cancelada con exito.");
                     cargarMisReservas();
                 } catch (Exception e) {
                     mostrarError("No se pudo cancelar la reserva: " + e.getMessage());
                 }
             }
         });
+    }
+
+    private void cerrarSesion() {
+        SesionActual.setUsuarioActual(null);
+        // Lógica para redirigir al login o cerrar la aplicación
     }
 
     private void limpiarSeleccion() {

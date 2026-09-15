@@ -1,9 +1,14 @@
-/*package app.Servicios;
+package app.Servicios;
 
-import app.Logica.LogicaReservas;
+import app.Logica.LogicaGemini;
+import app.DTO.ExtraccionIADTO;
 
+import java.io.IOException;
 
 public class ServicioGemini {
-    private final LogicaReservas logicaReservas =  new LogicaReservas();
-    //Despues pienso
-}*/
+    private static final LogicaGemini logicaGemini = new LogicaGemini();
+
+    public static ExtraccionIADTO extraerDatosDeLaIA(String frase) throws IOException, InterruptedException {
+        return logicaGemini.extraerDatosDesdeLaFrase(frase);
+    }
+}

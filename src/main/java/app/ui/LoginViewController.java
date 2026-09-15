@@ -45,6 +45,8 @@ public class LoginViewController {
 
             javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(getClass().getResource(vistaDestino));
             javafx.stage.Stage stage = (javafx.stage.Stage) btnLogin.getScene().getWindow();
+            stage.setWidth(800);
+            stage.setHeight(700);
             stage.getScene().setRoot(raiz);
 
         } catch (Exception e) {
