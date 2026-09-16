@@ -48,8 +48,6 @@ public class ReservasViewController {
     @FXML private TableColumn <ReservaDTO,String> tcReservasEstado;
     @FXML private Button btnImprimirReservas;
 
-    @FXML private Button btnCerrarSesion;
-
     private ServicioReservas servicioReservas = new ServicioReservas();
     private ServicioCategoria servicioCategoria = new ServicioCategoria();
     private String idFuncionarioActual;
