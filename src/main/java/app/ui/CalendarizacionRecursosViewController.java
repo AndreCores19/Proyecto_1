@@ -1,8 +1,6 @@
 package app.ui;
-import app.Controllers.SesionActual;
-import javafx.scene.control.Button;
-import javafx.fxml.FXML;
 
+import app.Controllers.SesionActual;
 import app.DTO.CategoriaDTO;
 import app.DTO.MatrizDTO;
 import app.Servicios.ServicioCalendarizacionRecursos;
@@ -21,53 +19,40 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class CalendarizacionRecursosViewController {
-    @FXML private Button btnCerrarSesion;
-
     @FXML
-    public void initialize() {
-        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
-    }
-
-    private void cerrarSesion(javafx.event.ActionEvent event) {
-        SesionActual.setUsuarioActual(null);
-        try {
-            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
-                    getClass().getResource("/app/ui/login-view.fxml")
-            );
-            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.getScene().setRoot(raiz);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
-    @FXML private ComboBox<CategoriaDTO>cbxCategoria;
-    @FXML private DatePicker dpFechafiltros;
-    @FXML private Button btnCargarFiltros;
-    @FXML private Button btnImprimirEnFiltros;
-    @FXML private Button btnCerrarSesion;
-    @FXML private TableView<MatrizDTO> tvCalendarizacion;
-    @FXML private TableColumn<MatrizDTO, String> tcHora;
+    private ComboBox<CategoriaDTO> cbxCategoria;
+    @FXML
+    private DatePicker dpFechafiltros;
+    @FXML
+    private Button btnCargarFiltros;
+    @FXML
+    private Button btnImprimirEnFiltros;
+    @FXML
+    private Button btnCerrarSesion;
+    @FXML
+    private TableView<MatrizDTO> tvCalendarizacion;
+    @FXML
+    private TableColumn<MatrizDTO, String> tcHora;
 
     private final ServicioCalendarizacionRecursos servicioCalendarizacion = new ServicioCalendarizacionRecursos();
     private final ServicioCategoria servicioCategoria = new ServicioCategoria();
 
     @FXML
     public void initialize() {
-    tcHora.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("hora"));
+        tcHora.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("hora"));
 
-    List<CategoriaDTO> categorias = servicioCategoria.listarTodas();
-    cbxCategoria.setItems(FXCollections.observableArrayList(categorias));
-    cbxCategoria.setCellFactory(cb-> new javafx.scene.control.ListCell<>() {
-        @Override
-        protected void updateItem(CategoriaDTO item, boolean empty) {
-            super.updateItem(item, empty);
-            setText(empty || item == null ? null : item.getDescripcion());
-        }
+        List<CategoriaDTO> categorias = servicioCategoria.listarTodas();
+        cbxCategoria.setItems(FXCollections.observableArrayList(categorias));
+        cbxCategoria.setCellFactory(cb -> new javafx.scene.control.ListCell<>() {
+            @Override
+            protected void updateItem(CategoriaDTO item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getDescripcion());
+            }
 
-    });
-cbxCategoria.setButtonCell(cbxCategoria.getCellFactory().call(null));
-btnCargarFiltros.setOnMouseClicked(e -> cargarMatriz());
+        });
+        cbxCategoria.setButtonCell(cbxCategoria.getCellFactory().call(null));
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
     }
 
     private void cargarMatriz() {
@@ -78,7 +63,7 @@ btnCargarFiltros.setOnMouseClicked(e -> cargarMatriz());
             mostrarError("Por favor, seleccione una categoría y una fecha.");
             return;
         }
-        try{
+        try {
             List<MatrizDTO> filas = servicioCalendarizacion.obtenerMatrizDeRecursos(categoria.getId(), fecha);
             construirColumnas(categoria);
             tvCalendarizacion.setItems(FXCollections.observableArrayList(filas));
@@ -90,7 +75,7 @@ btnCargarFiltros.setOnMouseClicked(e -> cargarMatriz());
     private void construirColumnas(CategoriaDTO categoria) {
         tvCalendarizacion.getColumns().setAll(tcHora);
 
-        for (var recurso : categoria.getRecursos()){
+        for (var recurso : categoria.getRecursos()) {
             TableColumn<MatrizDTO, String> columnaRecurso = new TableColumn<>(recurso.getDescripcion());
             String numActivo = recurso.getNumActivo();
             columnaRecurso.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEstadoPorRecurso().get(numActivo)));
@@ -106,5 +91,19 @@ btnCargarFiltros.setOnMouseClicked(e -> cargarMatriz());
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+    }
+
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 }
