@@ -14,6 +14,7 @@ import app.Servicios.ServicioCategoria;
 import app.Servicios.ServicioGemini;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class ReservasViewController {
     @FXML private TableColumn <ReservaDTO,String> tcReservasEstado;
     @FXML private Button btnImprimirReservas;
 
+    @FXML private Button btnCerrarSesion;
+
     private ServicioReservas servicioReservas = new ServicioReservas();
     private ServicioCategoria servicioCategoria = new ServicioCategoria();
     private String idFuncionarioActual;
@@ -56,6 +59,7 @@ public class ReservasViewController {
         btnCatCancelarSeleccionada.setOnAction(event -> cancelarReservaSeleccionada());
         btnLimpiarSeleccion.setOnAction(event -> limpiarSeleccion());
         btnImprimirReservas.setOnAction(event -> imprimirReservas());
+        btnCerrarSesion.setOnAction(event -> cerrarSesion());
         tvMisReservas.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccionado) -> {
             if (seleccionado != null) {
                 txtFActividad.setText(seleccionado.getActividad());
@@ -66,6 +70,7 @@ public class ReservasViewController {
         });
 
         cargarHorario();
+        configurarFecha();
         configurarTablaReservas();
         cargarCategorias();
         cargarMisReservas();
@@ -77,7 +82,6 @@ public class ReservasViewController {
             mostrarError("Ingrese una frase para extraer la actividad.");
             return;
         }
-
         try {
             ExtraccionIADTO extraido = ServicioGemini.extraerDatosDeLaIA(frase);
             limpiarSeleccion();
@@ -86,9 +90,7 @@ public class ReservasViewController {
             if(extraido.getFecha()!=null) dpFecha.setValue(extraido.getFecha());
             if(extraido.getHoraInicio()!=null) cbxHoraInicio.setValue(extraido.getHoraInicio().format(DateTimeFormatter.ofPattern("HH:mm")));
             if(extraido.getHoraFin()!=null) cbxHoraFin.setValue(extraido.getHoraFin().format(DateTimeFormatter.ofPattern("HH:mm")));
-
             seleccionarCategoriasSugeridas(extraido.getCategoriasSugeridas());
-
         } catch (IOException | InterruptedException e) {
             mostrarError("No se pudo interpretar la frase. Completa el formulario manualmente.");
         }
@@ -98,7 +100,6 @@ public class ReservasViewController {
         if (categoriasSugeridas == null || categoriasSugeridas.isEmpty()) {
             return;
         }
-
         for(CategoriaDTO categoria : lvCategorias.getItems()) {
             for (String sugeridas : categoriasSugeridas) {
                 if (categoria.getDescripcion().toLowerCase().contains(sugeridas.toLowerCase()) || sugeridas.toLowerCase().contains(categoria.getDescripcion().toLowerCase())) {
@@ -111,19 +112,45 @@ public class ReservasViewController {
 
     private void cargarHorario() {
         ObservableList<String> horas = FXCollections.observableArrayList();
+        LocalDate hoy = LocalDate.now();
         LocalTime ahora = LocalTime.now();
+        LocalDate fechaSeleccionada = dpFecha.getValue();
+        if (fechaSeleccionada == null) {
+            cbxHoraInicio.getItems().clear();
+            cbxHoraFin.getItems().clear();
+            return;
+        }
         for (int i = 7; i < 21; i++) {
             LocalTime horaEnPunto = LocalTime.of(i, 0);
             LocalTime horaMedia = LocalTime.of(i, 30);
-            if (horaEnPunto.isAfter(ahora)) {
+            if (!fechaSeleccionada.equals(hoy) || horaEnPunto.isAfter(ahora)) {
                 horas.add(String.format("%02d:00", i));
             }
-            if (horaMedia.isAfter(ahora)) {
+            if (!fechaSeleccionada.equals(hoy) || horaMedia.isAfter(ahora)) {
                 horas.add(String.format("%02d:30", i));
             }
         }
         cbxHoraInicio.setItems(horas);
         cbxHoraFin.setItems(horas);
+    }
+
+
+    private void configurarFecha() {
+        LocalDate hoy = LocalDate.now();
+        dpFecha.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate fecha, boolean vacío) {
+                super.updateItem(fecha, vacío);
+                if (fecha.isBefore(hoy)) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
+
+        dpFecha.valueProperty().addListener((obs, fechaAnterior, fechaNueva) -> {
+            cargarHorario();
+        });
     }
 
     private void configurarTablaReservas() {

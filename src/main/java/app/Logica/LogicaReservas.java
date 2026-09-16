@@ -164,7 +164,7 @@ public class LogicaReservas {
         reservaDatos.serializar();
     }
 
-    private boolean hayConflictoHoras(LocalTime horaInicioA, LocalTime horaFinA, LocalTime horaInicioB, LocalTime horaFinB) {
+    public boolean hayConflictoHoras(LocalTime horaInicioA, LocalTime horaFinA, LocalTime horaInicioB, LocalTime horaFinB) {
         return horaInicioA.isBefore(horaFinB) && horaInicioB.isBefore(horaFinA);
     }
     private boolean comparacionFechas(LocalDate fechaA, LocalDate fechaB) {

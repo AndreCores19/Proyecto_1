@@ -55,7 +55,6 @@
                 <TableView fx:id="tvCalendarizacion" maxHeight="Infinity" maxWidth="Infinity">
                     <columns>
                         <TableColumn fx:id="tcHora" prefWidth="100" text="Hora" />
-                        <TableColumn fx:id="tcEntiendo" prefWidth="300" text="Entiendo" />
                     </columns>
                 </TableView>
             </content>
