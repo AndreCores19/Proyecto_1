@@ -19,20 +19,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class CalendarizacionRecursosViewController {
-    @FXML
-    private ComboBox<CategoriaDTO> cbxCategoria;
-    @FXML
-    private DatePicker dpFechafiltros;
-    @FXML
-    private Button btnCargarFiltros;
-    @FXML
-    private Button btnImprimirEnFiltros;
-    @FXML
-    private Button btnCerrarSesion;
-    @FXML
-    private TableView<MatrizDTO> tvCalendarizacion;
-    @FXML
-    private TableColumn<MatrizDTO, String> tcHora;
+
+    @FXML private ComboBox<CategoriaDTO> cbxCategoria;
+    @FXML private DatePicker dpFechafiltros;
+    @FXML private Button btnCargarFiltros;
+    @FXML private Button btnImprimirEnFiltros;
+    @FXML private Button btnCerrarSesion;
+    @FXML private TableView<MatrizDTO> tvCalendarizacion;
+    @FXML private TableColumn<MatrizDTO, String> tcHora;
 
     private final ServicioCalendarizacionRecursos servicioCalendarizacion = new ServicioCalendarizacionRecursos();
     private final ServicioCategoria servicioCategoria = new ServicioCategoria();
@@ -53,6 +47,8 @@ public class CalendarizacionRecursosViewController {
         });
         cbxCategoria.setButtonCell(cbxCategoria.getCellFactory().call(null));
         btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
+        btnCargarFiltros.setOnAction(event -> cargarMatriz());
+        btnImprimirEnFiltros.setOnAction(event -> imprimirMatriz());
     }
 
     private void cargarMatriz() {
@@ -106,4 +102,9 @@ public class CalendarizacionRecursosViewController {
 
         }
     }
+
+    private void imprimirMatriz() {
+
+    }
+
 }
