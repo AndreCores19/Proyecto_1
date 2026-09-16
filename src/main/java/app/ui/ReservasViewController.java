@@ -5,6 +5,8 @@ import app.DTO.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import app.Controllers.SesionActual;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,6 +37,8 @@ public class ReservasViewController {
     @FXML private Button btnLimpiarSeleccion;
     @FXML private ListView <CategoriaDTO> lvCategorias;
 
+    @FXML private Button btnCerrarSesion;
+
     @FXML private TableView <ReservaDTO> tvMisReservas;
     @FXML private TableColumn <ReservaDTO,String> tcReservasId;
     @FXML private TableColumn <ReservaDTO,String> tcReservasActividad;
@@ -59,7 +63,6 @@ public class ReservasViewController {
         btnCatCancelarSeleccionada.setOnAction(event -> cancelarReservaSeleccionada());
         btnLimpiarSeleccion.setOnAction(event -> limpiarSeleccion());
         btnImprimirReservas.setOnAction(event -> imprimirReservas());
-        btnCerrarSesion.setOnAction(event -> cerrarSesion());
         tvMisReservas.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccionado) -> {
             if (seleccionado != null) {
                 txtFActividad.setText(seleccionado.getActividad());
@@ -68,6 +71,7 @@ public class ReservasViewController {
                 cbxHoraFin.setValue(seleccionado.getHoraFin().format(DateTimeFormatter.ofPattern("HH:mm")));
             }
         });
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
 
         cargarHorario();
         configurarFecha();
@@ -281,11 +285,6 @@ public class ReservasViewController {
         });
     }
 
-    private void cerrarSesion() {
-        SesionActual.setUsuarioActual(null);
-        // Lógica para redirigir al login o cerrar la aplicación
-    }
-
     private void limpiarSeleccion() {
         txtFActividad.clear();
         txtFFrase.clear();
@@ -310,4 +309,16 @@ public class ReservasViewController {
         alerta.showAndWait();
     }
 
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -48,6 +48,9 @@ public class LoginViewController {
             stage.setWidth(800);
             stage.setHeight(700);
             stage.getScene().setRoot(raiz);
+            stage.setWidth(900);
+            stage.setHeight(700);
+            stage.centerOnScreen();
 
         } catch (Exception e) {
             e.printStackTrace();

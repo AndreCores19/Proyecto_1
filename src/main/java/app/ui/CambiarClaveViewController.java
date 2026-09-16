@@ -68,6 +68,10 @@ public class CambiarClaveViewController {
             );
             javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(raiz);
+            stage.getScene().setRoot(raiz);
+            stage.setWidth(348);
+            stage.setHeight(363);
+            stage.centerOnScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }

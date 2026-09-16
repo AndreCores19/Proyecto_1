@@ -1,5 +1,6 @@
 package app.ui;
 
+import app.Controllers.SesionActual;
 import app.DTO.CategoriaDTO;
 import app.DTO.RecursoDTO;
 import app.Servicios.ServicioCategoria;
@@ -26,6 +27,8 @@ public class RecursoViewController {
     @FXML private Button btnGuardarFunc;
     @FXML private Button btnBorrarFunc;
     @FXML private Button btnLimpiarFunc;
+
+    @FXML private Button btnCerrarSesion;
 
     @FXML private TableView<RecursoDTO> tvRecursos;
     @FXML private TableColumn<RecursoDTO, String> tcIDRecur;
@@ -63,6 +66,7 @@ public class RecursoViewController {
         btnLimpiarFunc.setOnAction(event -> limpiar());
         btnBuscRecur.setOnAction(event -> buscar());
         btnImpriRecur.setOnAction(event -> imprimir());
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
     }
 
     private void configurarComboBox(ComboBox<CategoriaDTO> combo) {
@@ -196,5 +200,18 @@ public class RecursoViewController {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+    }
+
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

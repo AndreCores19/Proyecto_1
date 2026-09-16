@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import app.Controllers.SesionActual;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class CategoriaViewController {
     @FXML private Button btnGuardarFunc;
     @FXML private Button btnBorrarFunc;
     @FXML private Button btnLimpiarFunc;
+
+    @FXML private Button btnCerrarSesion;
 
     @FXML private TableView<CategoriaDTO> tvCategorias;
     @FXML private TableColumn<CategoriaDTO, String> tcIDCateg;
@@ -48,6 +51,7 @@ public class CategoriaViewController {
         btnLimpiarFunc.setOnAction(event -> limpiar());
         btnBuscDesc.setOnAction(event -> buscar());
         btnImpriDesc.setOnAction(event -> imprimir());
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
     }
 
     private void guardar() {
@@ -144,5 +148,18 @@ public class CategoriaViewController {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+    }
+
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

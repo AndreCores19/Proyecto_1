@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox fx:id="vBoxCateg" fx:controller="app.ui.CategoriaViewController" alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vBoxCateg" alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ui.CategoriaViewController">
    <children>
       <TitledPane fx:id="tltCategBusq" animated="false" collapsible="false" contentDisplay="CENTER" text="Busqueda">
          <content>
@@ -146,7 +145,15 @@
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="60.0" />
          </padding>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
       </TitledPane>
+      <Button fx:id="btnCerrarSesion" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Cerrar Sesión">
+         <VBox.margin>
+            <Insets bottom="50.0" />
+         </VBox.margin>
+      </Button>
    </children>
    <padding>
       <Insets top="30.0" />

@@ -1,4 +1,5 @@
 package app.ui;
+import app.Controllers.SesionActual;
 import app.DTO.CeldaActividadDTO;
 import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioProgramacion;
@@ -9,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
 
 import java.awt.*;
 import java.io.File;
@@ -31,6 +33,8 @@ public class CalendarizacionActividadesViewController {
     @FXML private TableColumn tcFechaDom;
     @FXML private DatePicker dteFechaReferencia;
 
+    @FXML private Button btnCerrarSesion;
+
     @FXML
     public void initialize() {
         tcHora.setCellValueFactory(new PropertyValueFactory<>("hora"));
@@ -41,6 +45,8 @@ public class CalendarizacionActividadesViewController {
         tcFechaVier.setCellValueFactory(new PropertyValueFactory<>("viernes"));
         tcFechaSab.setCellValueFactory(new PropertyValueFactory<>("sabado"));
         tcFechaDom.setCellValueFactory(new PropertyValueFactory<>("domingo"));
+
+        btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
 
     }
 
@@ -106,5 +112,18 @@ public class CalendarizacionActividadesViewController {
     private void limpiarCalendario() {
         tblCalendario.getItems().clear();
         dteFechaReferencia.setValue(null);
+    }
+
+    private void cerrarSesion(javafx.event.ActionEvent event) {
+        SesionActual.setUsuarioActual(null);
+        try {
+            javafx.scene.Parent raiz = javafx.fxml.FXMLLoader.load(
+                    getClass().getResource("/app/ui/login-view.fxml")
+            );
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(raiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
