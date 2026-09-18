@@ -1,8 +1,8 @@
 package app.ui;
 import app.Controllers.SesionActual;
 import app.DTO.CeldaActividadDTO;
-import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioProgramacion;
+import app.Servicios.ServicioImpresion;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,14 +13,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Button;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarizacionActividadesViewController {
-    private ServicioProgramacion servicioProgramacion = new ServicioProgramacion();
+    private final ServicioProgramacion servicioProgramacion = new ServicioProgramacion();
+    private final ServicioImpresion servicioImpresion = new ServicioImpresion();
 
     @FXML private TableView<FilaCalendario> tblCalendario;
     @FXML private TableColumn tcHora;
@@ -99,11 +98,10 @@ public class CalendarizacionActividadesViewController {
                     f.getJueves(), f.getViernes(), f.getSabado(), f.getDomingo()
             ));
         }
-        GeneradorReportePDFLogica.generar("Programación de Actividades", encabezados, filas, "Data/programacion_actividades.pdf");
-        try {
-            Desktop.getDesktop().open(new File("Data/programacion_actividades.pdf"));
-        } catch (IOException e) {
-            Alert alerta = new Alert(Alert.AlertType.ERROR, "El PDF se generó, pero no se pudo abrir automáticamente.");
+        try{
+            servicioImpresion.imprimirCalendario(encabezados, filas);
+        } catch(Exception e){
+            Alert alerta = new Alert(Alert.AlertType.ERROR, "Error al generar el PDF: " + e.getMessage());
             alerta.showAndWait();
         }
     }

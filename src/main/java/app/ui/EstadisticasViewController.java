@@ -2,9 +2,9 @@ package app.ui;
 
 import app.Controllers.SesionActual;
 import app.DTO.ResultadoEstadisticaDTO;
-import app.Logica.GeneradorGraficoLogica;
-import app.Logica.GeneradorReportePDFLogica;
+import app.Servicios.ServicioGeneradorGrafico;
 import app.Servicios.ServicioEstadisticas;
+import app.Servicios.ServicioImpresion;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -15,8 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +39,10 @@ public class EstadisticasViewController {
     @FXML private Button btnCerrarSesion;
 
 
-    private ServicioEstadisticas servicioEstadisticas = new ServicioEstadisticas();
+    private final ServicioEstadisticas servicioEstadisticas = new ServicioEstadisticas();
+    private final ServicioImpresion servicioImpresion = new ServicioImpresion();
+    private final ServicioGeneradorGrafico servicioGeneradorGrafico = new ServicioGeneradorGrafico();
+
     @FXML
     public void initialize() {
         tblCategoriaR.setCellValueFactory(new PropertyValueFactory<>("etiqueta"));
@@ -64,7 +65,7 @@ public class EstadisticasViewController {
             return;
         }
         tblRecursos.setItems(FXCollections.observableArrayList(resultados));
-        imgGraficoR.setImage(GeneradorGraficoLogica.generar("Recursos Usados", "Categoría", "Cantidad", resultados));
+        imgGraficoR.setImage(servicioGeneradorGrafico.generar("Recursos Usados", "Categoría", "Cantidad", resultados));
 
     }
 
@@ -80,49 +81,39 @@ public class EstadisticasViewController {
             return;
         }
         tblActividades.setItems(FXCollections.observableArrayList(resultados));
-        imgGraficoA.setImage(GeneradorGraficoLogica.generar("Actividades", "Semana", "Cantidad", resultados));
+        imgGraficoA.setImage(servicioGeneradorGrafico.generar("Actividades", "Semana", "Cantidad", resultados));
     }
 
     @FXML
     private void imprimirRecursos() {
-        if (tblRecursos.getItems().isEmpty()) {
+        List<ResultadoEstadisticaDTO> resultados = new ArrayList<>(tblRecursos.getItems());
+        if (resultados.isEmpty()) {
             // avisar al usuario que no hay datos cargados
             Alert alerta = new Alert(Alert.AlertType.WARNING, "No hay datos cargados. Presione 'Cargar' primero.");
             alerta.showAndWait();
             return;
         }
-        List<List<String>> filas = new ArrayList<>();
-        for (ResultadoEstadisticaDTO r : tblRecursos.getItems()) {
-            filas.add(List.of(r.getEtiqueta(), String.valueOf(r.getCantidad())));
-        }
-        List<String> encabezados = List.of("Categoría", "Cantidad");
-        GeneradorReportePDFLogica.generar("Estadísticas de Recursos", encabezados, filas, "Data/estadisticas_recursos.pdf");
-        try {
-            Desktop.getDesktop().open(new File("Data/estadisticas_recursos.pdf"));
-        } catch (IOException e) {
-            Alert alerta = new Alert(Alert.AlertType.ERROR, "El PDF se generó, pero no se pudo abrir automáticamente.");
+        try{
+            servicioImpresion.imprimirEstadisticaRecursos(resultados);
+        } catch (Exception e) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR, "Error al imprimir los recursos: " + e.getMessage());
             alerta.showAndWait();
         }
     }
 
     @FXML
     private void imprimirActividades() {
-        if (tblActividades.getItems().isEmpty()) {
+        List<ResultadoEstadisticaDTO> resultados = new ArrayList<>(tblActividades.getItems());
+        if (resultados.isEmpty()) {
             // avisar al usuario que no hay datos cargados
             Alert alerta = new Alert(Alert.AlertType.WARNING, "No hay datos cargados. Presione 'Cargar' primero.");
             alerta.showAndWait();
             return;
         }
-        List<List<String>> filas = new ArrayList<>();
-        for (ResultadoEstadisticaDTO a : tblActividades.getItems()) {
-            filas.add(List.of(a.getEtiqueta(), String.valueOf(a.getCantidad())));
-        }
-        List<String> encabezados = List.of("Semana", "Cantidad");
-        GeneradorReportePDFLogica.generar("Estadísticas de Actividades", encabezados, filas, "Data/estadisticas_actividades.pdf");
-        try {
-            Desktop.getDesktop().open(new File("Data/estadisticas_actividades.pdf"));
-        } catch (IOException e) {
-            Alert alerta = new Alert(Alert.AlertType.ERROR, "El PDF se generó, pero no se pudo abrir automáticamente.");
+        try{
+            servicioImpresion.imprimirEstadisticaActividades(resultados);
+        } catch (Exception e) {
+            Alert alerta = new Alert(Alert.AlertType.ERROR, "Error al imprimir las actividades: " + e.getMessage());
             alerta.showAndWait();
         }
     }

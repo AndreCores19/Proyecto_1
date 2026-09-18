@@ -5,6 +5,7 @@ import app.DTO.CategoriaDTO;
 import app.DTO.MatrizDTO;
 import app.Servicios.ServicioCalendarizacionRecursos;
 import app.Servicios.ServicioCategoria;
+import app.Servicios.ServicioImpresion;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ public class CalendarizacionRecursosViewController {
 
     private final ServicioCalendarizacionRecursos servicioCalendarizacion = new ServicioCalendarizacionRecursos();
     private final ServicioCategoria servicioCategoria = new ServicioCategoria();
+    private final ServicioImpresion servicioImpresion = new ServicioImpresion();
 
     @FXML
     public void initialize() {
@@ -48,7 +50,11 @@ public class CalendarizacionRecursosViewController {
         cbxCategoria.setButtonCell(cbxCategoria.getCellFactory().call(null));
         btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
         btnCargarFiltros.setOnAction(event -> cargarMatriz());
-        btnImprimirEnFiltros.setOnAction(event -> imprimirMatriz());
+        btnImprimirEnFiltros.setOnAction(event -> {try {
+            imprimirMatriz();
+        } catch (Exception e) {
+            mostrarError("Error al imprimir la matriz: " + e.getMessage());
+        }});
     }
 
     private void cargarMatriz() {
@@ -104,7 +110,18 @@ public class CalendarizacionRecursosViewController {
     }
 
     private void imprimirMatriz() {
-
+        CategoriaDTO categoria = cbxCategoria.getValue();
+        LocalDate fecha = dpFechafiltros.getValue();
+        if (categoria == null || fecha == null) {
+            mostrarError("Por favor, seleccione una categoría y una fecha.");
+            return;
+        }
+        try {
+            List<MatrizDTO> matriz = servicioCalendarizacion.obtenerMatrizDeRecursos(categoria.getId(), fecha);
+            servicioImpresion.imprimirMatrizRecursos(categoria, matriz);
+        } catch (Exception e) {
+            mostrarError("Error al obtener e imprimir el calendario: " + e.getMessage());
+        }
     }
 
 }

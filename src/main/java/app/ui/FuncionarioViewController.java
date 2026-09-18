@@ -2,8 +2,8 @@ package app.ui;
 
 import app.Controllers.SesionActual;
 import app.DTO.FuncionarioDTO;
-import app.Logica.GeneradorReportePDFLogica;
 import app.Servicios.ServicioFuncionario;
+import app.Servicios.ServicioImpresion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,8 +33,9 @@ public class FuncionarioViewController {
     @FXML private TableColumn<FuncionarioDTO, String> tcNombFunc;
     @FXML private TableColumn<FuncionarioDTO, String> tcTelFunc;
 
-    private ServicioFuncionario servicioFuncionario = new ServicioFuncionario();
-    private ObservableList<FuncionarioDTO> datosTabla = FXCollections.observableArrayList();
+    private final ServicioFuncionario servicioFuncionario = new ServicioFuncionario();
+    private final ServicioImpresion servicioImpresion = new ServicioImpresion();
+    private final ObservableList<FuncionarioDTO> datosTabla = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -55,7 +56,12 @@ public class FuncionarioViewController {
         btnBorrarFunc.setOnAction(event -> borrar());
         btnLimpiarFunc.setOnAction(event -> limpiar());
         btnBusc.setOnAction(event -> buscar());
-        btnImpri.setOnAction(event -> imprimir());
+        btnImpri.setOnAction(event -> {try {
+            imprimir();
+        } catch (Exception e) {
+            mostrarError(e.getMessage());
+        }
+        });
         btnCerrarSesion.setOnAction(event -> cerrarSesion(event));
     }
 
@@ -148,25 +154,18 @@ public class FuncionarioViewController {
     }
 
     private void imprimir() {
-        List<String> encabezados = List.of("ID", "Nombre", "Teléfono");
-        List<List<String>> filas = new java.util.ArrayList<>();
-
-        for (FuncionarioDTO f : datosTabla) {
-            filas.add(List.of(f.getId(), f.getNombre(), f.getTelefono()));
+        List<FuncionarioDTO> funcionarios = servicioFuncionario.listarTodos();
+        if (funcionarios.isEmpty()) {
+            mostrarError("No hay funcionarios para imprimir.");
+            return;
         }
-
-        String rutaPdf = "Data/reporteFuncionarios.pdf";
-
         try {
-            GeneradorReportePDFLogica.generar("Listado de Funcionarios", encabezados, filas, "Data/reporteFuncionarios.pdf");
-            java.io.File archivoPdf = new java.io.File(rutaPdf);
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(archivoPdf);
-            }
+            servicioImpresion.imprimirFuncionarios(funcionarios);
         } catch (Exception e) {
-            mostrarError("Error al generar el reporte: " + e.getMessage());
+            mostrarError("No se pudo general el reporte: " + e.getMessage());
         }
     }
+
 
     private void mostrarError(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.ERROR);

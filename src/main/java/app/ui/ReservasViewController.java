@@ -5,8 +5,6 @@ import app.DTO.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import app.Controllers.SesionActual;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -14,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import app.Servicios.ServicioReservas;
 import app.Servicios.ServicioCategoria;
 import app.Servicios.ServicioGemini;
+import app.Servicios.ServicioImpresion;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -48,8 +47,9 @@ public class ReservasViewController {
     @FXML private TableColumn <ReservaDTO,String> tcReservasEstado;
     @FXML private Button btnImprimirReservas;
 
-    private ServicioReservas servicioReservas = new ServicioReservas();
-    private ServicioCategoria servicioCategoria = new ServicioCategoria();
+    private final ServicioReservas servicioReservas = new ServicioReservas();
+    private final ServicioCategoria servicioCategoria = new ServicioCategoria();
+    private final ServicioImpresion servicioImpresion = new ServicioImpresion();
     private String idFuncionarioActual;
 
 
@@ -60,7 +60,13 @@ public class ReservasViewController {
         btnCatReservar.setOnAction(event -> reservarCategoria());
         btnCatCancelarSeleccionada.setOnAction(event -> cancelarReservaSeleccionada());
         btnLimpiarSeleccion.setOnAction(event -> limpiarSeleccion());
-        btnImprimirReservas.setOnAction(event -> imprimirReservas());
+        btnImprimirReservas.setOnAction(event -> {
+            try {
+                imprimirReservas();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
         tvMisReservas.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccionado) -> {
             if (seleccionado != null) {
                 txtFActividad.setText(seleccionado.getActividad());
@@ -80,7 +86,7 @@ public class ReservasViewController {
 
     private void extraerIA() {
         String frase = txtFFrase.getText();
-        if (frase.isEmpty() || frase == null) {
+        if (frase.isEmpty()) {
             mostrarError("Ingrese una frase para extraer la actividad.");
             return;
         }
@@ -94,6 +100,7 @@ public class ReservasViewController {
             if(extraido.getHoraFin()!=null) cbxHoraFin.setValue(extraido.getHoraFin().format(DateTimeFormatter.ofPattern("HH:mm")));
             seleccionarCategoriasSugeridas(extraido.getCategoriasSugeridas());
         } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
             mostrarError("No se pudo interpretar la frase. Completa el formulario manualmente.");
         }
     }
@@ -141,11 +148,11 @@ public class ReservasViewController {
         LocalDate hoy = LocalDate.now();
         dpFecha.setDayCellFactory(picker -> new DateCell() {
             @Override
-            public void updateItem(LocalDate fecha, boolean vacío) {
-                super.updateItem(fecha, vacío);
+            public void updateItem(LocalDate fecha, boolean vacio) {
+                super.updateItem(fecha, vacio);
                 if (fecha.isBefore(hoy)) {
                     setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
+                    setStyle("-fx-background-color: #72303f;");
                 }
             }
         });
@@ -165,7 +172,16 @@ public class ReservasViewController {
     }
 
     private void imprimirReservas() {
-        // Lógica para imprimir las reservas del usuario
+        List<ReservaDTO> reservas = tvMisReservas.getItems();
+        if (reservas.isEmpty()) {
+            mostrarError("No hay reservas para imprimir.");
+            return;
+        }
+        try {
+            servicioImpresion.imprimirReservas(reservas);
+        } catch (Exception e) {
+            mostrarError("No se pudo generar el reporte: " + e.getMessage());
+        }
     }
 
     private void cargarCategorias() {

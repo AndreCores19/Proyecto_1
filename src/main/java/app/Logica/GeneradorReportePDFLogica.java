@@ -11,7 +11,7 @@ import com.itextpdf.layout.properties.UnitValue;
 import java.util.List;
 
 public class GeneradorReportePDFLogica {
-    public static void generar(String titulo, List<String> encabezados, List<List<String>> filas, String rutaSalida) {
+    public static void generar(String titulo, List<String> encabezados, List<List<String>> filas, String rutaSalida) throws RuntimeException {
         if (encabezados == null || encabezados.isEmpty()) {
             throw new IllegalArgumentException("Debe indicar al menos un encabezado");
         }
