@@ -26,7 +26,6 @@ public class ReporteLogica {
     }
 
 
-
     public String generarReporteMatrizRecursos(CategoriaDTO categoria, List<MatrizDTO> filasMatriz) throws Exception {
         List<String> encabezados = new ArrayList<>();
         encabezados.add("Hora");
@@ -53,7 +52,6 @@ public class ReporteLogica {
         }
         return rutaSalida;
     }
-
 
 
     public String generarReporteParaFuncionarios(List<FuncionarioDTO> funcionarios) throws Exception {
@@ -110,6 +108,37 @@ public class ReporteLogica {
             GeneradorReportePDFLogica.generar("Programación de Actividades", encabezados, filas, rutaSalida);
         } catch (RuntimeException e) {
             throw new Exception("No se pudo generar el reporte de actividades: " + e.getMessage(), e);
+        }
+        return rutaSalida;
+    }
+
+    public String generarReporteRecursos(List<RecursoDTO> recursos) throws Exception {
+
+        List<String> encabezados = List.of("ID", "Categoría", "Descripción");
+        List<List<String>> filas = new java.util.ArrayList<>();
+        for (RecursoDTO r : recursos) {
+            filas.add(List.of(r.getNumActivo(), r.getCategoria().getDescripcion(), r.getDescripcion()));
+        }
+        String rutaSalida = "Data/reporteRecursos.pdf";
+        try {
+            GeneradorReportePDFLogica.generar("Listado de Recursos", encabezados, filas, rutaSalida);
+        } catch (RuntimeException e) {
+            throw new Exception("Error al generar el reporte: " + e.getMessage());
+        }
+        return rutaSalida;
+    }
+
+    public String generarReporteCategorias(List<String> encabezados, List<CategoriaDTO> resultado) throws Exception {
+        List<List<String>> filas = new java.util.ArrayList<>();
+        for (CategoriaDTO c : resultado) {
+            filas.add(List.of(c.getId(), c.getDescripcion()));
+        }
+
+        String rutaSalida = "Data/reporteCategorias.pdf";
+        try {
+            GeneradorReportePDFLogica.generar("Listado de Categorías", encabezados, filas, rutaSalida);
+        } catch (RuntimeException e) {
+            throw new Exception("No se pudo generar el reporte de categorias: " + e.getMessage(), e);
         }
         return rutaSalida;
     }

@@ -2,6 +2,7 @@ package app.ui;
 
 import app.DTO.CategoriaDTO;
 import app.Servicios.ServicioCategoria;
+import app.Servicios.ServicioImpresion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,8 +30,9 @@ public class CategoriaViewController {
     @FXML private TableColumn<CategoriaDTO, String> tcIDCateg;
     @FXML private TableColumn<CategoriaDTO, String> tcDesCateg;
 
-    private ServicioCategoria servicioCategoria = new ServicioCategoria();
-    private ObservableList<CategoriaDTO> datosTabla = FXCollections.observableArrayList();
+    private final ServicioCategoria servicioCategoria = new ServicioCategoria();
+    private final ServicioImpresion servicioImpresion = new ServicioImpresion();
+    private final ObservableList<CategoriaDTO> datosTabla = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -116,23 +118,16 @@ public class CategoriaViewController {
     }
 
     private void imprimir() {
-        List<String> encabezados = List.of("ID", "Descripción");
-        List<List<String>> filas = new java.util.ArrayList<>();
-
-        for (CategoriaDTO c : datosTabla) {
-            filas.add(List.of(c.getId(), c.getDescripcion()));
+        List<CategoriaDTO> resultado = servicioCategoria.listarTodas();
+        if(resultado.isEmpty()) {
+            mostrarError("No hay categorías para imprimir.");
+            return;
         }
-
-        String rutaPdf = "Data/reporteCategorias.pdf";
-
+        List<String> encabezados = List.of("ID", "Descripción");
         try {
-            app.Logica.GeneradorReportePDFLogica.generar("Listado de Categorías", encabezados, filas, rutaPdf);
-            java.io.File archivoPdf = new java.io.File(rutaPdf);
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(archivoPdf);
-            }
+            servicioImpresion.imprimirCategorias(encabezados, resultado);
         } catch (Exception e) {
-            mostrarError("Error al generar el reporte: " + e.getMessage());
+            mostrarError(e.getMessage());
         }
     }
 

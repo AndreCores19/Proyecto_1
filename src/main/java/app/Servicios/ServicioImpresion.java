@@ -31,4 +31,12 @@ public class ServicioImpresion {
     public void imprimirCalendario(List<String> encabezados, List<List<String>> filas) throws Exception {
         servicioPDF.abrirReporte(reporteLogica.generarReporteCalendarioActividades(encabezados, filas));
     }
+
+    public void imprimirRecursos(List<RecursoDTO> recursos) throws Exception {
+        servicioPDF.abrirReporte(reporteLogica.generarReporteRecursos(recursos));
+    }
+
+    public void imprimirCategorias(List<String> encabezados, List<CategoriaDTO> resultado) throws Exception {
+        servicioPDF.abrirReporte(reporteLogica.generarReporteCategorias(encabezados, resultado));
+    }
 }

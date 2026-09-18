@@ -5,6 +5,7 @@ import app.DTO.CategoriaDTO;
 import app.DTO.RecursoDTO;
 import app.Servicios.ServicioCategoria;
 import app.Servicios.ServicioRecurso;
+import app.Servicios.ServicioImpresion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -35,9 +36,10 @@ public class RecursoViewController {
     @FXML private TableColumn<RecursoDTO, String> tccategRecur;
     @FXML private TableColumn<RecursoDTO, String> tcDesRecur;
 
-    private ServicioRecurso servicioRecurso = new ServicioRecurso();
-    private ServicioCategoria servicioCategoria = new ServicioCategoria();
-    private ObservableList<RecursoDTO> datosTabla = FXCollections.observableArrayList();
+    private final ServicioRecurso servicioRecurso = new ServicioRecurso();
+    private final ServicioCategoria servicioCategoria = new ServicioCategoria();
+    private final ServicioImpresion servicioImpresion = new ServicioImpresion();
+    private final ObservableList<RecursoDTO> datosTabla = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -99,6 +101,7 @@ public class RecursoViewController {
             try {
                 existente = servicioRecurso.buscarPorNumActivo(id);
             } catch (Exception ignorado) {
+                // Ignorar excepción si el recurso no existe
             }
 
             if (existente == null) {
@@ -142,6 +145,7 @@ public class RecursoViewController {
     private void buscar() {
         CategoriaDTO categoriaFiltro = CombBRecur.getValue();
         String descripcion = txtFieldDescRecur.getText();
+        datosTabla.clear();
 
         List<RecursoDTO> resultado;
         if (categoriaFiltro != null) {
@@ -168,23 +172,14 @@ public class RecursoViewController {
     }
 
     private void imprimir() {
-        List<String> encabezados = List.of("ID", "Categoría", "Descripción");
-        List<List<String>> filas = new java.util.ArrayList<>();
-
-        for (RecursoDTO r : datosTabla) {
-            filas.add(List.of(r.getNumActivo(), r.getCategoria().getDescripcion(), r.getDescripcion()));
+        if(datosTabla.isEmpty()) {
+            mostrarError("No hay recursos para imprimir.");
+            return;
         }
-
-        String rutaPdf = "Data/reporteRecursos.pdf";
-
         try {
-            app.Logica.GeneradorReportePDFLogica.generar("Listado de Recursos", encabezados, filas, rutaPdf);
-            java.io.File archivoPdf = new java.io.File(rutaPdf);
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(archivoPdf);
-            }
+            servicioImpresion.imprimirRecursos(datosTabla);
         } catch (Exception e) {
-            mostrarError("Error al generar el reporte: " + e.getMessage());
+            mostrarError("Error al imprimir los recursos: " + e.getMessage());
         }
     }
 
