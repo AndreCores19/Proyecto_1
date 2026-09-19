@@ -68,7 +68,6 @@ public class RecursoLogica {
         }
         datos.getListado().add(nuevo);
         datos.serializar();
-        categoriaLogica.agregarRecursoALista(categoriaReal.getId(), nuevo);
     }
 
     public void modificar(RecursoDTO actualizado) throws Exception {
@@ -115,6 +114,5 @@ public class RecursoLogica {
         }
         datos.getListado().remove(encontrado);
         datos.serializar();
-        categoriaLogica.quitarRecursoDeLista(encontrado.getCategoria().getId(), numActivo);
     }
 }

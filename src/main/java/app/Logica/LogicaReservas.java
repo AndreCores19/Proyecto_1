@@ -103,6 +103,7 @@ public class LogicaReservas {
     private ResultadoDeAsignacionDTO estaDisponible(ReservaDTO reserva) throws Exception {
         List<ReservaDTO> todasLasReservas = listarTodas();
         List<CategoriaDTO> todasLasCategorias = categoriaLogica.listarTodas();
+        RecursoLogica recursoLogica = new RecursoLogica();
         List<String> idsCategoriasNoDisponibles = new ArrayList<>();
         List<String> idsRecursosAsignados = new ArrayList<>();
         if(!esFechaFutura(reserva.getFecha(), reserva.getHoraInicio())){
@@ -112,7 +113,8 @@ public class LogicaReservas {
             for(CategoriaDTO categoria : todasLasCategorias){
                 if(categoria.getId().equals(idCategoriaSolicitada)){
                     boolean recursoEncontrado = false;
-                    for(RecursoDTO recurso : categoria.getRecursos()){
+                    List<RecursoDTO> recursosDeCategoria = recursoLogica.filtrarPorCategoria(categoria.getId());
+                    for(RecursoDTO recurso : recursosDeCategoria){
                         boolean recursoOcupado = false;
                         for(ReservaDTO reservaExistente : todasLasReservas){
                             if(reservaExistente.getEstado().equals("CANCELADA")) continue;

@@ -1,6 +1,8 @@
 package app.ui;
 
 import app.Controllers.SesionActual;
+import app.DTO.RecursoDTO;
+import app.Servicios.ServicioRecurso;
 import app.DTO.CategoriaDTO;
 import app.DTO.MatrizDTO;
 import app.Servicios.ServicioCalendarizacionRecursos;
@@ -21,6 +23,7 @@ import java.util.List;
 
 public class CalendarizacionRecursosViewController {
 
+
     @FXML private ComboBox<CategoriaDTO> cbxCategoria;
     @FXML private DatePicker dpFechafiltros;
     @FXML private Button btnCargarFiltros;
@@ -32,6 +35,7 @@ public class CalendarizacionRecursosViewController {
     private final ServicioCalendarizacionRecursos servicioCalendarizacion = new ServicioCalendarizacionRecursos();
     private final ServicioCategoria servicioCategoria = new ServicioCategoria();
     private final ServicioImpresion servicioImpresion = new ServicioImpresion();
+    private final ServicioRecurso servicioRecurso = new ServicioRecurso();
 
     @FXML
     public void initialize() {
@@ -77,7 +81,8 @@ public class CalendarizacionRecursosViewController {
     private void construirColumnas(CategoriaDTO categoria) {
         tvCalendarizacion.getColumns().setAll(tcHora);
 
-        for (var recurso : categoria.getRecursos()) {
+        List<RecursoDTO> recursosDeCategoria = servicioRecurso.filtrarPorCategoria(categoria.getId());
+        for (var recurso : recursosDeCategoria) {
             TableColumn<MatrizDTO, String> columnaRecurso = new TableColumn<>(recurso.getDescripcion());
             String numActivo = recurso.getNumActivo();
             columnaRecurso.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEstadoPorRecurso().get(numActivo)));

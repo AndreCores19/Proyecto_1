@@ -13,10 +13,11 @@ import java.util.List;
 public class CalendarizacionRecursosLogica {
     private final LogicaReservas logicaReservas = new LogicaReservas();
     private final CategoriaLogica categoriaLogica = new CategoriaLogica();
+    private final RecursoLogica recursoLogica = new RecursoLogica();
 
     public List<MatrizDTO> construirMatriz (String idCategoria, LocalDate fecha) throws Exception {
         CategoriaDTO categoria = categoriaLogica.buscarPorId(idCategoria);
-        List<RecursoDTO> recursos = categoria.getRecursos();
+        List<RecursoDTO> recursos = recursoLogica.filtrarPorCategoria(categoria.getId());
         List<ReservaDTO> reservasDelDia = logicaReservas.listarPorRango(fecha, fecha);
         List<MatrizDTO> matriz = new ArrayList<>();
 
@@ -44,5 +45,3 @@ public class CalendarizacionRecursosLogica {
     }
 
 }
-
-

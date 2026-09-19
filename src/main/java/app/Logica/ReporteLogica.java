@@ -27,9 +27,11 @@ public class ReporteLogica {
 
 
     public String generarReporteMatrizRecursos(CategoriaDTO categoria, List<MatrizDTO> filasMatriz) throws Exception {
+        List<RecursoDTO> recursosDeCategoria = new app.Servicios.ServicioRecurso().filtrarPorCategoria(categoria.getId());
+
         List<String> encabezados = new ArrayList<>();
         encabezados.add("Hora");
-        for (RecursoDTO recurso : categoria.getRecursos()) {
+        for (RecursoDTO recurso : recursosDeCategoria) {
             encabezados.add(recurso.getDescripcion());
         }
 
@@ -37,7 +39,7 @@ public class ReporteLogica {
         for (MatrizDTO fila : filasMatriz) {
             List<String> filaTexto = new ArrayList<>();
             filaTexto.add(fila.getHora());
-            for (RecursoDTO recurso : categoria.getRecursos()) {
+            for (RecursoDTO recurso : recursosDeCategoria) {
                 filaTexto.add(fila.getEstadoPorRecurso().get(recurso.getNumActivo()));
             }
             filas.add(filaTexto);
@@ -52,7 +54,6 @@ public class ReporteLogica {
         }
         return rutaSalida;
     }
-
 
     public String generarReporteParaFuncionarios(List<FuncionarioDTO> funcionarios) throws Exception {
         List<String> encabezados = List.of("ID", "Nombre", "Teléfono");

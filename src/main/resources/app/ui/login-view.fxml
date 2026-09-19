@@ -50,7 +50,7 @@
          </rowConstraints>
          <children>
             <Label fx:id="lblPwdLogin" prefHeight="20.0" prefWidth="43.0" text="Clave" />
-            <PasswordField fx:id="txtPwdLogin" alignment="CENTER" GridPane.columnIndex="1" />
+            <PasswordField fx:id="txtPwdLogin" alignment="TOP_LEFT" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <Hyperlink fx:id="hyperPwd" text="¿Quiere cambiar la clave?">
@@ -61,7 +61,7 @@
       <HBox fx:id="hboxLogin" alignment="CENTER" spacing="80.0">
          <children>
             <Button fx:id="btnCancelar" mnemonicParsing="false" prefWidth="62.0" text="Cancelar" />
-            <Button fx:id="btnLogin" mnemonicParsing="false" text="Ingresar" />
+            <Button fx:id="btnLogin" mnemonicParsing="false" text="Ingresar" defaultButton="true" />
          </children>
       </HBox>
    </children>

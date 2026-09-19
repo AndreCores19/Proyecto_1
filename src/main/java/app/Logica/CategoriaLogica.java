@@ -53,10 +53,6 @@ public class CategoriaLogica {
         String nuevoId = generarSiguienteId(datos.getListado());
         nueva.setId(nuevoId);
 
-        if (nueva.getRecursos() == null) {
-            nueva.setRecursos(new ArrayList<>());
-        }
-
         datos.getListado().add(nueva);
         datos.serializar();
     }
@@ -102,47 +98,14 @@ public class CategoriaLogica {
             throw new Exception("No existe una categoría con ese id.");
         }
 
-        // Regla de negocio: no se puede borrar una categoría que todavía tiene recursos asociados
-        if (encontrada.getRecursos() != null && !encontrada.getRecursos().isEmpty()) {
+        RecursoLogica recursoLogica = new RecursoLogica();
+        List<RecursoDTO> recursosAsociados = recursoLogica.filtrarPorCategoria(id);
+        if (!recursosAsociados.isEmpty()) {
             throw new Exception("No se puede eliminar: la categoría tiene recursos asociados.");
         }
 
         datos.getListado().remove(encontrada);
         datos.serializar();
-    }
-
-    // Método de apoyo para RecursoLogica: agrega un RecursoDTO a la lista interna de su categoría
-    public void agregarRecursoALista(String categoriaId, RecursoDTO recurso) throws Exception {
-        CategoriaDatos datos = new CategoriaDatos();
-        datos.setRutaArchivo(rutaArchivo);
-        datos.deserializar();
-
-        for (CategoriaDTO c : datos.getListado()) {
-            if (c.getId().equals(categoriaId)) {
-                if (c.getRecursos() == null) {
-                    c.setRecursos(new ArrayList<>());
-                }
-                c.getRecursos().add(recurso);
-                datos.serializar();
-                return;
-            }
-        }
-        throw new Exception("No existe una categoría con id: " + categoriaId);
-    }
-
-    public void quitarRecursoDeLista(String categoriaId, String numActivo) throws Exception {
-        CategoriaDatos datos = new CategoriaDatos();
-        datos.setRutaArchivo(rutaArchivo);
-        datos.deserializar();
-
-        for (CategoriaDTO c : datos.getListado()) {
-            if (c.getId().equals(categoriaId) && c.getRecursos() != null) {
-                c.getRecursos().removeIf(r -> r.getNumActivo().equals(numActivo));
-                datos.serializar();
-                return;
-            }
-        }
-        throw new Exception("No existe una categoría con id: " + categoriaId);
     }
 
     private String generarSiguienteId(List<CategoriaDTO> lista) {
