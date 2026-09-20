@@ -12,8 +12,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class ServicioEstadisticas {
-    private LogicaReservas logicaReservas = new LogicaReservas();
-    private CategoriaLogica categoriaLogica = new CategoriaLogica();
+    private LogicaReservas logicaReservas;
+    private CategoriaLogica categoriaLogica;
+
+    public ServicioEstadisticas() {
+        this(new LogicaReservas());
+    }
+
+    public ServicioEstadisticas(LogicaReservas logicaReservas) {
+        this.logicaReservas = logicaReservas;
+        this.categoriaLogica = new CategoriaLogica();
+    }
 
     public List<ResultadoEstadisticaDTO> obtenerEstadisticaRecursos(LocalDate desde, LocalDate hasta){
         List<ReservaDTO> reservas = logicaReservas.listarPorRango(desde, hasta);

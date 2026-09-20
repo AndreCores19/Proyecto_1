@@ -1,0 +1,16 @@
+[
+  {
+    "nombre": "Andrea Cordero",
+    "telefono": "60032423",
+    "id": "111",
+    "clave": "111",
+    "rol": "FUNCIONARIO"
+  },
+  {
+    "nombre": "Emily Benavides",
+    "telefono": "72223694",
+    "id": "222",
+    "clave": "222",
+    "rol": "FUNCIONARIO"
+  }
+]

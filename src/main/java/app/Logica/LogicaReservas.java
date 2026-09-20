@@ -25,6 +25,14 @@ public class LogicaReservas {
         this.categoriaLogica = new CategoriaLogica();
     }
 
+    public LogicaReservas(String rutaReservas) {
+        this.recursoDatos = new RecursoDatos();
+        this.recursoDatos.setRutaArchivo("Data/recursos.json");
+        this.reservaDatos = new ReservaDatos();
+        this.reservaDatos.setRutaArchivo(rutaReservas);
+        this.categoriaLogica = new CategoriaLogica();
+    }
+
     public List<ReservaDTO> listarTodas() {
         reservaDatos.deserializar();
         return reservaDatos.getReservas();

@@ -12,7 +12,11 @@ public class CategoriaLogica {
     private String rutaArchivo;
 
     public CategoriaLogica() {
-        this.rutaArchivo = "Data/categorias.json";
+        this("Data/categorias.json");
+    }
+
+    public CategoriaLogica(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
     }
 
     public List<CategoriaDTO> listarTodas() {

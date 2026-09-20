@@ -51,14 +51,6 @@
                               <Button fx:id="btnLimpiarR" layoutX="295.0" layoutY="49.0" mnemonicParsing="false" onAction="#limpiarRecursos" prefHeight="25.0" prefWidth="67.0" text="Limpiar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
-                        <TitledPane fx:id="titleFondo" animated="false" collapsible="false" contentDisplay="CENTER" expanded="false" layoutX="-82.0" layoutY="-7.0" text="Estadísticas" wrapText="true">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                          </content>
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </TitledPane>
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -66,7 +58,7 @@
                   </AnchorPane>
                   <AnchorPane fx:id="ancpEstadisticaR">
                      <children>
-                        <TableView fx:id="tblRecursos" layoutX="16.0" layoutY="15.0" prefHeight="174.0" prefWidth="368.0">
+                        <TableView fx:id="tblRecursos" layoutX="16.0" layoutY="14.0" prefHeight="174.0" prefWidth="368.0">
                           <columns>
                             <TableColumn fx:id="tblCategoriaR" prefWidth="138.66668128967285" resizable="false" text="Categoría" />
                             <TableColumn fx:id="tblCantidadR" prefWidth="227.3333282470703" resizable="false" text="Cantidad" />
@@ -84,7 +76,7 @@
                   </AnchorPane>
                </children>
             </VBox>
-            <VBox fx:id="vbActividades" alignment="CENTER">
+            <VBox fx:id="vbActividades" alignment="CENTER" prefHeight="585.0" prefWidth="400.0">
                <children>
                   <AnchorPane fx:id="ancpFechasA" prefHeight="90.0" prefWidth="400.0">
                      <children>
@@ -118,7 +110,7 @@
                   </AnchorPane>
                   <AnchorPane fx:id="ancpEstadisticaA" prefHeight="181.0" prefWidth="417.0">
                      <children>
-                        <TableView fx:id="tblActividades" layoutX="16.0" layoutY="14.0" prefHeight="174.0" prefWidth="368.0">
+                        <TableView fx:id="tblActividades" layoutX="25.0" layoutY="14.0" prefHeight="174.0" prefWidth="368.0">
                            <columns>
                               <TableColumn fx:id="tblSemanaA" prefWidth="138.66668128967285" resizable="false" text="Semana" />
                               <TableColumn fx:id="tblCantidadA" prefWidth="227.3333282470703" resizable="false" text="Cantidad" />
@@ -126,10 +118,10 @@
                         </TableView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="ancpGraficoA">
+                  <AnchorPane fx:id="ancpGraficoA" prefHeight="281.0" prefWidth="397.0">
                      <children>
                         <ImageView fx:id="imgGraficoA" fitHeight="219.0" fitWidth="366.0" layoutX="17.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="12.0" />
-                        <Button fx:id="btnCerrarSesion" layoutX="295.0" layoutY="231.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Cerrar Sesión" />
+                        <Button fx:id="btnCerrarSesion" layoutX="295.0" layoutY="237.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Cerrar Sesión" />
                      </children>
                   </AnchorPane>
                </children>
@@ -140,4 +132,14 @@
    <padding>
       <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
    </padding>
+   <top>
+      <TitledPane fx:id="titleFondo" animated="false" collapsible="false" contentDisplay="CENTER" expanded="false" prefWidth="507.0" text="Estadísticas" wrapText="true" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </TitledPane>
+   </top>
 </BorderPane>

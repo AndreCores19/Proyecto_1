@@ -11,10 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarizacionRecursosLogica {
-    private final LogicaReservas logicaReservas = new LogicaReservas();
-    private final CategoriaLogica categoriaLogica = new CategoriaLogica();
-    private final RecursoLogica recursoLogica = new RecursoLogica();
+    private final LogicaReservas logicaReservas;
+    private final CategoriaLogica categoriaLogica;
+    private final RecursoLogica recursoLogica;
 
+    public CalendarizacionRecursosLogica() {
+        this(new LogicaReservas(), new CategoriaLogica(), new RecursoLogica());
+    }
+
+    public CalendarizacionRecursosLogica(LogicaReservas logicaReservas, CategoriaLogica categoriaLogica, RecursoLogica recursoLogica) {
+        this.logicaReservas = logicaReservas;
+        this.categoriaLogica = categoriaLogica;
+        this.recursoLogica = recursoLogica;
+    }
     public List<MatrizDTO> construirMatriz (String idCategoria, LocalDate fecha) throws Exception {
         CategoriaDTO categoria = categoriaLogica.buscarPorId(idCategoria);
         List<RecursoDTO> recursos = recursoLogica.filtrarPorCategoria(categoria.getId());

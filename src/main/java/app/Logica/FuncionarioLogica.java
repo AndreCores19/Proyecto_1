@@ -12,7 +12,11 @@ public class FuncionarioLogica {
     private String rutaArchivo;
 
     public FuncionarioLogica() {
-        this.rutaArchivo = "Data/funcionarios.json";
+        this("Data/funcionarios.json");
+    }
+
+    public FuncionarioLogica(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
         this.reservaLogica = new LogicaReservas();
     }
 

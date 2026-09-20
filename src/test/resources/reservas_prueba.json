@@ -5,12 +5,8 @@
     "fecha": "03/08/2026",
     "horaInicio": "09:00:00",
     "horaFin": "11:00:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000003"
-    ],
-    "idsRecursosAsignados": [
-      "452784"
-    ],
+    "idsCategoriaSolicitada": ["CAT-000003"],
+    "idsRecursosAsignados": ["452784"],
     "idFuncionario": "111",
     "estado": "ACTIVA"
   },
@@ -20,12 +16,8 @@
     "fecha": "04/08/2026",
     "horaInicio": "08:00:00",
     "horaFin": "09:00:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000002"
-    ],
-    "idsRecursosAsignados": [
-      "238715"
-    ],
+    "idsCategoriaSolicitada": ["CAT-000002"],
+    "idsRecursosAsignados": ["238715"],
     "idFuncionario": "222",
     "estado": "ACTIVA"
   },
@@ -35,14 +27,8 @@
     "fecha": "05/08/2026",
     "horaInicio": "14:00:00",
     "horaFin": "16:00:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000001",
-      "CAT-000002"
-    ],
-    "idsRecursosAsignados": [
-      "34343",
-      "45238"
-    ],
+    "idsCategoriaSolicitada": ["CAT-000001", "CAT-000002"],
+    "idsRecursosAsignados": ["34343", "45238"],
     "idFuncionario": "111",
     "estado": "ACTIVA"
   },
@@ -52,12 +38,8 @@
     "fecha": "06/08/2026",
     "horaInicio": "10:00:00",
     "horaFin": "11:00:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000001"
-    ],
-    "idsRecursosAsignados": [
-      "34343"
-    ],
+    "idsCategoriaSolicitada": ["CAT-000001"],
+    "idsRecursosAsignados": ["34343"],
     "idFuncionario": "333",
     "estado": "ACTIVA"
   },
@@ -67,12 +49,8 @@
     "fecha": "09/08/2026",
     "horaInicio": "07:00:00",
     "horaFin": "08:00:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000003"
-    ],
-    "idsRecursosAsignados": [
-      "452784"
-    ],
+    "idsCategoriaSolicitada": ["CAT-000003"],
+    "idsRecursosAsignados": ["452784"],
     "idFuncionario": "222",
     "estado": "ACTIVA"
   },
@@ -82,12 +60,8 @@
     "fecha": "30/07/2026",
     "horaInicio": "10:00:00",
     "horaFin": "12:00:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000001"
-    ],
-    "idsRecursosAsignados": [
-      "34343"
-    ],
+    "idsCategoriaSolicitada": ["CAT-000001"],
+    "idsRecursosAsignados": ["34343"],
     "idFuncionario": "111",
     "estado": "ACTIVA"
   },
@@ -97,30 +71,9 @@
     "fecha": "04/08/2026",
     "horaInicio": "09:00:00",
     "horaFin": "10:00:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000002"
-    ],
-    "idsRecursosAsignados": [
-      "238715"
-    ],
+    "idsCategoriaSolicitada": ["CAT-000002"],
+    "idsRecursosAsignados": ["238715"],
     "idFuncionario": "222",
     "estado": "CANCELADA"
-  },
-  {
-    "idReserva": "1",
-    "actividad": "Reserva de sala y laptop",
-    "fecha": "19/09/2026",
-    "horaInicio": "08:00:00",
-    "horaFin": "09:30:00",
-    "idsCategoriaSolicitada": [
-      "CAT-000001",
-      "CAT-000002"
-    ],
-    "idsRecursosAsignados": [
-      "34343",
-      "238715"
-    ],
-    "idFuncionario": "111",
-    "estado": "ACTIVA"
   }
 ]

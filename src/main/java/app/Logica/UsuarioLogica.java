@@ -13,8 +13,12 @@ public class UsuarioLogica {
     private String rutaArchivoFuncionarios;
 
     public UsuarioLogica() {
-        this.rutaArchivoAdmins = "Data/administradores.json";
-        this.rutaArchivoFuncionarios = "Data/funcionarios.json";
+        this("Data/administradores.json", "Data/funcionarios.json");
+    }
+
+    public UsuarioLogica(String rutaArchivoAdmins, String rutaArchivoFuncionarios) {
+        this.rutaArchivoAdmins = rutaArchivoAdmins;
+        this.rutaArchivoFuncionarios = rutaArchivoFuncionarios;
     }
 
     public UsuarioDTO iniciarSesion(String id, String clave) throws Exception {

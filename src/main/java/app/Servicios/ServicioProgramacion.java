@@ -9,9 +9,21 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ServicioProgramacion {
-    private LogicaReservas logicaReservas = new LogicaReservas();
-    private FuncionarioLogica funcionarioLogica = new FuncionarioLogica();
+    private LogicaReservas logicaReservas;
+    private FuncionarioLogica funcionarioLogica;
 
+    public ServicioProgramacion() {
+        this(new LogicaReservas(), new FuncionarioLogica());
+    }
+
+    public ServicioProgramacion(LogicaReservas logicaReservas) {
+        this(logicaReservas, new FuncionarioLogica());
+    }
+
+    public ServicioProgramacion(LogicaReservas logicaReservas, FuncionarioLogica funcionarioLogica) {
+        this.logicaReservas = logicaReservas;
+        this.funcionarioLogica = funcionarioLogica;
+    }
     public CeldaActividadDTO[][] matrizReservas(LocalDate fechaReferencia){
         LocalDate lunes = fechaReferencia.with(DayOfWeek.MONDAY);
         LocalDate domingo = lunes.plusDays(6);
