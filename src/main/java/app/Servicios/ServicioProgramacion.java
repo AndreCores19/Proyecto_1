@@ -13,7 +13,7 @@ public class ServicioProgramacion {
     private FuncionarioLogica funcionarioLogica;
 
     public ServicioProgramacion() {
-        this(new LogicaReservas(), new FuncionarioLogica());
+        this(new LogicaReservas());
     }
 
     public ServicioProgramacion(LogicaReservas logicaReservas) {
@@ -51,4 +51,3 @@ public class ServicioProgramacion {
 
 
 }
-

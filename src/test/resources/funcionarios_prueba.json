@@ -12,5 +12,12 @@
     "id": "222",
     "clave": "222",
     "rol": "FUNCIONARIO"
+  },
+  {
+    "nombre": "Jose Pablo Sanchez",
+    "telefono": "85692541",
+    "id": "333",
+    "clave": "333",
+    "rol": "FUNCIONARIO"
   }
 ]

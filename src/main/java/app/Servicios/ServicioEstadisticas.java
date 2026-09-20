@@ -20,8 +20,12 @@ public class ServicioEstadisticas {
     }
 
     public ServicioEstadisticas(LogicaReservas logicaReservas) {
+        this(logicaReservas, new CategoriaLogica());
+    }
+
+    public ServicioEstadisticas(LogicaReservas logicaReservas, CategoriaLogica categoriaLogica) {
         this.logicaReservas = logicaReservas;
-        this.categoriaLogica = new CategoriaLogica();
+        this.categoriaLogica = categoriaLogica;
     }
 
     public List<ResultadoEstadisticaDTO> obtenerEstadisticaRecursos(LocalDate desde, LocalDate hasta){
