@@ -205,11 +205,15 @@ Las pruebas de integración usan copias de los datos reales en `src/test/resourc
 |---|---|---|
 | `UsuarioLogicaIT` | Integración | Login y cambio de clave (administrador y funcionario) |
 | `CategoriaLogicaIT` | Integración | CRUD de categorías |
+| `FuncionarioLogicaIT` | Integración | CRUD de funcionarios y asignación de clave/rol por defecto |
+| `RecursoLogicaIT` | Integración | Listado, filtrado por categoría, búsqueda y modificación de recursos |
+| `LogicaReservasIT` | Integración | Reservas activas por funcionario, listado por funcionario y cancelación de reservas |
 | `ServicioProgramacionIT` | Integración | Matriz semanal de actividades |
 | `ServicioEstadisticasIT` | Integración | Estadísticas de recursos y de actividades |
 | `CalendarizacionRecursosLogicaIT` | Integración | Matriz diaria de disponibilidad de recursos |
 | `GeneradorGraficoLogicaTest` | Unidad | Validación de argumentos del generador de gráficos |
 | `GeneradorReportePDFLogicaTest` | Unidad | Validación de argumentos y generación real de PDF (contenido, filas vacías, ruta inválida) |
+| `LogicaReservasHayConflictoHorasTest` | Unidad | Detección de traslape de horarios (solapado, contenido, límites exactos) |
 
 
 ## Estructura resumida
