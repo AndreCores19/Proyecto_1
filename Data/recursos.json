@@ -1,4 +1,4 @@
-  [
+[
   {
     "numActivo": "34343",
     "categoria": {
@@ -38,5 +38,13 @@
       "descripcion": "Sala para 10 personas"
     },
     "descripcion": "Importante reunion"
+  },
+  {
+    "numActivo": "1234",
+    "categoria": {
+      "id": "CAT-000003",
+      "descripcion": "Proyector"
+    },
+    "descripcion": "Hola123"
   }
 ]

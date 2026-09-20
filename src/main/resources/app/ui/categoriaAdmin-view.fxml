@@ -107,7 +107,7 @@
                         </Button>
                      </children>
                   </GridPane>
-                  <TextField fx:id="txtFIDCateg" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                  <TextField fx:id="txtFIDCateg" disable="true" editable="false" text="El id se autogenerará..." GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
@@ -132,7 +132,7 @@
       </TitledPane>
       <TitledPane fx:id="tltCategList" animated="false" collapsible="false" contentDisplay="CENTER" graphicTextGap="0.0" text="Listado">
          <content>
-            <TableView fx:id="tvCategorias">
+            <TableView fx:id="tvCategorias" fixedCellSize="0.0" prefHeight="109.0" prefWidth="758.0">
                <columns>
                   <TableColumn fx:id="tcIDCateg" prefWidth="374.0" sortType="DESCENDING" text="ID" />
                   <TableColumn fx:id="tcDesCateg" prefWidth="420.0" sortType="DESCENDING" text="Descripción" />
@@ -140,18 +140,21 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
             </TableView>
          </content>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="60.0" />
          </padding>
          <VBox.margin>
-            <Insets bottom="30.0" />
+            <Insets />
          </VBox.margin>
       </TitledPane>
       <Button fx:id="btnCerrarSesion" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Cerrar Sesión">
          <VBox.margin>
-            <Insets bottom="50.0" />
+            <Insets bottom="20.0" />
          </VBox.margin>
       </Button>
    </children>

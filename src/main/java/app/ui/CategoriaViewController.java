@@ -118,14 +118,13 @@ public class CategoriaViewController {
     }
 
     private void imprimir() {
-        List<CategoriaDTO> resultado = servicioCategoria.listarTodas();
-        if(resultado.isEmpty()) {
+        if(datosTabla.isEmpty()) {
             mostrarError("No hay categorías para imprimir.");
             return;
         }
         List<String> encabezados = List.of("ID", "Descripción");
         try {
-            servicioImpresion.imprimirCategorias(encabezados, resultado);
+            servicioImpresion.imprimirCategorias(encabezados, datosTabla);
         } catch (Exception e) {
             mostrarError(e.getMessage());
         }

@@ -145,7 +145,6 @@ public class RecursoViewController {
     private void buscar() {
         CategoriaDTO categoriaFiltro = CombBRecur.getValue();
         String descripcion = txtFieldDescRecur.getText();
-        datosTabla.clear();
 
         List<RecursoDTO> resultado;
         if (categoriaFiltro != null) {

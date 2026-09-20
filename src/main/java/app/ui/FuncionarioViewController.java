@@ -154,15 +154,14 @@ public class FuncionarioViewController {
     }
 
     private void imprimir() {
-        List<FuncionarioDTO> funcionarios = servicioFuncionario.listarTodos();
-        if (funcionarios.isEmpty()) {
+        if (datosTabla.isEmpty()) {
             mostrarError("No hay funcionarios para imprimir.");
             return;
         }
         try {
-            servicioImpresion.imprimirFuncionarios(funcionarios);
+            servicioImpresion.imprimirFuncionarios(datosTabla);
         } catch (Exception e) {
-            mostrarError("No se pudo general el reporte: " + e.getMessage());
+            mostrarError("No se pudo generar el reporte: " + e.getMessage());
         }
     }
 
