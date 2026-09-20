@@ -182,14 +182,29 @@ Definidas en `pom.xml`:
 - JUnit Jupiter `5.11.4` como dependencia de pruebas.
 - Maven Surefire `3.5.2` y Failsafe `3.5.2`.
 
-## Configuración de pruebas
+## Pruebas
 
-El proyecto incorpora JUnit Jupiter, Surefire y Failsafe en su configuración Maven. Los comandos de ejecución son:
+El proyecto incorpora JUnit Jupiter, con Surefire para pruebas de unidad (`*Test`) y Failsafe para pruebas de integración (`*IT`). Los comandos de ejecución son:
 
 ```powershell
 mvn test
 mvn verify
 ```
+
+Las pruebas de integración usan copias de los datos reales en `src/test/resources/` (`*_prueba.json`) para no depender ni modificar los archivos de `Data/`. Las de escritura además usan `@TempDir` para no compartir estado entre ellas.
+
+### Cobertura actual
+
+| Clase de prueba | Tipo | Cubre |
+|---|---|---|
+| `UsuarioLogicaIT` | Integración | Login y cambio de clave (administrador y funcionario) |
+| `CategoriaLogicaIT` | Integración | CRUD de categorías |
+| `ServicioProgramacionIT` | Integración | Matriz semanal de actividades |
+| `ServicioEstadisticasIT` | Integración | Estadísticas de recursos y de actividades |
+| `CalendarizacionRecursosLogicaIT` | Integración | Matriz diaria de disponibilidad de recursos |
+| `GeneradorGraficoLogicaTest` | Unidad | Validación de argumentos del generador de gráficos |
+| `GeneradorReportePDFLogicaTest` | Unidad | Validación de argumentos y generación real de PDF (contenido, filas vacías, ruta inválida) |
+
 
 ## Estructura resumida
 
