@@ -14,7 +14,7 @@ public class App extends Application {
         Scene escena = new Scene(raiz);
         Stage stage = new Stage();
         stage.setScene(escena);
-        stage.setTitle("Prueba de Interfaz");
+        stage.setTitle("Sistema de Reservas");
         stage.show();
     }
     public static void main(String[] args){ launch(args); }
