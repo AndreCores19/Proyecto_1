@@ -1,17 +1,24 @@
 class Evento:
+    """Un evento programado en el reloj virtual."""
+
     def __init__(self, tiempo, num_sec, tipo, dueno=None, datos=None):
-        self.tiempo = tiempo       
-        self.num_sec = num_sec     
-        self.tipo = tipo           
-        self.dueno = dueno         
+        self.tiempo = tiempo
+        self.num_sec = num_sec
+        self.tipo = tipo
+        self.dueno = dueno
         self.datos = datos
-        self.pos = -1          
+        self.pos = -1
 
 
 class AgendaEventos:
-    def __init__(self):
+    def __init__(self, historial=None):
         self.heap = []
         self.num_sec = 0
+        self.historial = historial
+
+    def _registrar(self, deshacer):
+        if self.historial is not None:
+            self.historial.registrar(deshacer)
 
     def __len__(self):
         return len(self.heap)
@@ -64,7 +71,13 @@ class AgendaEventos:
         event.pos = len(self.heap)
         self.heap.append(event)
         self._subir(event.pos)
+        self._registrar(lambda: self.cancelar(event))
         return event
+
+    def reinsertar(self, event):
+        event.pos = len(self.heap)
+        self.heap.append(event)
+        self._subir(event.pos)
 
     def proximo(self):
         if not self.heap:
@@ -79,6 +92,7 @@ class AgendaEventos:
         event.pos = -1
         if self.heap:
             self._bajar(0)
+        self._registrar(lambda: self.reinsertar(event))
         return event
 
     def cancelar(self, event):
@@ -91,12 +105,20 @@ class AgendaEventos:
         event.pos = -1
         if i < len(self.heap):
             self._reubicar(i)
+        self._registrar(lambda: self.reinsertar(event))
         return True
 
     def reprogramar(self, event, nuevo_tiempo):
         if event.pos < 0:
             raise ValueError("El evento no está pendiente")
+        tiempo_anterior, sec_anterior = event.tiempo, event.num_sec
         event.tiempo = nuevo_tiempo
         event.num_sec = self.num_sec
         self.num_sec += 1
+        self._reubicar(event.pos)
+        self._registrar(lambda: self._restaurar(event, tiempo_anterior, sec_anterior))
+
+    def _restaurar(self, event, tiempo, num_sec):
+        event.tiempo = tiempo
+        event.num_sec = num_sec
         self._reubicar(event.pos)

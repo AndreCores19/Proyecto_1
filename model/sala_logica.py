@@ -12,7 +12,7 @@ class Sala:
         self.id = id_sala
         self.nombre = nombre
         self.salidas = []        
-        self.rastro = None       # último instante en que el jugador estuvo aquí
+        self.rastro = None       #último instante en que el jugador estuvo aquí
         self.inactivos = []     
         self.objetos = []        
         self.trampas = []       
