@@ -1,4 +1,4 @@
-from model.entidad import Entidad
+from model.entidad_logica import Entidad
 
 class Enemigo(Entidad):
     def __init__(self, id_enemigo, tipo, nombre, vida, vida_max, ataque, defensa,
