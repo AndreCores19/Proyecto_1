@@ -3,7 +3,10 @@ from contextlib import contextmanager
 from structures.agenda import AgendaEventos
 from structures.bitacora import Bitacora
 from structures.historial import Historial
-from model.tiempo_logica import (intervalo, COSTO_ESPERAR, COSTO_ATACAR, COSTO_MOVER, COSTO_ABRIR)
+from model.objeto_logica import PERGAMINO_RETROCESO
+from model.tiempo_logica import (intervalo, COSTO_ESPERAR, COSTO_ATACAR, COSTO_MOVER,
+                          COSTO_ABRIR, COSTO_RECOGER, COSTO_SOLTAR,
+                          COSTO_EQUIPAR, COSTO_USAR)
 
 RASTRO_VIGENCIA = 400
 
@@ -23,6 +26,7 @@ class Partida:
         self.sala_salida = sala_salida
         self.abrio_puerta_salida = False
         self.bitacora = Bitacora()
+        jugador.inventario.historial = self.historial
         jugador.evento = self.agenda.programar(0, "accion", jugador)
         self._entrar_en_sala(jugador.sala)
         self.avanzar_hasta_jugador()
@@ -48,6 +52,99 @@ class Partida:
         self.bitacora.agregar(f"t={self.reloj}: retrocedes en el tiempo")
         return True
 
+    #inventario
+    def _quitar_del_suelo(self, sala, objeto):
+        if objeto.clase == PERGAMINO_RETROCESO:
+            sala.objetos.remove(objeto)        # excluido del historial (§2.11)
+        else:
+            self.historial.lista_quitar(sala.objetos, objeto)
+
+    def _poner_en_suelo(self, sala, objeto):
+        if objeto.clase == PERGAMINO_RETROCESO:
+            sala.objetos.append(objeto)        # excluido del historial (§2.11)
+        else:
+            self.historial.lista_agregar(sala.objetos, objeto)
+
+    def recoger(self, objeto):
+        inv = self.jugador.inventario
+        sala = self.jugador.sala
+        if self.terminada or objeto not in sala.objetos or inv.esta_lleno():
+            return False                         # no consume tiempo
+        with self._accion_jugador():
+            self._refrescar_rastro()
+            self._sumar_accion()
+            self._quitar_del_suelo(sala, objeto)
+            inv.agregar(objeto)
+            self.bitacora.agregar(f"t={self.reloj}: recoges {objeto.nombre}")
+            self._programar_siguiente(self.jugador, COSTO_RECOGER)
+            self.avanzar_hasta_jugador()
+        return True
+
+    def soltar(self):
+        inv = self.jugador.inventario
+        nodo = inv.actual
+        if self.terminada or nodo is None:
+            return False
+        objeto = nodo.objeto
+        with self._accion_jugador():
+            self._refrescar_rastro()
+            self._sumar_accion()
+            inv.desequipar(objeto, self.jugador)   # un objeto soltado no puede seguir equipado
+            inv.quitar_nodo(nodo)
+            self._poner_en_suelo(self.jugador.sala, objeto)
+            self.bitacora.agregar(f"t={self.reloj}: sueltas {objeto.nombre}")
+            self._programar_siguiente(self.jugador, COSTO_SOLTAR)
+            self.avanzar_hasta_jugador()
+        return True
+
+    def equipar(self):
+        inv = self.jugador.inventario
+        if self.terminada or not inv.puede_equipar_actual():
+            return False
+        objeto = inv.obtener_actual()
+        with self._accion_jugador():
+            self._refrescar_rastro()
+            self._sumar_accion()
+            inv.equipar_actual(self.jugador)
+            self.bitacora.agregar(f"t={self.reloj}: equipas {objeto.nombre}")
+            self._programar_siguiente(self.jugador, COSTO_EQUIPAR)
+            self.avanzar_hasta_jugador()
+        return True
+
+    def usar(self):
+        inv = self.jugador.inventario
+        nodo = inv.actual
+        if self.terminada or nodo is None:
+            return False
+        objeto = nodo.objeto
+        if objeto.clase == PERGAMINO_RETROCESO:
+            return self.usar_pergamino()
+        if objeto.clase != "pocion" or objeto.modificador_velocidad:
+            raise NotImplementedError(f"usar {objeto.clase}: pendiente de efectos")
+        with self._accion_jugador():
+            self._refrescar_rastro()
+            self._sumar_accion()
+            self.historial.guardar(self.jugador, "vida")
+            self.jugador.curar(objeto.cura)
+            inv.quitar_nodo(nodo)
+            self.bitacora.agregar(f"t={self.reloj}: usas {objeto.nombre}")
+            self._programar_siguiente(self.jugador, COSTO_USAR)
+            self.avanzar_hasta_jugador()
+        return True
+
+    def usar_pergamino(self):
+        inv = self.jugador.inventario
+        nodo = inv.actual
+        if (self.terminada or nodo is None
+                or nodo.objeto.clase != PERGAMINO_RETROCESO):
+            return False
+        if len(self.historial) == 0:
+            self.bitacora.agregar(f"t={self.reloj}: no hay acciones que retroceder")
+            return False                         # el pergamino no se gasta
+        pergamino = nodo.objeto
+        self.retroceder()
+        inv.quitar_nodo(inv.nodo_de(pergamino))
+        return True
     #salas
     def _entrar_en_sala(self, sala):
         self.historial.asignar(sala, "rastro", self.reloj)

@@ -54,7 +54,14 @@ class Historial:
 
     def lista_agregar(self, lista, elemento):
         lista.append(elemento)
-        self.registrar(lambda: lista.pop())
+        self.registrar(lambda: self._quitar_elemento(lista, elemento))
+
+    @staticmethod
+    def _quitar_elemento(lista, elemento):
+        for i in range(len(lista) - 1, -1, -1):
+            if lista[i] is elemento:
+                del lista[i]
+                return
 
     def lista_quitar(self, lista, elemento):
         i = lista.index(elemento)
