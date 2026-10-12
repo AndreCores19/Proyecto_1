@@ -2,7 +2,10 @@ from model.jugador_logica import Jugador
 from model.partida_logica import Partida
 from model.sala_logica import Sala, Salida
 from model.trampa_logica import Trampa
-
+from structures.ordenamientos import insercion
+from structures.ordenamientos import mergesort
+from structures.ordenamientos import ordenar
+from model.inventario_logica import Inventario
 
 def armar_mundo():
     """Dos salas conectadas: la 1 al norte de la 2. Trampa en la 2."""
@@ -166,6 +169,19 @@ def test_puerta_se_abre_y_cierra_por_los_dos_lados():
     partida.esperar_jugador()                       # pasa el cierre automático
     assert ida.cerrada is True and vuelta.cerrada is True
 
+
+def test_inventario_vista_ordenada():
+    inv = Inventario(10)
+    datos = [("Escudo", 8, 30), ("Daga", 2, 15), ("Poción", 1, 15), ("Llave", 1, 5)]
+    for i, (nombre, peso, valor) in enumerate(datos):
+        inv.agregar(Objeto(i, nombre.lower(), nombre, "x", peso, valor))
+
+    por_peso = [o.nombre for o in inv.vista_ordenada("peso")]
+    assert por_peso == ["Poción", "Llave", "Daga", "Escudo"]    # Poción y Llave empatan: se respeta el orden original
+    por_nombre = [o.nombre for o in inv.vista_ordenada("nombre")]
+    assert por_nombre == ["Daga", "Escudo", "Llave", "Poción"]
+    assert [o.nombre for o in inv.a_lista()] == ["Escudo", "Daga", "Poción", "Llave"]   # el original no cambió
+
 if __name__ == "__main__":
     test_trampa_quita_vida_y_se_desarma()
     test_trampa_con_veneno_sigue_danando()
@@ -175,4 +191,7 @@ if __name__ == "__main__":
     test_antidoto_cancela_el_veneno()
     test_enemigo_se_regenera_sin_pasar_de_su_vida_maxima()
     test_puerta_se_abre_y_cierra_por_los_dos_lados()
+    print(ordenar([5, 2, 8, 1], lambda x: x))
+    print(ordenar(list(range(100, 0, -1)), lambda x: x)[:5])
+    test_inventario_vista_ordenada()
     print("OK: todas las pruebas pasaron")
