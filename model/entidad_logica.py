@@ -9,6 +9,13 @@ class Entidad:
         self.velocidad = velocidad
         self.sala = sala
         self.evento = None
+        self.efectos = []
+
+    def efecto_activo(self, tipo):
+        for e in self.efectos:
+            if e.tipo == tipo:
+                return e
+        return None
 
     def esta_vivo(self):
         return self.vida > 0

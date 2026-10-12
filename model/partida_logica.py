@@ -4,9 +4,8 @@ from structures.agenda import AgendaEventos
 from structures.bitacora import Bitacora
 from structures.historial import Historial
 from model.objeto_logica import PERGAMINO_RETROCESO
-from model.tiempo_logica import (intervalo, COSTO_ESPERAR, COSTO_ATACAR, COSTO_MOVER,
-                          COSTO_ABRIR, COSTO_RECOGER, COSTO_SOLTAR,
-                          COSTO_EQUIPAR, COSTO_USAR)
+from model.tiempo_logica import (intervalo, COSTO_ESPERAR, COSTO_ATACAR, COSTO_MOVER, COSTO_ABRIR, COSTO_RECOGER, COSTO_SOLTAR, COSTO_EQUIPAR, COSTO_USAR)
+from model.efectos_logica import Efectos
 
 RASTRO_VIGENCIA = 400
 
@@ -26,6 +25,7 @@ class Partida:
         self.sala_salida = sala_salida
         self.abrio_puerta_salida = False
         self.bitacora = Bitacora()
+        self.efectos = Efectos(self)
         jugador.inventario.historial = self.historial
         jugador.evento = self.agenda.programar(0, "accion", jugador)
         self._entrar_en_sala(jugador.sala)
@@ -119,13 +119,22 @@ class Partida:
         objeto = nodo.objeto
         if objeto.clase == PERGAMINO_RETROCESO:
             return self.usar_pergamino()
-        if objeto.clase != "pocion" or objeto.modificador_velocidad:
-            raise NotImplementedError(f"usar {objeto.clase}: pendiente de efectos")
+        if objeto.clase not in ("pocion", "antidoto", "antorcha"):
+            return False
         with self._accion_jugador():
             self._refrescar_rastro()
             self._sumar_accion()
-            self.historial.guardar(self.jugador, "vida")
-            self.jugador.curar(objeto.cura)
+            if objeto.clase == "pocion":
+                if objeto.cura:
+                    self.historial.guardar(self.jugador, "vida")
+                    self.jugador.curar(objeto.cura)
+                if objeto.modificador_velocidad:
+                    self.efectos.aplicar_velocidad(
+                        self.jugador, objeto.modificador_velocidad, objeto.duracion)
+            elif objeto.clase == "antidoto":
+                self.efectos.cancelar_veneno(self.jugador)
+            else:
+                self.efectos.encender_antorcha(self.jugador, objeto.duracion)
             inv.quitar_nodo(nodo)
             self.bitacora.agregar(f"t={self.reloj}: usas {objeto.nombre}")
             self._programar_siguiente(self.jugador, COSTO_USAR)
@@ -158,6 +167,7 @@ class Partida:
     def activar_enemigo(self, enemigo):
         self.historial.lista_agregar(self.enemigos, enemigo)
         self._programar_siguiente(enemigo, COSTO_ESPERAR)
+        self.efectos.iniciar_regeneracion(enemigo)
 
     #acciones
     def mover(self, direccion):
@@ -171,6 +181,8 @@ class Partida:
             self._sumar_accion()
             self.historial.asignar(self.jugador, "sala", salida.destino)
             self._entrar_en_sala(salida.destino)
+            if self.efectos.activar_trampas(salida.destino):
+                return True                      #el jugador se murió en una trampa
             if self._hay_victoria():
                 self.terminada = True
                 self.victoria = True
@@ -218,6 +230,7 @@ class Partida:
             if not enemigo.esta_vivo():
                 self.agenda.cancelar(enemigo.evento)
                 self.historial.lista_quitar(self.enemigos, enemigo)
+                self.efectos.cancelar_todos(enemigo)
                 self.historial.asignar(self, "enemigos_derrotados",
                                        self.enemigos_derrotados + 1)
                 self.bitacora.agregar(f"t={self.reloj}: {enemigo.nombre} muere")
@@ -263,6 +276,8 @@ class Partida:
                 self._actuar_enemigo(ev.dueno)
             elif ev.tipo == "cierre_puerta":
                 self._cerrar_puerta(ev.datos)
+            elif self.efectos.maneja(ev.tipo):
+                self.efectos.ejecutar(ev)
             else:
                 raise ValueError(f"Tipo de evento sin manejador: {ev.tipo}")
 
