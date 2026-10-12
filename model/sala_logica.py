@@ -4,7 +4,23 @@ class Salida:
         self.destino = destino  
         self.cerrada = cerrada
         self.llave = llave                  
-        self.cierre_automatico = cierre_automatico  
+        self.cierre_automatico = cierre_automatico
+        self.opuesta = None  #la Salida gemela
+
+    def enlazar(self, otra):
+        #soluciona la relación entre dos salidas
+        #Une dos Salida como las dos caras de una misma puerta y si alguna viene
+        #cerrada, las dos quedan cerradas
+        self.opuesta = otra
+        otra.opuesta = self
+        cerrada = self.cerrada or otra.cerrada
+        llave = self.llave if self.llave is not None else otra.llave
+        cierre = (self.cierre_automatico if self.cierre_automatico is not None
+                  else otra.cierre_automatico)
+        for cara in (self, otra):
+            cara.cerrada = cerrada
+            cara.llave = llave
+            cara.cierre_automatico = cierre
 
 
 class Sala:

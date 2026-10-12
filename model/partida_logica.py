@@ -203,7 +203,7 @@ class Partida:
         with self._accion_jugador():
             self._refrescar_rastro()
             self._sumar_accion()
-            self.historial.asignar(salida, "cerrada", False)
+            self._poner_cerrada(salida, False)
             if self.sala_salida is not None and salida.destino is self.sala_salida:
                 self.historial.asignar(self, "abrio_puerta_salida", True)
             self.bitacora.agregar(f"t={self.reloj}: se abre la puerta hacia {direccion}")
@@ -281,8 +281,14 @@ class Partida:
             else:
                 raise ValueError(f"Tipo de evento sin manejador: {ev.tipo}")
 
+    def _poner_cerrada(self, salida, valor):
+        #abre o cierra la puerta y su opuesta
+        self.historial.asignar(salida, "cerrada", valor)
+        if salida.opuesta is not None:
+            self.historial.asignar(salida.opuesta, "cerrada", valor)
+
     def _cerrar_puerta(self, salida):
-        self.historial.asignar(salida, "cerrada", True)
+        self._poner_cerrada(salida, True)
         self.bitacora.agregar(f"t={self.reloj}: una puerta se cierra automáticamente")
 
     #enemigos
