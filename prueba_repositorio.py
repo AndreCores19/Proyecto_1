@@ -13,6 +13,7 @@ for i in range(1, 7):
     print(sala.id, sala.nombre)
     for s in sala.salidas:
         print("   ", s.direccion, "->", s.destino.nombre, "cerrada" if s.cerrada else "abierta")
+        print(s.llave, s.cierre_automatico, "opuesta" if s.opuesta else "sin opuesta")
 
 for s in dtos:
     print(s.id_sala, s.nombre, len(s.salidas))

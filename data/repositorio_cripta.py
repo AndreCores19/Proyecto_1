@@ -3,6 +3,20 @@ from dto.sala_dto import SalaDTO
 from structures.vector_busqueda import VectorBusqueda
 from model.sala_logica import Sala, Salida
 
+## funcion auxiliar de direccion opuesta
+def direccion_opuesta(direccion):
+    if direccion == "N":
+        return "S"
+    if direccion == "S":
+        return "N"
+    if direccion == "E":
+        return "O"
+    if direccion == "O":
+        return "E"
+    return None
+
+
+
 class RepositorioCripta:
     def __init__(self, fuente):
         self.fuente = fuente
@@ -55,5 +69,19 @@ class RepositorioCripta:
                     llave=salida_dto.llave,
                     cierre_automatico=salida_dto.cierre_automatico,
                 ))
-
+        ## tercer ciclo enlaza las salidas opuestas
+        for sala in creadas:
+            for salida in sala.salidas:
+                if salida.opuesta is not None:
+                    continue
+                otra = salida.destino.salida(direccion_opuesta(salida.direccion))
+                if otra is None:
+                    continue
+                if otra.destino is not sala:
+                    raise ValueError(
+                        f"Puerta inconsistente: la salida {salida.direccion} de la sala "
+                        f"{sala.id} va a la sala {salida.destino.id}, pero la salida "
+                        f"{otra.direccion} de esa sala va a la sala {otra.destino.id}"
+                    )
+                salida.enlazar(otra)
         self.salas = vector
