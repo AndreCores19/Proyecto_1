@@ -1,5 +1,5 @@
 from model.objeto_logica import PERGAMINO_RETROCESO
-
+from structures.ordenamientos import ordenar
 
 class NodoInventario:
     def __init__(self, objeto):
@@ -176,6 +176,18 @@ class Inventario:
             resultado.append(c.objeto)
             c = c.siguiente
         return resultado
+
+    def vista_ordenada(self, criterio):
+        #utiliza una copia del inventario para devolver
+        #los objetos ordenados por peso, valor o nombre
+        objetos = self.a_lista()
+        if criterio == "peso":
+            return ordenar(objetos, lambda o: o.peso)
+        if criterio == "valor":
+            return ordenar(objetos, lambda o: o.valor)
+        if criterio == "nombre":
+            return ordenar(objetos, lambda o: o.nombre)
+        raise ValueError(f"Criterio de orden desconocido: {criterio}")
 
     def nodo_de(self, objeto):
         c = self.cabeza

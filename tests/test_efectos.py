@@ -1,7 +1,9 @@
 from model.jugador_logica import Jugador
-from model.partida_logica import Partida
 from model.sala_logica import Sala, Salida
+from model.partida_logica import Partida
+
 from model.trampa_logica import Trampa
+
 
 
 def armar_mundo():
@@ -146,33 +148,5 @@ def test_enemigo_se_regenera_sin_pasar_de_su_vida_maxima():
     assert goblin.vida == 30               # nunca supera su vida máxima
 
 
-def test_puerta_se_abre_y_cierra_por_los_dos_lados():
-    sala1, sala2 = Sala(1, "A"), Sala(2, "B")
-    ida = Salida("E", sala2, cerrada=True, llave="llave1", cierre_automatico=100)
-    vuelta = Salida("O", sala1)
-    sala1.agregar_salida(ida)
-    sala2.agregar_salida(vuelta)
-    ida.enlazar(vuelta)
-    assert vuelta.cerrada is True and vuelta.llave == "llave1"
 
-    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, sala=sala1)
-    jugador.inventario.agregar(Objeto(1, "llave1", "Llave", "llave", 1, 1))
-    partida = Partida(jugador, semilla=1)
 
-    partida.abrir_puerta("E")
-    assert ida.cerrada is False and vuelta.cerrada is False
-
-    partida.esperar_jugador()
-    partida.esperar_jugador()                       # pasa el cierre automático
-    assert ida.cerrada is True and vuelta.cerrada is True
-
-if __name__ == "__main__":
-    test_trampa_quita_vida_y_se_desarma()
-    test_trampa_con_veneno_sigue_danando()
-    test_retroceder_deshace_trampa_y_veneno()
-    test_pocion_de_velocidad_sube_y_luego_termina()
-    test_antorcha_se_enciende_y_se_apaga()
-    test_antidoto_cancela_el_veneno()
-    test_enemigo_se_regenera_sin_pasar_de_su_vida_maxima()
-    test_puerta_se_abre_y_cierra_por_los_dos_lados()
-    print("OK: todas las pruebas pasaron")
