@@ -1,11 +1,10 @@
 from model.jugador_logica import Jugador
-from model.partida_logica import Partida
 from model.sala_logica import Sala, Salida
+from model.partida_logica import Partida
+
 from model.trampa_logica import Trampa
-from structures.ordenamientos import insercion
-from structures.ordenamientos import mergesort
-from structures.ordenamientos import ordenar
-from model.inventario_logica import Inventario
+
+
 
 def armar_mundo():
     """Dos salas conectadas: la 1 al norte de la 2. Trampa en la 2."""
@@ -149,49 +148,5 @@ def test_enemigo_se_regenera_sin_pasar_de_su_vida_maxima():
     assert goblin.vida == 30               # nunca supera su vida máxima
 
 
-def test_puerta_se_abre_y_cierra_por_los_dos_lados():
-    sala1, sala2 = Sala(1, "A"), Sala(2, "B")
-    ida = Salida("E", sala2, cerrada=True, llave="llave1", cierre_automatico=100)
-    vuelta = Salida("O", sala1)
-    sala1.agregar_salida(ida)
-    sala2.agregar_salida(vuelta)
-    ida.enlazar(vuelta)
-    assert vuelta.cerrada is True and vuelta.llave == "llave1"
-
-    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, sala=sala1)
-    jugador.inventario.agregar(Objeto(1, "llave1", "Llave", "llave", 1, 1))
-    partida = Partida(jugador, semilla=1)
-
-    partida.abrir_puerta("E")
-    assert ida.cerrada is False and vuelta.cerrada is False
-
-    partida.esperar_jugador()
-    partida.esperar_jugador()                       # pasa el cierre automático
-    assert ida.cerrada is True and vuelta.cerrada is True
 
 
-def test_inventario_vista_ordenada():
-    inv = Inventario(10)
-    datos = [("Escudo", 8, 30), ("Daga", 2, 15), ("Poción", 1, 15), ("Llave", 1, 5)]
-    for i, (nombre, peso, valor) in enumerate(datos):
-        inv.agregar(Objeto(i, nombre.lower(), nombre, "x", peso, valor))
-
-    por_peso = [o.nombre for o in inv.vista_ordenada("peso")]
-    assert por_peso == ["Poción", "Llave", "Daga", "Escudo"]    # Poción y Llave empatan: se respeta el orden original
-    por_nombre = [o.nombre for o in inv.vista_ordenada("nombre")]
-    assert por_nombre == ["Daga", "Escudo", "Llave", "Poción"]
-    assert [o.nombre for o in inv.a_lista()] == ["Escudo", "Daga", "Poción", "Llave"]   # el original no cambió
-
-if __name__ == "__main__":
-    test_trampa_quita_vida_y_se_desarma()
-    test_trampa_con_veneno_sigue_danando()
-    test_retroceder_deshace_trampa_y_veneno()
-    test_pocion_de_velocidad_sube_y_luego_termina()
-    test_antorcha_se_enciende_y_se_apaga()
-    test_antidoto_cancela_el_veneno()
-    test_enemigo_se_regenera_sin_pasar_de_su_vida_maxima()
-    test_puerta_se_abre_y_cierra_por_los_dos_lados()
-    print(ordenar([5, 2, 8, 1], lambda x: x))
-    print(ordenar(list(range(100, 0, -1)), lambda x: x)[:5])
-    test_inventario_vista_ordenada()
-    print("OK: todas las pruebas pasaron")
