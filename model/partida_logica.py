@@ -11,7 +11,10 @@ RASTRO_VIGENCIA = 400
 
 
 class Partida:
-    def __init__(self, jugador, semilla, sala_salida=None):
+    def __init__(self, jugador, semilla=None, sala_salida=None):
+        if semilla is None:
+            semilla = random.SystemRandom().randrange(2 ** 32)
+        self.semilla = semilla
         self.reloj = 0
         self.historial = Historial(5)
         self.agenda = AgendaEventos(self.historial)
