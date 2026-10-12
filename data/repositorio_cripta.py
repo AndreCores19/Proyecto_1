@@ -1,5 +1,7 @@
+from dto.contenido_sala_dto import ContenidoSalaDTO
 from dto.datos_cripta_dto import DatosCriptaDTO
 from dto.sala_dto import SalaDTO
+from structures.cola import Cola
 from structures.vector_busqueda import VectorBusqueda
 from model.sala_logica import Sala, Salida
 
@@ -22,6 +24,7 @@ class RepositorioCripta:
         self.fuente = fuente
         self.datos = None
         self.salas = None
+        self.contenidos = None
 
     def cargar_datos(self, id_cripta):
         datos = DatosCriptaDTO.desde_json(self.fuente.datos_cripta(id_cripta))
@@ -49,7 +52,9 @@ class RepositorioCripta:
             sala = Sala(dto.id_sala, dto.nombre)
             vector.agregar(dto.id_sala, sala)
             creadas.append(sala)
+
         vector.preparar()
+        self.contenidos = [None] * vector.tamano()
 
         ## Segundo ciclo enlaza las salidas
         for i in range(len(dtos)):
@@ -85,3 +90,37 @@ class RepositorioCripta:
                     )
                 salida.enlazar(otra)
         self.salas = vector
+
+    def precargar(self, id_sala):
+        if self.contenidos is None:
+            raise ValueError("No se han construido las salas")
+
+        sala_actual = self.salas.buscar(id_sala)
+        if sala_actual is None:
+            raise ValueError(f"La sala {id_sala} no existe")
+
+        visto = [False] * self.salas.tamano()
+        cola = Cola()
+        lote = []
+
+        visto[self.salas.posicion(id_sala)] = True
+        cola.encolar(sala_actual)
+
+        while not cola.esta_vacia() and len(lote) < 10:
+            sala = cola.desencolar()
+            pos = self.salas.posicion(sala.id)
+            if self.contenidos[pos] is None:
+                lote.append(sala.id)
+
+            for salida in sala.salidas:
+                if salida.destino is not None:
+                    pos_destino = self.salas.posicion(salida.destino.id)
+                    if not visto[pos_destino]:
+                        visto[pos_destino] = True
+                        cola.encolar(salida.destino)
+
+        if lote:
+            respuesta = self.fuente.contenido_salas(self.datos.id_cripta, lote)
+            for elemento in respuesta["contenido"]:
+                dto = ContenidoSalaDTO.desde_json(elemento)
+                self.contenidos[self.salas.posicion(dto.id_sala)] = dto
