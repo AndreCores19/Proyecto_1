@@ -130,7 +130,7 @@ def ejecutar():
 
     candidatas = (("heap", AgendaHeap), ("lista sin ordenar", AgendaListaSinOrdenar),
                   ("lista ordenada", AgendaListaOrdenada))
-    print("\n Extraer el próximo y programar otro (microsegundos por ciclo):")
+    print("\n Extraer el próximo y programar otro (microsegundos por operación):")
     print(f"{'pendientes':>11}" + "".join(f"{nombre:>20}" for nombre, _ in candidatas))
     for n in TAMANOS:
         fila = f"{n:>11}"
