@@ -1,6 +1,6 @@
 from dto.ficha_dto import FichaEnemigoDTO, ficha_desde_json
 from structures.vector_busqueda import VectorBusqueda
-from structures.cache_fichas import CacheFichas
+
 
 
 class RepositorioCatalogo:
@@ -20,12 +20,12 @@ class RepositorioCatalogo:
 
     def faltantes(self, ids):
         pendientes = VectorBusqueda()
-        for id in ids:
-            if self.cache.contiene(id):
+        for id_ficha in ids:
+            if self.cache.contiene(id_ficha):
                 continue
-            if pendientes.buscar(id) is not None:
+            if pendientes.buscar(id_ficha) is not None:
                 continue
-            pendientes.agregar(id, id)
+            pendientes.insertar_ordenado(id_ficha, id_ficha)
         return pendientes.ids
 
     def resolver(self, ids, con_sueltos=True):
@@ -41,9 +41,9 @@ class RepositorioCatalogo:
 
         sueltos = []
         for ficha in resueltas:
-            if ficha is FichaEnemigoDTO:
+            if isinstance(ficha, FichaEnemigoDTO):
                 sueltos.extend(ficha.suelta)
-        if sueltos is not None:
+        if con_sueltos and sueltos:
             resueltas.extend(self.resolver(sueltos, con_sueltos=False))
 
         return resueltas
