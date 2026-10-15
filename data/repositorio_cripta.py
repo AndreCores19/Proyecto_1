@@ -17,8 +17,6 @@ def direccion_opuesta(direccion):
         return "E"
     return None
 
-
-
 class RepositorioCripta:
     def __init__(self, fuente):
         self.fuente = fuente

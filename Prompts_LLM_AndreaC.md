@@ -28,6 +28,11 @@
 - **Uso:** decidir cómo representar las fichas del catálogo (una clase por tipo o una sola clase).
 
 
+### 3 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Para el algoritmo de búsqueda, sería mejor la versión iterativa o la recursiva?
+- **Uso:** decidir entre las dos versiones de la búsqueda binaria y justificarlo en el documento.
+
 
 
 
