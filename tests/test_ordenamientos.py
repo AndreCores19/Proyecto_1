@@ -31,7 +31,6 @@ def test_ordenar_por_clave():
 
 
 def test_los_empates_conservan_su_orden_original():
-    # (clave, posicion original): al empatar la clave, debe ganar la posición menor
     datos = [(2, 0), (1, 1), (2, 2), (1, 3), (2, 4)]
     esperado = [(1, 1), (1, 3), (2, 0), (2, 2), (2, 4)]
     assert insercion(datos, lambda t: t[0]) == esperado
@@ -46,15 +45,14 @@ def test_listas_aleatorias_quedan_ordenadas_y_completas():
         for algoritmo in (insercion, mergesort, ordenar):
             resultado = algoritmo(datos, lambda t: t[0])
             assert len(resultado) == n
-            assert sum(t[1] for t in resultado) == sum(range(n))   # no se perdió ni repitió nadie
+            assert sum(t[1] for t in resultado) == sum(range(n))
             for i in range(1, n):
-                # ordenado por clave y, en empate, por posición original (estable)
                 assert resultado[i - 1] <= resultado[i]
 
 
 def test_ordenar_da_igual_resultado_en_listas_chicas_y_grandes():
     azar = random.Random(3)
-    for n in (TAMANO_MAXIMO, TAMANO_MAXIMO + 1):     # justo a cada lado del umbral
+    for n in (TAMANO_MAXIMO, TAMANO_MAXIMO + 1):
         datos = [azar.randint(0, 50) for _ in range(n)]
         assert ordenar(datos, por_valor) == insercion(datos, por_valor)
         assert ordenar(datos, por_valor) == mergesort(datos, por_valor)

@@ -12,10 +12,7 @@ PARTIDAS = 150
 PASOS = 80
 HISTORIAL = 5
 
-
-# ------------------------------------------------------------------ el mundo
 def armar_mundo(azar):
-    """Un mapa pequeño con puertas, objetos, trampas y enemigos"""
     salas = [Sala(i + 1, f"Sala {i + 1}") for i in range(5)]
     for i in range(4):
         ida = Salida("N", salas[i + 1], cerrada=azar.random() < 0.3, llave="llave",
@@ -51,12 +48,10 @@ def armar_mundo(azar):
             e.regeneracion = azar.choice((0, 2))
             sala.inactivos.append(e)
 
-    jugador = Jugador(vida_max=300, ataque=8, defensa=1, velocidad=100, sala=salas[0])
+    jugador = Jugador(vida_max=300, ataque=8, defensa=1, velocidad=100, inventario_max=10, sala=salas[0])
     partida = Partida(jugador, azar.randint(0, 10**6), sala_salida=salas[-1])
     return partida, salas
 
-
-# ------------------------------------------------------------------ la foto
 def foto_evento(ev):
     if ev is None or ev.pos < 0:
         return None
@@ -66,7 +61,6 @@ def foto_evento(ev):
 def foto_efectos(actor):
     return [(e.tipo, e.dano, e.fin, e.cambio_aplicado, e.cantidad, foto_evento(e.evento))
             for e in actor.efectos]
-
 
 def foto_actor(a):
     return (a.vida, a.ataque, a.defensa, a.velocidad, a.sala.id,
@@ -101,9 +95,7 @@ def foto(partida, salas):
     )
 
 
-# ------------------------------------------------------------- acciones al azar
 def accion_al_azar(partida, azar):
-    """Hace una acción cualquiera. Devuelve (nombre, si_cambio_el_juego)."""
     sala = partida.jugador.sala
     inv = partida.jugador.inventario
     opcion = azar.choice(("mover", "mover", "esperar", "esperar", "abrir", "atacar",
@@ -133,13 +125,12 @@ def accion_al_azar(partida, azar):
     return "esperar", partida.esperar_jugador()
 
 
-# ------------------------------------------------------------------ la prueba
 def test_retroceder_restaura_exactamente_el_estado_anterior():
     verificados = 0
     for semilla in range(PARTIDAS):
         azar = random.Random(semilla)
         partida, salas = armar_mundo(azar)
-        pasadas = []          # fotos previas de las últimas acciones (igual que el historial)
+        pasadas = []
         for _ in range(PASOS):
             if partida.terminada:
                 break
@@ -154,4 +145,4 @@ def test_retroceder_restaura_exactamente_el_estado_anterior():
                 pasadas.append(antes)
                 if len(pasadas) > HISTORIAL:
                     del pasadas[0]
-    assert verificados > 500        # la prueba de verdad ejercitó muchos retrocesos
+    assert verificados > 500

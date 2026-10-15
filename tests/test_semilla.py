@@ -15,9 +15,9 @@ def jugar(semilla, turnos=60):
     for k in range(3):
         salas[1 + k].inactivos.append(
             Enemigo(f"e{k}", "x", f"Enemigo {k}", 20, 20, 3, 0, 100, "errante", salas[1 + k]))
-    jugador = Jugador(vida_max=10**6, ataque=8, defensa=1, velocidad=100, sala=salas[0])
+    jugador = Jugador(vida_max=10**6, ataque=8, defensa=1, velocidad=100, inventario_max=10, sala=salas[0])
     partida = Partida(jugador, semilla=semilla)
-    for sala in salas:                   # activa a todos, para que se muevan por el mapa
+    for sala in salas:
         for e in list(sala.inactivos):
             partida.activar_enemigo(e)
         sala.inactivos = []
@@ -37,11 +37,11 @@ def test_distinta_semilla_distinta_partida():
 
 
 def test_sin_semilla_se_genera_y_se_guarda():
-    jugador = Jugador(vida_max=100, ataque=8, defensa=1, velocidad=100, sala=Sala(1, "A"))
+    jugador = Jugador(vida_max=100, ataque=8, defensa=1, velocidad=100, inventario_max=10, sala=Sala(1, "A"))
     partida = Partida(jugador)
     assert isinstance(partida.semilla, int)
     # Repetir con esa semilla reproduce la partida: es lo que permite saber qué se usó
-    otra = Partida(Jugador(vida_max=100, ataque=8, defensa=1, velocidad=100, sala=Sala(1, "A")),
+    otra = Partida(Jugador(vida_max=100, ataque=8, defensa=1, velocidad=100, inventario_max=10, sala=Sala(1, "A")),
                    semilla=partida.semilla)
     assert otra.semilla == partida.semilla
     assert otra.azar.getstate() == partida.azar.getstate()

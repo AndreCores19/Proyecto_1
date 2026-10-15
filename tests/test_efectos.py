@@ -7,12 +7,11 @@ from model.trampa_logica import Trampa
 
 
 def armar_mundo():
-    """Dos salas conectadas: la 1 al norte de la 2. Trampa en la 2."""
     sala1 = Sala(1, "Entrada")
     sala2 = Sala(2, "Pasillo")
     sala1.agregar_salida(Salida("N", sala2))
     sala2.agregar_salida(Salida("S", sala1))
-    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, sala=sala1)
+    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, inventario_max=10, sala=sala1)
     return sala1, sala2, jugador
 
 
@@ -49,12 +48,12 @@ def test_retroceder_deshace_trampa_y_veneno():
     partida.esperar_jugador()
     assert jugador.vida == 30
 
-    partida.retroceder()                 # deshace la espera
+    partida.retroceder()
     assert jugador.vida == 35
     assert partida.reloj == 100
     assert jugador.efecto_activo("veneno") is not None
 
-    partida.retroceder()                 # deshace el movimiento completo
+    partida.retroceder()
     assert jugador.vida == 50
     assert partida.reloj == 0
     assert jugador.efecto_activo("veneno") is None
@@ -66,7 +65,7 @@ from model.objeto_logica import Objeto
 
 def test_pocion_de_velocidad_sube_y_luego_termina():
     sala1 = Sala(1, "Entrada")
-    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, sala=sala1)
+    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, inventario_max=10, sala=sala1)
     pocion = Objeto(1, "pocion_vel", "Poción de velocidad", "pocion", 1, 10,
                     modificador_velocidad=100, duracion=300)
     jugador.inventario.agregar(pocion)
@@ -75,12 +74,12 @@ def test_pocion_de_velocidad_sube_y_luego_termina():
     partida.usar()
     assert jugador.velocidad == 200
     assert jugador.efecto_activo("velocidad") is not None
-    assert len(jugador.inventario.a_lista()) == 0     # la poción se consumió
+    assert len(jugador.inventario.a_lista()) == 0
 
     while partida.reloj < 300:
         partida.esperar_jugador()
 
-    assert jugador.velocidad == 100                   # el efecto terminó
+    assert jugador.velocidad == 100
     assert jugador.efecto_activo("velocidad") is None
 
 def test_antidoto_cancela_el_veneno():
@@ -93,22 +92,22 @@ def test_antidoto_cancela_el_veneno():
     assert jugador.vida == 35
     assert jugador.efecto_activo("veneno") is not None
 
-    partida.usar()                                    # usa el antídoto
+    partida.usar()
     assert jugador.efecto_activo("veneno") is None
 
     partida.esperar_jugador()
     partida.esperar_jugador()
-    assert jugador.vida == 35                         # ya no pierde vida
+    assert jugador.vida == 35
 
     partida.retroceder()
     partida.retroceder()
-    partida.retroceder()                              # deshace también el uso del antídoto
+    partida.retroceder()
     assert jugador.efecto_activo("veneno") is not None
-    assert len(jugador.inventario.a_lista()) == 1     # el antídoto volvió al inventario
+    assert len(jugador.inventario.a_lista()) == 1
 
 def test_antorcha_se_enciende_y_se_apaga():
     sala1 = Sala(1, "Entrada")
-    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, sala=sala1)
+    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, inventario_max=10, sala=sala1)
     jugador.inventario.agregar(Objeto(1, "antorcha", "Antorcha", "antorcha", 1, 5, duracion=300))
     partida = Partida(jugador, semilla=1)
 
@@ -117,11 +116,11 @@ def test_antorcha_se_enciende_y_se_apaga():
 
     partida.esperar_jugador()
     partida.esperar_jugador()
-    assert jugador.efecto_activo("antorcha") is not None   # todavía no pasan 300
+    assert jugador.efecto_activo("antorcha") is not None
 
     while partida.reloj < 300:
         partida.esperar_jugador()
-    assert jugador.efecto_activo("antorcha") is None       # ya se apagó
+    assert jugador.efecto_activo("antorcha") is None
 
 from model.enemigo_logica import Enemigo
 
@@ -129,23 +128,23 @@ from model.enemigo_logica import Enemigo
 def test_enemigo_se_regenera_sin_pasar_de_su_vida_maxima():
     sala1 = Sala(1, "Entrada")
     sala2 = Sala(2, "Lejana")
-    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, sala=sala1)
+    jugador = Jugador(vida_max=50, ataque=10, defensa=0, velocidad=100, inventario_max=10, sala=sala1)
     goblin = Enemigo("g1", "goblin", "Goblin", 10, 30, 5, 0, 100, "estatico", sala2)
     goblin.regeneracion = 5
     partida = Partida(jugador, semilla=1)
     partida.activar_enemigo(goblin)
 
     for _ in range(3):
-        partida.esperar_jugador()          # reloj = 300: pasó el pulso de t=200
+        partida.esperar_jugador()
     assert goblin.vida == 15
 
     for _ in range(2):
-        partida.esperar_jugador()          # reloj = 500: pasó también el de t=400
+        partida.esperar_jugador()
     assert goblin.vida == 20
 
     for _ in range(20):
         partida.esperar_jugador()
-    assert goblin.vida == 30               # nunca supera su vida máxima
+    assert goblin.vida == 30
 
 
 

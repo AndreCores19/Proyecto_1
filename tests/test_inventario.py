@@ -9,7 +9,7 @@ def test_inventario_vista_ordenada():
         inv.agregar(Objeto(i, nombre.lower(), nombre, "x", peso, valor))
 
     por_peso = [o.nombre for o in inv.vista_ordenada("peso")]
-    assert por_peso == ["Poción", "Llave", "Daga", "Escudo"]    # Poción y Llave empatan: se respeta el orden original
+    assert por_peso == ["Poción", "Llave", "Daga", "Escudo"]
     por_nombre = [o.nombre for o in inv.vista_ordenada("nombre")]
     assert por_nombre == ["Daga", "Escudo", "Llave", "Poción"]
-    assert [o.nombre for o in inv.a_lista()] == ["Escudo", "Daga", "Poción", "Llave"]   # el original no cambió
+    assert [o.nombre for o in inv.a_lista()] == ["Escudo", "Daga", "Poción", "Llave"]

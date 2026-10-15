@@ -21,7 +21,7 @@ def armar_partida(num_salas, num_enemigos):
     for i in range(num_salas - 1):
         salas[i].agregar_salida(Salida("N", salas[i + 1]))
         salas[i + 1].agregar_salida(Salida("S", salas[i]))
-    jugador = Jugador(vida_max=10**9, ataque=10, defensa=10**6, velocidad=100, sala=salas[0])
+    jugador = Jugador(vida_max=10**9, ataque=10, defensa=10**6, velocidad=100, inventario_max=10, sala=salas[0])
     partida = Partida(jugador, semilla=1)
     for k in range(num_enemigos):
         sala = salas[k % num_salas]
