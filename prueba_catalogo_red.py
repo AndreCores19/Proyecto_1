@@ -2,6 +2,7 @@ from adapters.cliente_http import ClienteHttp
 from dto.contenido_sala_dto import ContenidoSalaDTO
 from structures.cache_fichas import CacheFichas
 from data.repositorio_catalogo import RepositorioCatalogo
+from adapters.almacen_fichas import AlmacenFichas
 
 URL = "https://cripta-api.kad06a0zhgs84.us-east-2.cs.amazonlightsail.com/v1"
 
@@ -13,7 +14,7 @@ respuesta = cliente.contenido_salas("cripta-01", ids_salas)
 contenidos = [ContenidoSalaDTO.desde_json(c) for c in respuesta["contenido"]]
 
 cache = CacheFichas(25)
-repo = RepositorioCatalogo(cliente, cache)
+repo = RepositorioCatalogo(cliente, cache, AlmacenFichas("cache/catalogo"))
 ids = repo.ids_del_contenido(contenidos)
 
 fichas = repo.resolver(ids)

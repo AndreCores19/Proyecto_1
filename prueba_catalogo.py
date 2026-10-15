@@ -41,12 +41,21 @@ class FuenteFalsa:
         self.lotes.append(list(ids))
         return {"entidades": [f for f in CATALOGO if f["id"] in ids]}
 
+    def version_catalogo(self):
+        return {"version": "v1"}
+
+class AlmacenFalso:
+    def version(self): return "v1"
+    def guardar_version(self, valor): pass
+    def borrar_todo(self): pass
+    def leer(self, id_ficha): return None
+    def guardar(self, id_ficha, json_ficha): pass
 
 contenidos = [ContenidoSalaDTO.desde_json(c) for c in CONTENIDO]
 
 # 1. ids_del_contenido: con repetidos
 fuente = FuenteFalsa(); cache = CacheFichas(25)
-repo = RepositorioCatalogo(fuente, cache)
+repo = RepositorioCatalogo(fuente, cache, AlmacenFalso())
 ids = repo.ids_del_contenido(contenidos)
 assert len(ids) == 12 and ids.count("ent_rata_gigante") == 2, ids
 print("OK   ids_del_contenido:", len(ids), "ids (con repetidos)")
@@ -64,7 +73,7 @@ print("OK   faltantes con 2 en caché: 9")
 
 # 4. resolver: 11 fichas en 2 lotes (10 y 1)
 fuente = FuenteFalsa(); cache = CacheFichas(25)
-repo = RepositorioCatalogo(fuente, cache)
+repo = RepositorioCatalogo(fuente, cache, AlmacenFalso())
 fichas = repo.resolver(ids)
 assert len(fichas) == 11 and [len(l) for l in fuente.lotes] == [10, 1], [len(l) for l in fuente.lotes]
 assert cache.indice.ids == sorted(cache.indice.ids) and len(cache.indice.ids) == 11
@@ -78,7 +87,7 @@ print("OK   resolver repetido: 0 solicitudes nuevas")
 
 # 6. segunda ronda: la poción que suelta la rata no estaba en el contenido
 fuente = FuenteFalsa(); cache = CacheFichas(25)
-repo = RepositorioCatalogo(fuente, cache)
+repo = RepositorioCatalogo(fuente, cache, AlmacenFalso())
 fichas = repo.resolver(["ent_rata_gigante"])
 assert [f.id_ficha for f in fichas] == ["ent_rata_gigante", "itm_pocion_menor"], [f.id_ficha for f in fichas]
 assert len(fuente.lotes) == 2
@@ -86,7 +95,7 @@ print("OK   segunda ronda: pidió la rata y luego la poción que suelta")
 
 # 7. id inexistente: debe fallar con un error claro
 fuente = FuenteFalsa(); cache = CacheFichas(25)
-repo = RepositorioCatalogo(fuente, cache)
+repo = RepositorioCatalogo(fuente, cache, AlmacenFalso())
 try:
     repo.resolver(["itm_no_existe"])
     raise AssertionError("debía lanzar ValueError")
