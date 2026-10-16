@@ -2,6 +2,7 @@
 
 import sys
 
+from adapters.bitacora_partida import BitacoraPartida
 from adapters.cliente_http import ClienteHttp
 from adapters.almacen_fichas import AlmacenFichas
 from data.repositorio_cripta import RepositorioCripta
@@ -32,14 +33,17 @@ if __name__ == "__main__":
     fabrica = FabricaModelo(repo_cripta, repo_catalogo)
     fabrica.iniciar()
 
-    partida = fabrica.nueva_partida(semilla=1)
+    partida = fabrica.nueva_partida(semilla=None)
+    bitacora = BitacoraPartida("saves")
     servicio = JuegoService(partida, fabrica)
     vista = VistaConsola()
-    controlador = Controlador(servicio, vista)
     try:
+        bitacora.abrir(repo_cripta.datos.id_cripta, repo_cripta.datos.version, repo_catalogo.version(), partida.semilla)
+        controlador = Controlador(servicio, vista, bitacora)
         controlador.jugar()
     finally:
         vista.mostrar_reporte(
             cliente.solicitudes, cliente.presupuesto,
             repo_catalogo.aciertos_memoria + repo_catalogo.aciertos_disco,
             repo_catalogo.fallos)
+        bitacora.cerrar()

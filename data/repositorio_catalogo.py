@@ -93,7 +93,10 @@ class RepositorioCatalogo:
             raise ValueError("llegaron menos fichas de las pedidas")
         return fichas
 
-
+    def version(self):
+        if not self._validado:
+            self.validar_version()
+        return self.almacen.version()
 
 
 

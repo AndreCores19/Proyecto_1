@@ -33,6 +33,7 @@ class DatosCriptaDTO:
         self.inventario_max = inventario_max
         self.jugador = jugador
 
+
     @classmethod
     def desde_json(cls, datos):
         return cls(

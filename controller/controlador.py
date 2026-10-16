@@ -11,10 +11,12 @@ def direccionar(tecla):
         return "E"
 
 class Controlador:
-    def __init__(self, servicio, vista):
+    def __init__(self, servicio, vista, bitacora):
         self.servicio = servicio
         self.vista = vista
+        self.bitacora = bitacora
         self.activo = True
+
 
     def jugar(self):
         partida = self.servicio.partida
@@ -43,6 +45,8 @@ class Controlador:
         comando = palabras[0]
         direccion = direccionar(comando)
 
+        if self.bitacora is not None and comando != "salir":
+            self.bitacora.anotar(" ".join(palabras))
         if comando == "salir":
             self.activo = False
         elif direccion is not None:
