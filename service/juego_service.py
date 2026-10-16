@@ -1,7 +1,5 @@
-from prueba_fabrica_modelo import fabrica
-
-
 class JuegoService:
+
     def __init__(self, partida, fabrica):
         self.partida = partida
         self.fabrica = fabrica
@@ -29,13 +27,13 @@ class JuegoService:
         return self.partida.mover(direccion)
 
     def atacar_enemigo(self, enemigo):
-        return self.partida.atacar_enemigo(enemigo)
+        return self.partida.atacar(enemigo)
 
     def esperar(self):
-        return self.partida.esperar()
+        return self.partida.esperar_jugador()
 
-    def abrir_puerta(self):
-        return self.partida.abrir_puerta()
+    def abrir_puerta(self, direccion):
+        return self.partida.abrir_puerta(direccion)
 
     def retroceder(self):
         return self.partida.retroceder()
