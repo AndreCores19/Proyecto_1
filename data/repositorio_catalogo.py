@@ -2,8 +2,6 @@ from dto.ficha_dto import FichaEnemigoDTO, ficha_desde_json
 from structures.vector_busqueda import VectorBusqueda
 from adapters.almacen_fichas import AlmacenFichas
 
-
-
 class RepositorioCatalogo:
     def __init__(self, fuente, cache, almacen):
         self.fuente = fuente

@@ -1,6 +1,6 @@
 from adapters.cliente_http import ClienteHttp, ErrorCliente
 
-URL = "https://cripta-api.kad06a0zhgs84.us-east-2.cs.amazonlightsail.com/v1"
+'''URL = "https://cripta-api.kad06a0zhgs84.us-east-2.cs.amazonlightsail.com/v1"
 cliente = ClienteHttp(URL, timeout=10)
 
 try:
@@ -36,4 +36,10 @@ try:
 except ErrorCliente as e:
     print("Error:", e)
 
-print("Solicitudes:", cliente.solicitudes_realizadas())
+print("Solicitudes:", cliente.solicitudes_realizadas())'''
+
+from adapters.cliente_http import ClienteHttp
+
+URL = "https://cripta-api.kad06a0zhgs84.us-east-2.cs.amazonlightsail.com/v1"
+cliente = ClienteHttp(URL, timeout=10)
+print(cliente.listar_criptas())
