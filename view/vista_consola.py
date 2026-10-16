@@ -30,12 +30,14 @@ class VistaConsola:
         print("-" * 40)
         for mensaje in partida.bitacora.obtener_todos()[-6:]:
             print(f"  {mensaje}")
+        print(f"Tiempo final: {partida.reloj}")
         if partida.victoria:
             print("¡Victoria! Escapaste de la cripta.")
         elif partida.terminada:
             print("Has muerto.")
         else:
             print("Saliste de la partida.")
+
 
     def mostrar_mensaje(self, texto):
         print(texto)
