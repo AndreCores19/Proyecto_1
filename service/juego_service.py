@@ -26,7 +26,7 @@ class JuegoService:
         self.fabrica.poblar_sala(salida.destino)
         return self.partida.mover(direccion)
 
-    def atacar_enemigo(self, enemigo):
+    def atacar(self, enemigo):
         return self.partida.atacar(enemigo)
 
     def esperar(self):
@@ -37,3 +37,9 @@ class JuegoService:
 
     def retroceder(self):
         return self.partida.retroceder()
+
+    def siguiente_objeto(self):
+        return self.partida.jugador.inventario.siguiente()
+
+    def anterior_objeto(self):
+        return self.partida.jugador.inventario.anterior()
