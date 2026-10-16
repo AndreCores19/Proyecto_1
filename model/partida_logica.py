@@ -28,6 +28,7 @@ class Partida:
         self.sala_salida = sala_salida
         self.abrio_puerta_salida = False
         self.bitacora = Bitacora()
+        self.creador_objetos = None
         self.efectos = Efectos(self)
         jugador.inventario.historial = self.historial
         jugador.evento = self.agenda.programar(0, "accion", jugador)
@@ -217,6 +218,15 @@ class Partida:
             self.avanzar_hasta_jugador()
         return True
 
+    def _soltar_botin(self, enemigo):
+        #Los objetos que suelta quedan en el suelo de la sala donde murio
+        if self.creador_objetos is None:
+            return
+        for id_ficha in enemigo.suelta:
+            objeto = self.creador_objetos(id_ficha)
+            self.historial.lista_agregar(enemigo.sala.objetos, objeto)
+            self.bitacora.agregar(f"t={self.reloj}: {enemigo.nombre} suelta {objeto.nombre}")
+
     def atacar(self, enemigo):
         if self.terminada or enemigo.sala != self.jugador.sala:
             return False
@@ -237,6 +247,7 @@ class Partida:
                 self.historial.asignar(self, "enemigos_derrotados",
                                        self.enemigos_derrotados + 1)
                 self.bitacora.agregar(f"t={self.reloj}: {enemigo.nombre} muere")
+                self._soltar_botin(enemigo)
             self._programar_siguiente(self.jugador, COSTO_ATACAR)
             self.avanzar_hasta_jugador()
         return True
