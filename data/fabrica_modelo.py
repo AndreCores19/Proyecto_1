@@ -58,7 +58,17 @@ class FabricaModelo:
             defensa=ficha.defensa,
             velocidad=ficha.velocidad,
             comportamiento=ficha.comportamiento,
-            sala=sala)
+            sala=sala,
+            suelta=ficha.suelta)
+
+    def objeto_desde_id(self, id_ficha):
+        #Crea un objeto nuevo a partir de un id de catálogo.
+        #Lo usa la partida cuando un enemigo muere y suelta objetos
+        if not self.repo_catalogo.cache.contiene(id_ficha):
+            self.repo_catalogo.resolver([id_ficha], con_sueltos=False)
+        objeto = self.crear_objeto(self.siguiente_instancia, self._ficha(id_ficha))
+        self.siguiente_instancia += 1
+        return objeto
 
     def crear_trampa(self, instancia, ficha):
         return Trampa(
@@ -109,6 +119,8 @@ class FabricaModelo:
         sala_salida = self.repo_cripta.salas.buscar(self.repo_cripta.datos.sala_salida)
         self.poblar_sala(sala_inicial)
         jugador = self.crear_jugador(sala_inicial)
-        return Partida(jugador, semilla, sala_salida)
+        partida = Partida(jugador, semilla, sala_salida)
+        partida.creador_objetos = self.objeto_desde_id
+        return partida
 
 
