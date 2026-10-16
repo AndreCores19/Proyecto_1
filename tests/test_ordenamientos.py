@@ -56,3 +56,43 @@ def test_ordenar_da_igual_resultado_en_listas_chicas_y_grandes():
         datos = [azar.randint(0, 50) for _ in range(n)]
         assert ordenar(datos, por_valor) == insercion(datos, por_valor)
         assert ordenar(datos, por_valor) == mergesort(datos, por_valor)
+
+
+def _llamadas(funcion, datos):
+    cuenta = [0]
+
+    def clave(x):
+        cuenta[0] += 1
+        return x
+    funcion(datos, clave)
+    return cuenta[0]
+
+
+def test_ordenar_casi_ordenado_grande_es_correcto_y_barato():
+    azar = random.Random(5)
+    datos = list(range(1000))
+    for _ in range(50):
+        i = azar.randrange(999)
+        datos[i], datos[i + 1] = datos[i + 1], datos[i]
+    assert ordenar(datos, lambda x: x) == sorted(datos)
+    assert _llamadas(ordenar, datos) < _llamadas(mergesort, datos) / 2
+
+
+def test_ordenar_caso_trampa_dos_mitades_invertidas():
+    datos = list(range(500, 1000)) + list(range(0, 500))
+    assert ordenar(datos, lambda x: x) == sorted(datos)
+    assert _llamadas(ordenar, datos) < 4 * len(datos) * 5
+
+
+def test_ordenar_es_estable_tambien_en_casi_ordenados():
+    datos = [(i // 3, i) for i in range(300)]
+    datos[10], datos[11] = datos[11], datos[10]
+    esperado = sorted(datos, key=lambda t: t[0])
+    assert ordenar(datos, lambda t: t[0]) == esperado
+
+
+def test_ordenar_al_azar_grande_coincide_con_sorted():
+    azar = random.Random(9)
+    for n in (49, 100, 777):
+        datos = [azar.randint(0, 50) for _ in range(n)]
+        assert ordenar(datos, lambda x: x) == sorted(datos)

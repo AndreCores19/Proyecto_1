@@ -1,6 +1,4 @@
 class Evento:
-    """Un evento programado en el reloj virtual."""
-
     def __init__(self, tiempo, num_sec, tipo, dueno=None, datos=None):
         self.tiempo = tiempo
         self.num_sec = num_sec
