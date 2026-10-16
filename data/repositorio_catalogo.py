@@ -8,6 +8,9 @@ class RepositorioCatalogo:
         self.cache = cache
         self.almacen = almacen
         self._validado = False
+        self.aciertos_memoria = 0
+        self.aciertos_disco = 0
+        self.fallos = 0
 
     def ids_del_contenido(self, contenidos):
         ids = []
@@ -20,13 +23,16 @@ class RepositorioCatalogo:
         return ids
 
     def faltantes(self, ids):
+        vistos = VectorBusqueda()
         pendientes = VectorBusqueda()
         for id_ficha in ids:
+            if vistos.buscar(id_ficha) is not None:
+                continue
+            vistos.insertar_ordenado(id_ficha, id_ficha)
             if self.cache.contiene(id_ficha):
-                continue
-            if pendientes.buscar(id_ficha) is not None:
-                continue
-            pendientes.insertar_ordenado(id_ficha, id_ficha)
+                self.aciertos_memoria += 1
+            else:
+                pendientes.insertar_ordenado(id_ficha, id_ficha)
         return pendientes.ids
 
     def resolver(self, ids, con_sueltos=True):
@@ -42,8 +48,10 @@ class RepositorioCatalogo:
             json_ficha = self.almacen.leer(id_ficha)
             if json_ficha is not None:
                 del_disco.append(json_ficha)
+                self.aciertos_disco += 1
             else:
                 para_red.append(id_ficha)
+                self.fallos += 1
 
         for json_ficha in del_disco:
             ficha = ficha_desde_json(json_ficha)
