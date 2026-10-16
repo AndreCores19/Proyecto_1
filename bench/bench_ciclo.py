@@ -46,7 +46,7 @@ def medir_ciclos(partida):
     return tiempos
 
 
-if __name__ == "__main__":
+def ejecutar():
     print(f"{'escenario':>10} {'salas':>6} {'enemigos':>9} {'promedio':>10} {'p99':>9} {'peor':>9}   (ms)")
     for nombre, salas, enemigos in ESCENARIOS:
         tiempos = medir_ciclos(armar_partida(salas, enemigos))
@@ -57,3 +57,7 @@ if __name__ == "__main__":
         veredicto = "cumple" if p99 < LIMITE_MS else "NO cumple"
         print(f"{nombre:>10} {salas:>6} {enemigos:>9} {promedio:>10.3f} {p99:>9.3f} {peor:>9.3f}   {veredicto}")
     print(f"\nLimite: {LIMITE_MS} ms por ciclo (veredicto sobre el percentil 99)")
+
+
+if __name__ == "__main__":
+    ejecutar()
