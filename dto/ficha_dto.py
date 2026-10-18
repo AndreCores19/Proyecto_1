@@ -6,7 +6,7 @@ class FichaDTO:
 
 
 class FichaEnemigoDTO(FichaDTO):
-    def __init__(self, id_ficha, nombre, clase, vida_max, ataque, defensa, velocidad, comportamiento, suelta):
+    def __init__(self, id_ficha, nombre, clase, vida_max, ataque, defensa, velocidad, comportamiento, suelta, regeneracion=0):
         super().__init__(id_ficha, nombre, clase)
         self.vida_max = vida_max
         self.ataque = ataque
@@ -14,6 +14,7 @@ class FichaEnemigoDTO(FichaDTO):
         self.velocidad = velocidad
         self.comportamiento = comportamiento
         self.suelta = list(suelta) if suelta is not None else []
+        self.regeneracion = regeneracion or 0  #si la ficha no lo trae, no se regenera
 
     @classmethod
     def desde_json(cls, datos):
@@ -26,7 +27,8 @@ class FichaEnemigoDTO(FichaDTO):
             defensa=datos['defensa'],
             velocidad=datos['velocidad'],
             comportamiento=datos['comportamiento'],
-            suelta=datos.get('suelta', [])
+            suelta=datos.get('suelta', []),
+            regeneracion=datos.get('regeneracion', 0)
         )
 
 class FichaObjetoDTO(FichaDTO):
@@ -142,10 +144,11 @@ class FichaPergaminoRetrocesoDTO(FichaObjetoDTO):
         )
 
 class FichaTrampaDTO(FichaDTO):
-    def __init__(self, id_ficha, nombre, clase, dano, rearme):
+    def __init__(self, id_ficha, nombre, clase, dano, rearme, veneno=0):
         super().__init__(id_ficha, nombre, clase)
         self.dano = dano
         self.rearme = rearme
+        self.veneno = veneno or 0 #si la ficha no lo trae, no envenena
 
     @classmethod
     def desde_json(cls, datos):
@@ -154,7 +157,8 @@ class FichaTrampaDTO(FichaDTO):
             nombre=datos['nombre'],
             clase=datos['clase'],
             dano=datos['daño'],
-            rearme=datos.get('rearme')
+            rearme=datos.get('rearme'),
+            veneno=datos.get('veneno', 0)
         )
 
 

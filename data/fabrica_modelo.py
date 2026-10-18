@@ -48,7 +48,7 @@ class FabricaModelo:
             vida = ficha.vida_max
         else:
             vida = instancia.vida
-        return Enemigo(
+        enemigo = Enemigo(
             id_enemigo=instancia.instancia,
             tipo=instancia.tipo,
             nombre=ficha.nombre,
@@ -59,7 +59,11 @@ class FabricaModelo:
             velocidad=ficha.velocidad,
             comportamiento=ficha.comportamiento,
             sala=sala,
-            suelta=ficha.suelta)
+            suelta=ficha.suelta
+        )
+        enemigo.regeneracion = getattr(ficha, "regeneracion", 0) or 0  # solo si la ficha lo trae
+        return enemigo
+
 
     def objeto_desde_id(self, id_ficha):
         #Crea un objeto nuevo a partir de un id de catálogo.
@@ -76,7 +80,9 @@ class FabricaModelo:
             nombre=ficha.nombre,
             dano=ficha.dano,
             rearme=ficha.rearme,
-            id_catalogo=instancia.tipo)
+            id_catalogo=instancia.tipo,
+            veneno=getattr(ficha, "veneno", 0) or 0
+        )
 
     def poblar_sala(self, sala):
         pos = self.repo_cripta.salas.posicion(sala.id)

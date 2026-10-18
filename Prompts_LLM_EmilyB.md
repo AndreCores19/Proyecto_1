@@ -97,4 +97,18 @@
 - el servicio "juego_service.py" para que no falle
 - Uso: corrí las pruebas con los cambios, apliqué las correcciones en mis archivos
 
+### 18 de Octubre, 2026
+- Herramienta: Claude
+- Prompt: El profesor indicó que el veneno de las trampas y la regeneración de los enemigos
+- deben aplicarse solo si la ficha de la cripta los trae. Cómo lo conecto con el modelo sin
+- escribir valores a mano y sin romper lo que ya funciona?
+- Uso: apliqué los cambios en el DTO y la fábrica (valor 0 si la ficha no los trae) y agregué pruebas
+
+### 18 de Octubre, 2026
+- Herramienta: Claude
+- Prompt: Al correr las pruebas fallaron los tests del servicio: FabricaFalsa no tiene
+- "marcar_en_uso" y "atacar_enemigo" ya no existe. Cómo los corrijo?
+- Uso: corregí la fábrica falsa de la prueba y cambié el nombre del método a "atacar" 
+- y pasaron todas las pruebas
+
 

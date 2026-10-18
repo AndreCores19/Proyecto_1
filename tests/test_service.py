@@ -11,9 +11,13 @@ from service.juego_service import JuegoService
 class FabricaFalsa:
     def __init__(self):
         self.pobladas = []
+        self.en_uso = []
 
     def poblar_sala(self, sala):
         self.pobladas.append(sala.id)
+
+    def marcar_en_uso(self, ids):
+        self.en_uso = list(ids)       #solo anota qué fichas le avisaron que siguen en uso
 
 
 def armar_servicio():
@@ -69,7 +73,7 @@ def test_servicio_esperar_y_atacar():
     antes = partida.reloj
     assert servicio.esperar() is True
     assert partida.reloj > antes
-    assert servicio.atacar_enemigo(rata) is True
+    assert servicio.atacar(rata) is True
     assert partida.enemigos_derrotados == 1
 
 
@@ -79,3 +83,8 @@ def test_servicio_retroceder_deshace_la_ultima_accion():
     assert partida.jugador.inventario.tamano == 1
     assert servicio.retroceder() is True
     assert partida.jugador.inventario.tamano == 0
+
+def test_servicio_avisa_a_la_fabrica_que_fichas_estan_en_uso():
+    servicio, partida, fabrica, _ = armar_servicio()
+    servicio.recoger_objeto(1)
+    assert fabrica.en_uso != []
