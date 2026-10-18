@@ -18,6 +18,9 @@ class FabricaModelo:
     def _ficha(self, id_ficha):
         ficha = self.repo_catalogo.cache.obtener(id_ficha)
         if ficha is None:
+            self.repo_catalogo.resolver([id_ficha], con_sueltos=False)
+            ficha = self.repo_catalogo.cache.obtener(id_ficha)
+        if ficha is None:
             raise ValueError(f"No se encontró la ficha {id_ficha} en la caché")
         return ficha
 
@@ -89,7 +92,9 @@ class FabricaModelo:
         if self.pobladas[pos]:
             return
 
-        self.repo_cripta.precargar(sala.id)
+        if self.repo_cripta.contenidos[pos] is None:
+            nuevos = self.repo_cripta.precargar(sala.id)
+            self.repo_catalogo.resolver(self.repo_catalogo.ids_del_contenido(nuevos))
         contenido = self.repo_cripta.contenidos[pos]
         if contenido is None:
             raise ValueError(f"No se pudo cargar el contenido de la sala {sala.id}")

@@ -117,8 +117,11 @@ class RepositorioCripta:
                         visto[pos_destino] = True
                         cola.encolar(salida.destino)
 
+        nuevos = []
         if lote:
             respuesta = self.fuente.contenido_salas(self.datos.id_cripta, lote)
             for elemento in respuesta["contenido"]:
                 dto = ContenidoSalaDTO.desde_json(elemento)
                 self.contenidos[self.salas.posicion(dto.id_sala)] = dto
+                nuevos.append(dto)
+        return nuevos

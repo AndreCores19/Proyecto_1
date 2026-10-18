@@ -16,7 +16,7 @@ from view.vista_silenciosa import VistaSilenciosa
 
 ## La clase aplicacion arma todas las piezas y permite jugar o reproducir una partida grabada.
 class Aplicacion:
-    def __init__(self, url, id_cripta, tamano_cache=25):
+    def __init__(self, url, id_cripta, tamano_cache=3):
         self.cliente = ClienteHttp(url, timeout=10)
         self.repo_cripta = RepositorioCripta(self.cliente)
         dtos = self.repo_cripta.cargar_esqueleto(id_cripta)
@@ -110,6 +110,7 @@ class Aplicacion:
                 break
             controlador.ejecutar(comando)
         vista.mostrar_final(partida)
+        self._reportar(vista)
 
     def _versiones_coinciden(self, lector):
         return (lector.version_cripta == self.repo_cripta.datos.version
