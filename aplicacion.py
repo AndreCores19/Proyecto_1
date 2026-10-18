@@ -11,6 +11,8 @@ from structures.cache_fichas import CacheFichas
 from view.vista_consola import VistaConsola
 from view.vista_replay import VistaReplay
 from pathlib import Path
+from adapters.guardado_binario import GuardadoBinario, ErrorGuardado
+from view.vista_silenciosa import VistaSilenciosa
 
 ## La clase aplicacion arma todas las piezas y permite jugar o reproducir una partida grabada.
 class Aplicacion:
@@ -19,6 +21,7 @@ class Aplicacion:
         self.repo_cripta = RepositorioCripta(self.cliente)
         dtos = self.repo_cripta.cargar_esqueleto(id_cripta)
         self.repo_cripta.construir_salas(dtos)
+        self.dtos = self.repo_cripta.cargar_esqueleto(id_cripta)
 
         self.cache = CacheFichas(tamano_cache)
         self.repo_catalogo = RepositorioCatalogo(
@@ -26,21 +29,69 @@ class Aplicacion:
         self.fabrica = FabricaModelo(self.repo_cripta, self.repo_catalogo)
         self.fabrica.iniciar()
 
-    def jugar(self):
-        partida = self.fabrica.nueva_partida(semilla=None)
-        servicio = JuegoService(partida, self.fabrica)
-        servicio._actualizar_fichas()
+    def jugar(self, ruta_carga=None):
         vista = VistaConsola()
+        try:
+            while True:
+                ruta_carga = self._sesion(vista, ruta_carga)
+                if ruta_carga is None:
+                    break
+        finally:
+            self._reportar(vista)
+
+    def _sesion(self, vista, ruta_carga):
+        semilla = None
+        comandos = []
+        if ruta_carga is not None:
+            guardado = GuardadoBinario()
+            with open(ruta_carga, "rb") as archivo:
+                semilla = guardado.leer_cabecera(archivo).semilla
+            comandos = guardado.leer_comandos(ruta_carga)
+            self._reiniciar_salas()
+
+        partida = self.fabrica.nueva_partida(semilla=semilla)
+        servicio = JuegoService(partida, self.fabrica)
+        servicio.actualizar_fichas()
         bitacora = BitacoraPartida("saves")
         controlador = Controlador(servicio, vista, bitacora, self)
         datos = self.repo_cripta.datos
         try:
             bitacora.abrir(datos.id_cripta, datos.version,
                            self.repo_catalogo.version(), partida.semilla)
+            self._reejecutar(controlador, vista, comandos)
             controlador.jugar()
         finally:
-            self._reportar(vista)
             bitacora.cerrar()
+        return controlador.ruta_carga
+
+    def _reejecutar(self, controlador, vista, comandos):
+        controlador.vista = VistaSilenciosa()
+        for comando in comandos:
+            if controlador.servicio.partida.terminada:
+                break
+            controlador.ejecutar(comando)
+        controlador.vista = vista
+
+    def _reiniciar_salas(self):
+        self.fabrica.marcar_en_uso([])
+        contenidos = self.repo_cripta.contenidos
+        self.repo_cripta.construir_salas(self.dtos)
+        self.repo_cripta.contenidos = contenidos
+        self.fabrica.iniciar()
+
+    def validar_guardado(self, ruta):
+        # devuelve un mensaje de error, o None si se puede cargar
+        try:
+            with open(ruta, "rb") as archivo:
+                cab = GuardadoBinario().leer_cabecera(archivo)
+        except (ErrorGuardado, OSError, UnicodeDecodeError) as error:
+            return f"No se puede cargar: {error}"
+        datos = self.repo_cripta.datos
+        if (cab.id_cripta != datos.id_cripta
+                or cab.version_cripta != datos.version
+                or cab.version_catalogo != self.repo_catalogo.version()):
+            return "No se puede cargar: la partida es de otra cripta o versión."
+        return None
 
     def reproducir(self, lector):
         vista = VistaReplay()
@@ -52,7 +103,7 @@ class Aplicacion:
 
         partida = self.fabrica.nueva_partida(semilla=lector.semilla)
         servicio = JuegoService(partida, self.fabrica)
-        servicio._actualizar_fichas()
+        servicio.actualizar_fichas()
         controlador = Controlador(servicio, vista, None, None)
         for comando in lector.comandos:
             if partida.terminada:
@@ -71,8 +122,11 @@ class Aplicacion:
             self.repo_catalogo.fallos)
 
     def guardar_partida(self, partida, comandos, nombre):
-        ruta = Path("saves") / f"{nombre}.sav"
+        ruta = self.ruta_guardado(nombre)
         ruta.parent.mkdir(exist_ok=True)
         cabecera = CabeceraGuardado(self.repo_cripta.datos.id_cripta, self.repo_cripta.datos.version, self.repo_catalogo.version(), partida.semilla)
         GuardadoBinario().guardar(ruta, cabecera, self.repo_cripta.contenidos, comandos)
         return ruta
+
+    def ruta_guardado(self, nombre):
+        return Path("saves") / f"{nombre}.sav"

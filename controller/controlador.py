@@ -18,6 +18,7 @@ class Controlador:
         self.activo = True
         self.comandos = []
         self.persistencia = persistencia
+        self.ruta_carga = None
 
 
 
@@ -27,7 +28,8 @@ class Controlador:
             self.vista.mostrar_estado(partida)
             texto = self.vista.pedir_comando()
             self.ejecutar(texto)
-        self.vista.mostrar_final(partida)
+        if self.ruta_carga is None:
+            self.vista.mostrar_final(partida)
 
     def _enemigos_en_sala(self):
         partida = self.servicio.partida
@@ -57,6 +59,8 @@ class Controlador:
             self.activo = False
         elif comando == "guardar":  # ← nuevo
             self._cmd_guardar(palabras)
+        elif comando == "cargar":
+            self._cmd_cargar(palabras)
         elif direccion is not None:
             self._avisar_si_falla(self.servicio.mover(direccion),
                                   "No puedes moverte en esa dirección.")
@@ -141,3 +145,16 @@ class Controlador:
         ruta = self.persistencia.guardar_partida(
             self.servicio.partida, self.comandos, nombre)
         self.vista.mostrar_mensaje(f"Partida guardada en {ruta}")
+
+    def _cmd_cargar(self, palabras):
+        nombre = palabras[1] if len(palabras) > 1 else "partida"
+        ruta = self.persistencia.ruta_guardado(nombre)
+        if not ruta.exists():
+            self.vista.mostrar_mensaje("No existe esa partida.")
+            return
+        error = self.persistencia.validar_guardado(ruta)
+        if error is not None:
+            self.vista.mostrar_mensaje(error)
+            return
+        self.ruta_carga = ruta
+        self.activo = False
