@@ -12,7 +12,21 @@ def main():
     parser.add_argument("--replay", metavar="LOG", help="reproduce una partida grabada")
     parser.add_argument("--cache-size", type=int, default=25, dest="tamano_cache",
                         help="fichas máximas en memoria (por defecto 25)")
+    parser.add_argument("--bench", action="store_true",
+                        help="ejecuta los benchmarks y termina")
     args = parser.parse_args()
+
+    if args.bench:
+        from bench import (bench_agenda, bench_bitacora, bench_ciclo,
+                           bench_historial, bench_inventario,
+                           bench_ordenamientos, bench_rastro,
+                           bench_guardado, bench_cache, bench_fichas, bench_replay)
+        for modulo in (bench_ciclo, bench_historial, bench_agenda,
+                       bench_inventario, bench_bitacora, bench_ordenamientos,
+                       bench_rastro, bench_cache, bench_guardado, bench_fichas, bench_replay):
+            modulo.ejecutar()
+            print()
+        return
 
     if args.tamano_cache < 1:
         parser.error("--cache-size debe ser al menos 1")
