@@ -1,6 +1,5 @@
 from dto.ficha_dto import FichaEnemigoDTO, ficha_desde_json
 from structures.vector_busqueda import VectorBusqueda
-from adapters.almacen_fichas import AlmacenFichas
 
 class RepositorioCatalogo:
     def __init__(self, fuente, cache, almacen):
@@ -11,6 +10,7 @@ class RepositorioCatalogo:
         self.aciertos_memoria = 0
         self.aciertos_disco = 0
         self.fallos = 0
+        self._en_uso = []
 
     def ids_del_contenido(self, contenidos):
         ids = []
@@ -98,6 +98,13 @@ class RepositorioCatalogo:
             self.validar_version()
         return self.almacen.version()
 
+    def marcar_en_uso(self, ids):
+        for id_ficha in ids:
+            if self.cache.contiene(id_ficha):
+                self.cache.adquirir(id_ficha)
 
-
+        for id_ficha in self._en_uso:
+            if self.cache.contiene(id_ficha):
+                self.cache.soltar(id_ficha)
+        self._en_uso = ids
 

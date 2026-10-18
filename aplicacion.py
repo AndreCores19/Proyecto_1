@@ -27,6 +27,7 @@ class Aplicacion:
     def jugar(self):
         partida = self.fabrica.nueva_partida(semilla=None)
         servicio = JuegoService(partida, self.fabrica)
+        servicio._actualizar_fichas()
         vista = VistaConsola()
         bitacora = BitacoraPartida("saves")
         controlador = Controlador(servicio, vista, bitacora)
@@ -49,6 +50,7 @@ class Aplicacion:
 
         partida = self.fabrica.nueva_partida(semilla=lector.semilla)
         servicio = JuegoService(partida, self.fabrica)
+        servicio._actualizar_fichas()
         controlador = Controlador(servicio, vista, None)
         for comando in lector.comandos:
             if partida.terminada:

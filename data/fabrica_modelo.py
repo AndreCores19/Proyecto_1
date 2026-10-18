@@ -75,7 +75,8 @@ class FabricaModelo:
             id_instancia=instancia.instancia,
             nombre=ficha.nombre,
             dano=ficha.dano,
-            rearme=ficha.rearme)
+            rearme=ficha.rearme,
+            id_catalogo=instancia.tipo)
 
     def poblar_sala(self, sala):
         pos = self.repo_cripta.salas.posicion(sala.id)
@@ -123,4 +124,6 @@ class FabricaModelo:
         partida.creador_objetos = self.objeto_desde_id
         return partida
 
+    def marcar_en_uso(self, ids):
+        self.repo_catalogo.marcar_en_uso(ids)
 

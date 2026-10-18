@@ -46,3 +46,4 @@ class LectorBitacora:
         if (not en_cuerpo or self.cripta is None or self.version_cripta is None
                 or self.version_catalogo is None or self.semilla is None):
             raise ErrorBitacora("El encabezado de la bitácora está incompleto")
+
