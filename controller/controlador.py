@@ -11,11 +11,14 @@ def direccionar(tecla):
         return "E"
 
 class Controlador:
-    def __init__(self, servicio, vista, bitacora):
+    def __init__(self, servicio, vista, bitacora, persistencia):
         self.servicio = servicio
         self.vista = vista
         self.bitacora = bitacora
         self.activo = True
+        self.comandos = []
+        self.persistencia = persistencia
+
 
 
     def jugar(self):
@@ -45,10 +48,15 @@ class Controlador:
         comando = palabras[0]
         direccion = direccionar(comando)
 
-        if self.bitacora is not None and comando != "salir":
-            self.bitacora.anotar(" ".join(palabras))
+        if comando not in ("salir", "guardar", "cargar"):  # ← cambia esta condición
+            self.comandos.append(" ".join(palabras))  # ← nuevo: siempre
+            if self.bitacora is not None:
+                self.bitacora.anotar(" ".join(palabras))
+
         if comando == "salir":
             self.activo = False
+        elif comando == "guardar":  # ← nuevo
+            self._cmd_guardar(palabras)
         elif direccion is not None:
             self._avisar_si_falla(self.servicio.mover(direccion),
                                   "No puedes moverte en esa dirección.")
@@ -126,4 +134,10 @@ class Controlador:
         else:
             self._avisar_si_falla(self.servicio.retroceder(), "No hay nada que retroceder.")
 
-
+    def _cmd_guardar(self, palabras):
+        if self.persistencia is None:
+            return
+        nombre = palabras[1] if len(palabras) > 1 else "partida"
+        ruta = self.persistencia.guardar_partida(
+            self.servicio.partida, self.comandos, nombre)
+        self.vista.mostrar_mensaje(f"Partida guardada en {ruta}")

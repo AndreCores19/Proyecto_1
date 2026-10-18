@@ -1,6 +1,7 @@
 from adapters.almacen_fichas import AlmacenFichas
 from adapters.bitacora_partida import BitacoraPartida
 from adapters.cliente_http import ClienteHttp
+from adapters.guardado_binario import CabeceraGuardado, GuardadoBinario
 from controller.controlador import Controlador
 from data.fabrica_modelo import FabricaModelo
 from data.repositorio_catalogo import RepositorioCatalogo
@@ -9,6 +10,7 @@ from service.juego_service import JuegoService
 from structures.cache_fichas import CacheFichas
 from view.vista_consola import VistaConsola
 from view.vista_replay import VistaReplay
+from pathlib import Path
 
 ## La clase aplicacion arma todas las piezas y permite jugar o reproducir una partida grabada.
 class Aplicacion:
@@ -30,7 +32,7 @@ class Aplicacion:
         servicio._actualizar_fichas()
         vista = VistaConsola()
         bitacora = BitacoraPartida("saves")
-        controlador = Controlador(servicio, vista, bitacora)
+        controlador = Controlador(servicio, vista, bitacora, self)
         datos = self.repo_cripta.datos
         try:
             bitacora.abrir(datos.id_cripta, datos.version,
@@ -51,7 +53,7 @@ class Aplicacion:
         partida = self.fabrica.nueva_partida(semilla=lector.semilla)
         servicio = JuegoService(partida, self.fabrica)
         servicio._actualizar_fichas()
-        controlador = Controlador(servicio, vista, None)
+        controlador = Controlador(servicio, vista, None, None)
         for comando in lector.comandos:
             if partida.terminada:
                 break
@@ -67,3 +69,10 @@ class Aplicacion:
             self.cliente.solicitudes, self.cliente.presupuesto,
             self.repo_catalogo.aciertos_memoria + self.repo_catalogo.aciertos_disco,
             self.repo_catalogo.fallos)
+
+    def guardar_partida(self, partida, comandos, nombre):
+        ruta = Path("saves") / f"{nombre}.sav"
+        ruta.parent.mkdir(exist_ok=True)
+        cabecera = CabeceraGuardado(self.repo_cripta.datos.id_cripta, self.repo_cripta.datos.version, self.repo_catalogo.version(), partida.semilla)
+        GuardadoBinario().guardar(ruta, cabecera, self.repo_cripta.contenidos, comandos)
+        return ruta

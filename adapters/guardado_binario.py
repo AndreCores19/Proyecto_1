@@ -38,7 +38,7 @@ class GuardadoBinario:
 
         archivo.write(struct.pack("<H", len(dto.enemigos)))
         for enemigo in dto.enemigos:
-            archivo.write(struct.pack("<I", enemigo.instancia))
+            self.escribir_cadena(archivo, enemigo.instancia)
             self.escribir_cadena(archivo, enemigo.tipo)
             vida = -1 if enemigo.vida is None else enemigo.vida
             archivo.write(struct.pack("<i", vida))
@@ -49,7 +49,7 @@ class GuardadoBinario:
 
         archivo.write(struct.pack("<H", len(dto.trampas)))
         for trampa in dto.trampas:
-            archivo.write(struct.pack("<I", trampa.instancia))
+            self.escribir_cadena(archivo, trampa.instancia)
             self.escribir_cadena(archivo, trampa.tipo)
 
     def leer_sala(self, archivo):
@@ -58,7 +58,7 @@ class GuardadoBinario:
         enemigos = []
         (n_enemigos,) = self._leer(archivo, "<H")
         for _ in range(n_enemigos):
-            (instancia,) = self._leer(archivo, "<I")
+            instancia = self.leer_cadena(archivo)
             tipo = self.leer_cadena(archivo)
             (vida,) = self._leer(archivo, "<i")
             if vida == -1:
@@ -73,7 +73,7 @@ class GuardadoBinario:
         trampas = []
         (n_trampas,) = self._leer(archivo, "<H")
         for _ in range(n_trampas):
-            (instancia,) = self._leer(archivo, "<I")
+            instancia = self.leer_cadena(archivo)
             tipo = self.leer_cadena(archivo)
             trampas.append(InstanciaTrampaDTO(instancia, tipo))
 
