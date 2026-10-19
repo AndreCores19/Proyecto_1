@@ -76,3 +76,6 @@ class JuegoService:
 
     def actualizar_fichas(self):
         self.fabrica.marcar_en_uso(self._ids_en_uso())
+
+    def vista_ordenada(self, criterio):
+        return self.partida.jugador.inventario.vista_ordenada(criterio)

@@ -16,3 +16,6 @@ class VistaSilenciosa(VistaReplay):
 
     def mostrar_final(self, partida):
         pass
+
+    def mostrar_inventario_ordenado(self, objetos, criterio):
+        pass

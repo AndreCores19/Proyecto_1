@@ -20,8 +20,6 @@ class Controlador:
         self.persistencia = persistencia
         self.ruta_carga = None
 
-
-
     def jugar(self):
         partida = self.servicio.partida
         while self.activo and not partida.terminada:
@@ -30,6 +28,9 @@ class Controlador:
             self.ejecutar(texto)
         if self.ruta_carga is None:
             self.vista.mostrar_final(partida)
+            if (partida.victoria or partida.terminada) and self.persistencia is not None:
+                puntajes = self.persistencia.registrar_puntaje(partida)
+                self.vista.mostrar_puntajes(puntajes)
 
     def _enemigos_en_sala(self):
         partida = self.servicio.partida
@@ -75,7 +76,7 @@ class Controlador:
         elif comando in ("equipar", "usar", "soltar", "retroceder"):
             self._cmd_simple(comando)
         elif comando in ("inv", "sig", "ant"):
-            self._cmd_inventario(comando)
+            self._cmd_inventario(palabras)
         else:
             self.vista.mostrar_mensaje("Comando no reconocido.")
 
@@ -100,11 +101,20 @@ class Controlador:
         else:
             self._avisar_si_falla(self.servicio.abrir_puerta(direccionar(palabras[1])),"No se pudo abrir (¿no hay puerta cerrada o falta la llave?).")
 
-    def _cmd_inventario(self, comando):
+    def _cmd_inventario(self, palabras):
+        comando = palabras[0]
         if comando == "sig":
             self.servicio.siguiente_objeto()
         elif comando == "ant":
             self.servicio.anterior_objeto()
+        elif len(palabras) > 1:
+            criterio = palabras[1]
+            if criterio not in ("peso", "valor", "nombre"):
+                self.vista.mostrar_mensaje("Usa: inv peso|valor|nombre")
+                return
+            objetos = self.servicio.vista_ordenada(criterio)
+            self.vista.mostrar_inventario_ordenado(objetos, criterio)
+            return
         self.vista.mostrar_inventario(self.servicio.partida)
 
     def _cmd_atacar(self, palabras):

@@ -13,15 +13,17 @@ from view.vista_replay import VistaReplay
 from pathlib import Path
 from adapters.guardado_binario import GuardadoBinario, ErrorGuardado
 from view.vista_silenciosa import VistaSilenciosa
+from data.tabla_puntajes import TablaPuntajes, Puntaje
 
 ## La clase aplicacion arma todas las piezas y permite jugar o reproducir una partida grabada.
 class Aplicacion:
-    def __init__(self, url, id_cripta, tamano_cache=3):
-        self.cliente = ClienteHttp(url, timeout=10)
+    def __init__(self, url, id_cripta, tamano_cache=3, cliente=None):
+        self.cliente = cliente if cliente is not None else ClienteHttp(url, timeout=10)
+        self.nombre_jugador = "Jugador"
         self.repo_cripta = RepositorioCripta(self.cliente)
         dtos = self.repo_cripta.cargar_esqueleto(id_cripta)
         self.repo_cripta.construir_salas(dtos)
-        self.dtos = self.repo_cripta.cargar_esqueleto(id_cripta)
+        self.dtos = dtos
 
         self.cache = CacheFichas(tamano_cache)
         self.repo_catalogo = RepositorioCatalogo(
@@ -31,6 +33,7 @@ class Aplicacion:
 
     def jugar(self, ruta_carga=None):
         vista = VistaConsola()
+        self.nombre_jugador = vista.pedir_nombre()
         try:
             while True:
                 ruta_carga = self._sesion(vista, ruta_carga)
@@ -50,6 +53,7 @@ class Aplicacion:
             self._reiniciar_salas()
 
         partida = self.fabrica.nueva_partida(semilla=semilla)
+        partida.jugador.nombre = self.nombre_jugador
         servicio = JuegoService(partida, self.fabrica)
         servicio.actualizar_fichas()
         bitacora = BitacoraPartida("saves")
@@ -131,3 +135,10 @@ class Aplicacion:
 
     def ruta_guardado(self, nombre):
         return Path("saves") / f"{nombre}.sav"
+
+    def registrar_puntaje(self, partida):
+        datos = self.repo_cripta.datos
+        tabla = TablaPuntajes("saves/puntajes.txt")
+        tabla.registrar(Puntaje(partida.jugador.nombre, datos.id_cripta, datos.version, partida.acciones_jugador,
+                                partida.enemigos_derrotados, partida.reloj,partida.victoria))
+        return tabla.ordenados()

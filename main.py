@@ -43,7 +43,12 @@ def main():
     elif args.cripta:
         Aplicacion(URL, args.cripta, args.tamano_cache).jugar()
     else:
-        parser.error("indica una cripta o usa --replay LOG")
+        from adapters.cliente_http import ClienteHttp
+        from view.vista_consola import VistaConsola
+        cliente = ClienteHttp(URL, timeout=10)
+        id_cripta = VistaConsola().elegir_cripta(cliente.listar_criptas()["criptas"])
+        if id_cripta is not None:
+            Aplicacion(URL, id_cripta, args.tamano_cache, cliente).jugar()
 
 if __name__ == "__main__":
     main()

@@ -35,3 +35,6 @@ class VistaReplay:
         else:
             print("Porcentaje de aciertos: N/A")
         print("-" * 40)
+
+    def mostrar_inventario_ordenado(self, objetos, criterio):
+        pass
