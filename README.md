@@ -122,7 +122,7 @@ El programa crea estas carpetas y archivos al ejecutarse (todos se pueden borrar
 
 Para probar `--replay` sin jugar antes, se incluye una partida de ejemplo:
 
-`python main.py --replay docs/partida_cripta-04_ejemplo-partida.txt`
+`python main.py --replay docs/ejemplo_partida.txt`
 
 ## 7. Estructura del proyecto
 
