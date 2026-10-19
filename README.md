@@ -11,8 +11,7 @@ Integrantes:
 
 - Python 3.11.
 - Conexión a internet para consultar la API de criptas (salvo que esté usando el modo `--offline`).
-- Dependencias de desarrollo: `pytest` (solo para correr las pruebas), pero el juego en sí no usa
-  paquetes externos.
+- Instalar las dependencias con `pip install -r requirements.txt`. Estas contienen Requests (lo utilizado para la comunicación HTTP) y Pytest (para las pruebas automáticas). No se usan otras librerías externas.
 
 ## 2. Instalación
 
@@ -23,15 +22,13 @@ Desde un entorno limpio, en la carpeta del proyecto:
 Activar el entorno:
 
 - Windows (PowerShell): `.venv\Scripts\Activate.ps1`
+- pip install -r requirements.txt
+- Linux/macOS: `source .venv/bin/activate`
 
 El proyecto también incluye pyproject.toml y uv.lock. 
 Si ya está uv instalado, es opcional usarlo en lugar de los pasos anteriores:
 
 `uv sync`
-
-Instalar la dependencia de pruebas:
-
-`pip install pytest`
 
 ## 3. Comandos principales
 
@@ -75,7 +72,10 @@ Las pruebas están en `tests/` y cubren: inventario, puertas, efectos (veneno y 
 botín de enemigos, ordenamientos, bitácora, servicio y una prueba aleatoria del retroceso que
 compara una foto exacta del estado antes de una acción y después de retroceder.
 
-_**Nota:** Los prueba*.py de la raíz son pruebas manuales que se ejecutan con python prueba_x.py, no tests implementados con pytest._
+_**Nota:** Los `prueba_*.py` de la raíz son pruebas manuales de las capas de datos, adaptadores y
+vista (caché, catálogo, cliente, DTO, estructuras, fábrica, lector, lista, repositorio y vista).
+Se ejecutan con `python prueba_x.py`, no con pytest. `pruebas_manuales/prueba_catalogo_red.py`
+hace solicitudes reales al servicio._
 
 ## 5. Benchmarks
 
