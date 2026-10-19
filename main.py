@@ -14,6 +14,8 @@ def main():
                         help="fichas máximas en memoria (por defecto 25)")
     parser.add_argument("--bench", action="store_true",
                         help="ejecuta los benchmarks y termina")
+    parser.add_argument("--offline", action="store_true",
+                        help="usa el paquete de respuestas de offline/ en vez de la red")
     args = parser.parse_args()
 
     if args.bench:
@@ -32,6 +34,12 @@ def main():
 
     if args.tamano_cache < 1:
         parser.error("--cache-size debe ser al menos 1")
+    from adapters.cliente_http import ClienteHttp
+    if args.offline:
+        from adapters.cliente_offline import ClienteOffline
+        cliente = ClienteOffline("offline")
+    else:
+        cliente = ClienteHttp(URL, timeout=10)
     if args.replay:
         lector = LectorBitacora(args.replay)
         try:
@@ -39,16 +47,13 @@ def main():
         except (ErrorBitacora, FileNotFoundError) as error:
             print(f"No se pudo leer la bitácora: {error}")
             sys.exit(1)
-        Aplicacion(URL, lector.cripta, args.tamano_cache).reproducir(lector)
+        Aplicacion(URL, lector.cripta, args.tamano_cache, cliente).reproducir(lector)
     elif args.cripta:
-        Aplicacion(URL, args.cripta, args.tamano_cache).jugar()
+        Aplicacion(URL, args.cripta, args.tamano_cache, cliente).jugar()
     else:
-        from adapters.cliente_http import ClienteHttp
         from view.vista_consola import VistaConsola
-        cliente = ClienteHttp(URL, timeout=10)
         id_cripta = VistaConsola().elegir_cripta(cliente.listar_criptas()["criptas"])
         if id_cripta is not None:
             Aplicacion(URL, id_cripta, args.tamano_cache, cliente).jugar()
-
 if __name__ == "__main__":
     main()

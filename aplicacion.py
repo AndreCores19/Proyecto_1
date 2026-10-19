@@ -17,7 +17,7 @@ from data.tabla_puntajes import TablaPuntajes, Puntaje
 
 ## La clase aplicacion arma todas las piezas y permite jugar o reproducir una partida grabada.
 class Aplicacion:
-    def __init__(self, url, id_cripta, tamano_cache=3, cliente=None):
+    def __init__(self, url, id_cripta, tamano_cache=25, cliente=None):
         self.cliente = cliente if cliente is not None else ClienteHttp(url, timeout=10)
         self.nombre_jugador = "Jugador"
         self.repo_cripta = RepositorioCripta(self.cliente)
