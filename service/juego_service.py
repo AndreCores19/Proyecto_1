@@ -10,12 +10,12 @@ class JuegoService:
             if objeto.id_instancia == id_instancia:
                 resultado = self.partida.recoger(objeto)
                 break
-        self._actualizar_fichas()
+        self.actualizar_fichas()
         return resultado
 
     def soltar_objeto(self):
         resultado = self.partida.soltar()
-        self._actualizar_fichas()
+        self.actualizar_fichas()
         return resultado
 
     def equipar_objeto(self):
@@ -23,7 +23,7 @@ class JuegoService:
 
     def usar_objeto(self):
         resultado = self.partida.usar()
-        self._actualizar_fichas()
+        self.actualizar_fichas()
         return resultado
 
     def mover(self, direccion):
@@ -32,17 +32,17 @@ class JuegoService:
             return False
         self.fabrica.poblar_sala(salida.destino)
         resultado = self.partida.mover(direccion)
-        self._actualizar_fichas()
+        self.actualizar_fichas()
         return resultado
 
     def atacar(self, enemigo):
         resultado = self.partida.atacar(enemigo)
-        self._actualizar_fichas()
+        self.actualizar_fichas()
         return resultado
 
     def esperar(self):
         resultado = self.partida.esperar_jugador()
-        self._actualizar_fichas()
+        self.actualizar_fichas()
         return resultado
 
     def abrir_puerta(self, direccion):
@@ -50,7 +50,7 @@ class JuegoService:
 
     def retroceder(self):
         resultado = self.partida.retroceder()
-        self._actualizar_fichas()
+        self.actualizar_fichas()
         return resultado
 
     def siguiente_objeto(self):
@@ -74,5 +74,8 @@ class JuegoService:
             ids.append(trampa.id_catalogo)
         return ids
 
-    def _actualizar_fichas(self):
+    def actualizar_fichas(self):
         self.fabrica.marcar_en_uso(self._ids_en_uso())
+
+    def vista_ordenada(self, criterio):
+        return self.partida.jugador.inventario.vista_ordenada(criterio)

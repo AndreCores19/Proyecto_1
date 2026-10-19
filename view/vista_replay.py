@@ -22,3 +22,19 @@ class VistaReplay:
             print("Has muerto.")
         else:
             print("Saliste de la partida.")
+
+    def mostrar_reporte(self, solicitudes, presupuesto, aciertos, fallos):
+        print("-" * 40)
+        print(f"Solicitudes realizadas: {solicitudes} de {presupuesto}")
+        if presupuesto is not None:
+            print(f"Presupuesto restante: {presupuesto - solicitudes}")
+        print(f"Aciertos: {aciertos}, Fallos: {fallos}")
+        total = aciertos + fallos
+        if total > 0:
+            print(f"Porcentaje de aciertos: {aciertos / total * 100:.2f}%")
+        else:
+            print("Porcentaje de aciertos: N/A")
+        print("-" * 40)
+
+    def mostrar_inventario_ordenado(self, objetos, criterio):
+        pass

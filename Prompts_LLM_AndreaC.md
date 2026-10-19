@@ -62,3 +62,42 @@
 - **Prompt:** Quedé encerrada: la sala 19 solo va a la 20 y la puerta hacia la sala 5 aparece cerrada. ¿Es un error?
 - **Uso:** comprender el cierre automático de puertas (la puerta se cierra sola tras cierto tiempo, en ambas caras) y decidir mostrar en la vista qué llave requiere cada puerta cerrada como mejora futura.
 
+### 15 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** ¿Cómo diseño la bitácora de comandos para que --replay reproduzca la partida de forma fiel? ¿Qué debe llevar el encabezado y qué pasa si cambia la versión de la cripta?
+- **Uso:** definir un log de texto con encabezado (cripta, versiones, semilla) y un comando por línea con flush; validar versiones antes de reproducir y medir el costo en bench_replay.
+
+### 15 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Descubrimos que veneno va en las trampas y regeneración en los enemigos, y Emily ya lo añadió y lo probó. Eso afecta lo que ya hicimos (caché, guardado, benchmarks)? Además, en las fichas reales de trp_dardos y ent_rata_gigante no aparece ninguno de los dos campos, ¿es un problema?
+- **Uso:** comprobar que los campos nuevos no rompen la caché ni el guardado, y entender que los nombres `veneno` y `regeneracion` son una suposición nuestra porque el enunciado no nombra los campos de la ficha.
+
+### 15 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Revisa los benchmarks de Emily en bench/ y dime cómo agrego la opción --bench a main.py sin romper el resto de los flags.
+- **Uso:** entender qué mide cada benchmark contra lo que pide la sección 5.3 del enunciado (agenda, caché, fichas expulsadas, inventario, historial, ordenamientos, guardado y carga) y agregar --bench con argparse.
+
+
+### 16 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Necesito un formato de guardado binario para la partida: ¿qué debe llevar el encabezado, cómo valido que la cripta y las versiones coinciden, y por qué es mejor que JSON?
+- **Uso:** diseñar GuardadoBinario (magic, versión de formato, índice de salas al final) y compararlo con JSON midiendo tamaño y tiempos de guardar, cargar todo y leer una sola sala (bench_guardado).
+
+### 16 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Quiero medir cuánto cuesta una ficha según venga de memoria, de disco o de la red, y cuánto cuesta marcar las fichas en uso en cada acción del jugador. Cómo armo ese benchmark sin usar la red real?
+- **Uso:** escribir bench_fichas con una fuente falsa y una cita de 400 ms por solicitud; comprobar que marcar las fichas en uso es una fracción pequeña del límite de 20 ms por ciclo.
+
+### 17 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Al jugar cripta-04 el programa gasta muchas solicitudes. ¿Estamos pidiendo el contenido de las salas y las fichas del catálogo de la forma más eficiente? Mide cuántas solicitudes gasta cada estrategia.
+- **Uso:** descubrir que se pedía contenido en cada sala y fichas una por una; cambiar a pedir un lote de salas solo cuando falta la sala de destino y resolver las fichas de todo el lote juntas. Medimos con bench_precarga y bench_catalogo (por ejemplo, de 83,5 a 9,9 solicitudes en una cripta de 100 salas).
+
+### 18 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** El benchmark de precarga me da el doble de solicitudes que a ti. Aquí está mi función precargar y la salida de una prueba mínima. Por qué da diferente?
+- **Uso:** encontrar con una prueba mínima que `precargar` hacía la solicitud dos veces porque quedó el bloque viejo junto al nuevo; borrar el duplicado y verificar con prueba_precarga y --bench que los conteos coinciden.
+
+
+
+
