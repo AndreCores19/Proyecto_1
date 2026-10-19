@@ -1,14 +1,16 @@
 # Entorno virtual
 .venv/
 
-# Caché de Python
+# Caché de Python y de pruebas
 __pycache__/
 *.pyc
+.pytest_cache/
 
-# Archivos de configuración del juego
+# Archivos generados por el juego
 cache/
 saves/
 *.log
 
-# Editor
+# Editores
+.idea/
 .vscode/

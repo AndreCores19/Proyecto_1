@@ -7,7 +7,7 @@ Integrantes:
 - Emily Benavides Rodríguez
 - Andrea Cordero Espinoza.
 
-## 1. ¿Qué se necesitá para ejecutarlo?
+## 1. ¿Qué se necesita para ejecutarlo?
 
 - Python 3.11.
 - Conexión a internet para consultar la API de criptas (salvo que esté usando el modo `--offline`).
@@ -35,7 +35,11 @@ Instalar la dependencia de pruebas:
 
 ## 3. Comandos principales
 
-Jugar una cripta:
+Jugar sin indicar cripta (muestra un menú con las criptas del servicio):
+
+`python main.py`
+
+Jugar una cripta específica:
 
 `python main.py <id_de_la_cripta>`
 
@@ -45,12 +49,24 @@ Opciones:
 |---|---|
 | `--cache-size N` | Fichas máximas guardadas en memoria (por defecto 25). |
 | `--replay LOG` | Reproduce una partida grabada en un archivo de bitácora. |
-| `--offline` | **[PENDIENTE: Andrea]** describir si está disponible y cómo se usa. |
-| `--bench` | **[PENDIENTE: Andrea]** ejecuta las mediciones de rendimiento (ver sección 5). |
+| `--offline` | Lee las respuestas del paquete de la carpeta `offline/` en lugar de la red. No cuenta solicitudes. Para generar el paquete: `python grabar_offline.py`. |
+| `--bench` | Ejecuta todos los benchmarks y termina, sin abrir la vista interactiva. |
 
-**[PENDIENTE: Andrea]** Controles dentro del juego (moverse, abrir puerta, atacar, esperar,
-recoger, usar, equipar, soltar, recorrer inventario, pergamino de retroceso, guardar, cargar y salir).
+Comandos del juego:
 
+| Comando | Acción |
+|---|---|
+| `w` `a` `s` `d` | Moverse al norte, oeste, sur o este, respectivamente. |
+| `abrir w/a/s/d` | Abrir la puerta en esa dirección (necesita la llave). |
+| `atacar [id]` | Atacar a un enemigo de la sala (el id se puede omitir si hay uno solo). |
+| `esperar` | Dejar pasar el tiempo. |
+| `recoger [id]` | Recoger un objeto del suelo. |
+| `usar`, `equipar`, `soltar` | Actúan sobre el objeto marcado con `>` en el inventario. |
+| `inv`, `sig`, `ant` | Ver el inventario y moverse al siguiente o al anterior. |
+| `inv peso`, `inv valor`, `inv nombre` | Vista ordenada del inventario (no cambia el orden real). |
+| `retroceder` | Usar el pergamino de retroceso (también funciona seleccionando el pergamino en inventario y escribir usar). |
+| `guardar [nombre]`, `cargar [nombre]` | Guardar o cargar la partida (nombre por defecto: `partida`). |
+| `salir` | Terminar la sesión. |
 ## 4. Pruebas automáticas
 
 `python -m pytest`
@@ -59,31 +75,54 @@ Las pruebas están en `tests/` y cubren: inventario, puertas, efectos (veneno y 
 botín de enemigos, ordenamientos, bitácora, servicio y una prueba aleatoria del retroceso que
 compara una foto exacta del estado antes de una acción y después de retroceder.
 
+_**Nota:** Los prueba*.py de la raíz son pruebas manuales que se ejecutan con python prueba_x.py, no tests implementados con pytest._
+
 ## 5. Benchmarks
 
-Cada archivo de `bench/` mide una estructura contra la alternativa que se descartó. Se ejecutan
-desde la carpeta del proyecto, con `-m`:
+Cada archivo de `bench/` mide una estructura contra la alternativa que se descartó. Para ejecutarlos
+todos, en orden, sin abrir la vista interactiva:
+
+`python main.py --bench`
+
+También se puede correr uno solo, desde la carpeta del proyecto y con `-m`:
 
 | Comando | Qué mide |
 |---|---|
+| `python -m bench.bench_ciclo` | Ciclo completo del juego (esperar y retroceder) contra el límite de 20 ms. |
+| `python -m bench.bench_historial` | Retroceso con funciones de deshacer contra copiar el estado completo. |
 | `python -m bench.bench_agenda` | Agenda de eventos (heap) contra listas sin ordenar y ordenada. |
 | `python -m bench.bench_inventario` | Lista doblemente enlazada con cursor contra arreglo. |
-| `python -m bench.bench_historial` | Retroceso con funciones de deshacer contra copiar el estado completo. |
-| `python -m bench.bench_rastro` | Rastro con caducidad al consultar contra eventos y barrido de salas. |
 | `python -m bench.bench_bitacora` | Buffer circular de 20 mensajes contra lista que desplaza y contra guardar todo. |
 | `python -m bench.bench_ordenamientos` | Inserción, mergesort y la función híbrida `ordenar`. |
-| `python -m bench.bench_ciclo` | Ciclo completo del juego (esperar y retroceder) contra el límite de 20 ms. |
+| `python -m bench.bench_rastro` | Rastro con caducidad al consultar contra eventos y barrido de salas. |
+| `python -m bench.bench_cache` | Caché de fichas: búsqueda binaria contra lineal, y LRU contra FIFO. |
+| `python -m bench.bench_guardado` | Guardado binario contra JSON: tamaño, guardar, cargar todo y cargar una sala. |
+| `python -m bench.bench_fichas` | Costo de una ficha desde memoria, disco y red, y costo de marcar las fichas en uso. |
+| `python -m bench.bench_precarga` | Solicitudes de contenido de salas: una por sala, anticipar siempre y lote solo si falta. |
+| `python -m bench.bench_catalogo` | Solicitudes de fichas del catálogo: una por id, por sala y por lote de salas. |
+| `python -m bench.bench_replay` | Bitácora de partida: anotar con y sin flush, leer, reejecutar y copiar el estado. |
 
-Los benchmarks usan `time`, `gc`, `tracemalloc` y `copy` únicamente para medir, la lógica del
-juego no los usa. Los tiempos dependen de la computadora: lo que se mantiene entre equipos es
-la forma de las curvas, no los números exactos.
-
-**[PENDIENTE: Andrea]** Si `--bench` en `main.py` ejecuta estos benchmarks, indicarlo aquí.
+Los benchmarks usan `time`, `gc`, `tracemalloc`, `copy`, `json` y `tempfile` únicamente para medir
+o para construir la alternativa descartada; el modelo del juego no los usa. Los benchmarks de red
+(`bench_fichas`, `bench_precarga`, `bench_catalogo`) usan una fuente falsa y no hacen solicitudes
+reales. Los tiempos dependen de la computadora: lo que se mantiene entre equipos es la forma de las
+curvas y los conteos de solicitudes, no los números exactos.
 
 ## 6. Archivos generados
 
-**[PENDIENTE: Andrea]** Indicar dónde se guardan: partida guardada (archivo binario), bitácora
-de la partida para `--replay` y cualquier caché en disco.
+El programa crea estas carpetas y archivos al ejecutarse (todos se pueden borrar sin romper nada):
+
+| Ruta | Qué contiene |
+|---|---|
+| `saves/<nombre>.sav` | Partida guardada con `guardar [nombre]`, en el formato binario propio. |
+| `saves/partida_<cripta>_<semilla>.log` | Bitácora de la partida (texto, un comando por línea) para `--replay`. |
+| `saves/puntajes.txt` | Tabla de puntajes local, una línea por partida terminada. |
+| `cache/catalogo/` | Fichas del catálogo descargadas (un `.json` por ficha) y `version.txt`. Si cambia la versión del catálogo, se borra y se vuelve a descargar. |
+| `offline/` | Paquete de respuestas para `--offline`. Se genera con `python grabar_offline.py`. Está incluido en el repositorio. |
+
+Para probar `--replay` sin jugar antes, se incluye una partida de ejemplo:
+
+`python main.py --replay docs/partida_cripta-04_ejemplo-partida.txt`
 
 ## 7. Estructura del proyecto
 
@@ -116,3 +155,20 @@ de la partida para `--replay` y cualquier caché en disco.
 - **Veneno y regeneración:** opcionales; solo se aplican si la ficha de la cripta los trae.
 - **Botín:** lo que suelta un enemigo queda en el suelo y se registra en el historial, de modo que
   retroceder lo quita y revive al enemigo.
+- **Caché de fichas:** vector ordenado de ids (búsqueda binaria) y lista doblemente enlazada con el
+  orden de uso; expulsa la menos usada recientemente que no esté en uso, y lo expulsado se recupera
+  del disco, no de la red.
+- **Contenido de salas:** al entrar a una sala cuyo contenido falta, se pide en una sola solicitud
+  un lote de hasta 10 salas cercanas (recorrido en anchura); si ya está, no se pide nada.
+- **Catálogo:** las fichas de todas las salas de un lote se resuelven juntas, en lotes de 10 ids;
+  se guardan en `cache/catalogo` y se invalidan si cambia la versión del catálogo.
+- **Guardado:** archivo binario propio con encabezado, versión del formato, índice de salas al
+  final para leer una sala sin leer el resto, y los comandos del jugador. Al cargar se valida la
+  cripta, su versión y la del catálogo.
+- **Bitácora de partida:** archivo de texto de solo anexado, con flush en cada comando; el
+  encabezado lleva cripta, versiones y semilla. `--replay` se niega a reproducir si las versiones
+  no coinciden.
+- **Modo sin conexión:** `ClienteOffline` ofrece los mismos métodos que `ClienteHttp` y lee JSON
+  del paquete `offline/`; la elección se hace en un solo lugar de `main.py` y el modelo no se entera.
+- **Puntajes:** archivo de texto; al mostrarse se ordenan con `ordenar` (victorias primero, luego
+  más enemigos derrotados y menos tiempo).

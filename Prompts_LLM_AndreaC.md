@@ -98,6 +98,22 @@
 - **Prompt:** El benchmark de precarga me da el doble de solicitudes que a ti. Aquí está mi función precargar y la salida de una prueba mínima. Por qué da diferente?
 - **Uso:** encontrar con una prueba mínima que `precargar` hacía la solicitud dos veces porque quedó el bloque viejo junto al nuevo; borrar el duplicado y verificar con prueba_precarga y --bench que los conteos coinciden.
 
+### 18 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Cada partida de cripta-04 es distinta, así que no puedo comparar caché fría y caliente. ¿Cómo mido la misma partida?
+- **Uso:** usar --replay con el mismo log para comparar la caché fría y la caliente con --cache-size 3, y agregar mostrar_reporte a VistaReplay y llamar a _reportar al final de reproducir.
 
+### 18 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Revisa mi vista y mi controlador contra la sección 10.2 del enunciado y dime qué falta.
+- **Uso:** detectar que faltaban el menú para elegir cripta, la vista ordenada del inventario, las estadísticas, el estado de efectos, los 20 mensajes y la tabla de puntajes, y hacerlos uno por uno probando cada paso.
 
+### 18 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** ¿Cómo implemento --offline para que el modelo no sepa si los datos vienen de HTTP o de archivos?
+- **Uso:** crear ClienteOffline con la misma interfaz que ClienteHttp, un script que descarga el paquete de respuestas a offline/ y un solo if en main.py para elegir el cliente. Se comprobó que una partida completa cuenta 0 solicitudes.
 
+### 18 de Octubre, 2026
+- **Herramienta:** Claude
+- **Prompt:** Revisa mi README, pyproject.toml y .gitignore y dime qué falta para que funcione en un entorno limpio.
+- **Uso:** detectar que requests faltaba en las dependencias, completar las partes pendientes del README (opciones, controles, benchmarks y archivos generados) y agregar .idea/ y .pytest_cache/ al .gitignore.
