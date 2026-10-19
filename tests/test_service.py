@@ -77,12 +77,22 @@ def test_servicio_esperar_y_atacar():
     assert partida.enemigos_derrotados == 1
 
 
-def test_servicio_retroceder_deshace_la_ultima_accion():
+def test_servicio_retroceder_sin_pergamino_no_hace_nada():
     servicio, partida, _, _ = armar_servicio()
     servicio.recoger_objeto(1)
+    reloj = partida.reloj
+    assert servicio.retroceder() is False
+    assert partida.reloj == reloj
     assert partida.jugador.inventario.tamano == 1
+
+
+def test_servicio_retroceder_deshace_la_ultima_accion_y_gasta_el_pergamino():
+    servicio, partida, _, _ = armar_servicio()
+    servicio.recoger_objeto(3)          # pergamino
+    servicio.recoger_objeto(1)          # espada
+    assert partida.jugador.inventario.tamano == 2
     assert servicio.retroceder() is True
-    assert partida.jugador.inventario.tamano == 0
+    assert partida.jugador.inventario.tamano == 0   # se deshace la espada y se gasta el pergamino
 
 def test_servicio_avisa_a_la_fabrica_que_fichas_estan_en_uso():
     servicio, partida, fabrica, _ = armar_servicio()

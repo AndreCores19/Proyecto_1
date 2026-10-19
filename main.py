@@ -56,4 +56,10 @@ def main():
         if id_cripta is not None:
             Aplicacion(URL, id_cripta, args.tamano_cache, cliente).jugar()
 if __name__ == "__main__":
-    main()
+    from adapters.cliente_http import ErrorCliente
+    from adapters.cliente_offline import ErrorOffline
+    try:
+        main()
+    except (ErrorCliente, ErrorOffline) as error:
+        print(f"Error de comunicación con el servicio: {error}")
+        sys.exit(1)

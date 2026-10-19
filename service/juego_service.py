@@ -1,3 +1,6 @@
+from model.objeto_logica import PERGAMINO_RETROCESO
+
+
 class JuegoService:
 
     def __init__(self, partida, fabrica):
@@ -49,7 +52,15 @@ class JuegoService:
         return self.partida.abrir_puerta(direccion)
 
     def retroceder(self):
-        resultado = self.partida.retroceder()
+        ## el comando retroceder usa un pergamino del inventario
+        inv = self.partida.jugador.inventario
+        nodo = inv.cabeza
+        while nodo is not None and nodo.objeto.clase != PERGAMINO_RETROCESO:
+            nodo = nodo.siguiente
+        if nodo is None:
+            return False
+        inv.actual = nodo
+        resultado = self.partida.usar_pergamino()
         self.actualizar_fichas()
         return resultado
 
