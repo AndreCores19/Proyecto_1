@@ -1,6 +1,6 @@
 from adapters.lector_bitacora import LectorBitacora
 
-lector = LectorBitacora("saves/partida_cripta-02_2440366726.log")
+lector = LectorBitacora("docs/ejemplo_partida.txt")
 lector.leer()
 print("Cripta:", lector.cripta)
 print("Version Cripta:", lector.version_cripta)

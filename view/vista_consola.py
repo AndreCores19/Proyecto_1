@@ -119,5 +119,5 @@ class VistaConsola:
               f"{'Acc.':>5} {'Derr.':>5} {'Tiempo':>7}  Resultado")
         for i, p in enumerate(puntajes[:10], 1):
             resultado = "victoria" if p.victoria else "derrota"
-            print(f"  {i:>2} {p.nombre:<14} {p.id_cripta:<10} {p.version:<6} "
+            print(f"  {i:>2} {p.nombre:<14} {p.id_cripta:<10} {p.version:<12} "
                   f"{p.acciones:>5} {p.derrotados:>5} {p.tiempo:>7}  {resultado}")

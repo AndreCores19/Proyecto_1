@@ -72,10 +72,11 @@ Las pruebas están en `tests/` y cubren: inventario, puertas, efectos (veneno y 
 botín de enemigos, ordenamientos, bitácora, servicio y una prueba aleatoria del retroceso que
 compara una foto exacta del estado antes de una acción y después de retroceder.
 
-_**Nota:** Los `prueba_*.py` de la raíz son pruebas manuales de las capas de datos, adaptadores y
-vista (caché, catálogo, cliente, DTO, estructuras, fábrica, lector, lista, repositorio y vista).
-Se ejecutan con `python prueba_x.py`, no con pytest. `pruebas_manuales/prueba_catalogo_red.py`
-hace solicitudes reales al servicio._
+_**Nota:** La carpeta `pruebas_manuales/` contiene pruebas manuales de las capas de datos,
+adaptadores y vista (almacén, caché, catálogo, DTO, estructuras, lector, lista, repositorio y vista).
+No son pruebas de pytest. Se ejecutan desde la raíz, por ejemplo:
+`python -m pruebas_manuales.prueba_lista`. `prueba_catalogo_red`, `prueba_repositorio` y
+`prueba_vista` hacen solicitudes reales al servicio y gastan presupuesto._
 
 ## 5. Benchmarks
 
